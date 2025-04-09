@@ -1,0 +1,66 @@
+/*
+파일명 : Home.css
+파일설명 : 로컬잇 웹사이트의 메인(홈) 화면 디자인
+작성자 : 정여진
+기간 : 2025-04-09.
+*/
+.banner-container {
+    position: relative;
+    width: 100%;
+    background-color: white;
+    overflow: hidden;
+}
+
+.banner-image {
+    width: 100%;
+    height: auto;
+    max-height: 500px;
+    object-fit: cover;
+}
+
+.banner-button {
+    position: absolute;
+    bottom: 30px;
+    right: 30px;
+    background: rgba(17, 0, 0, 0.7);
+    padding: 10px 20px;
+    border-radius: 17px;
+    color: white;
+    font-size: 1.5rem;
+    font-weight: 700;
+    text-align: center;
+}
+
+.region-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px;
+    padding: 2rem;
+    justify-content: center;
+}
+
+.tag {
+    padding: 0.5rem 1.25rem;
+    border-radius: 999px;
+    font-size: 1rem;
+    font-weight: 500;
+    color: black;
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+.tag-0 { background-color: rgba(171, 78, 82, 0.1); }
+.tag-1 { background-color: rgba(244, 166, 136, 0.1); }
+.tag-2 { background-color: rgba(110, 75, 53, 0.1); }
+.tag-3 { background-color: rgba(164, 215, 146, 0.1); }
+.tag-4 { background-color: rgba(0, 178, 169, 0.1); }
+.tag-5 { background-color: rgba(116, 139, 171, 0.1); }
+.tag-6 { background-color: rgba(208, 176, 132, 0.1); }
+.tag-7 { background-color: rgba(189, 160, 203, 0.1); }
+
+.product-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 32px;
+    justify-content: space-between;
+    padding: 40px 70px;
+}
