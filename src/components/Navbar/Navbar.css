@@ -1,0 +1,98 @@
+/*
+파일명  : Navbar.css
+파일설명 : LocalEat 네비게이션 바에 대한 스타일 정의
+          - 반응형 레이아웃 고려 (Flex 기반 정렬)
+          - 로고, 메뉴, 검색창, 아이콘 등 각 요소별 스타일링 포함
+작성자  : 정여진
+작성일  : 2025-04-09.~
+*/
+.navbar {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    height: 120px;
+    background-color: white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    z-index: 100;
+}
+
+.navbar-inner {
+    max-width: 1440px;
+    height: 100%;
+    margin: 0 auto;
+    padding: 0 50px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 30px;
+}
+
+.logo {
+    font-size: 48px;
+    font-family: 'Pretendard', sans-serif;
+    font-weight: 800;
+}
+
+.logo-green {
+    color: #03C75A;
+}
+
+.logo-pink {
+    color: #FF7698;
+}
+
+.search-bar {
+    position: relative;
+    width: 300px;
+    height: 50px;
+    background-color: rgba(3, 199, 90, 0.1);
+    border-radius: 15px;
+}
+
+.search-icon-circle {
+    position: absolute;
+    right: 12px;
+    top: 11px;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    border: 3px solid #03C75A;
+}
+
+.search-icon-line {
+    position: absolute;
+    right: 5px;
+    top: 30px;
+    width: 10px;
+    height: 2px;
+    background-color: #03C75A;
+    transform: rotate(45deg);
+    transform-origin: top left;
+}
+
+.menu {
+    display: flex;
+    gap: 24px;
+    font-size: 24px;
+    font-family: 'Pretendard', sans-serif;
+    font-weight: 400;
+}
+
+.icons {
+    display: flex;
+    gap: 20px;
+}
+.icon-img {
+    width: 30px;
+    height: 30px;
+    object-fit: contain;
+}
+.icon-button {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: #e0f7ec;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
