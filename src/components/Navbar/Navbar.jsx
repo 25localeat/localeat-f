@@ -12,6 +12,7 @@ import iconLogin from './logo-nav-login.png';
 import iconBasket from './logo-nav-basket.png';
 import iconAlarm from './logo-nav-alarm.jpg';
 import iconLogout from './logo-nav-logout.png';
+import { Link } from 'react-router-dom'; // 소망쓰가 추가했어요
 
 const Navbar = () => {
     return (
@@ -38,7 +39,9 @@ const Navbar = () => {
 
                 <div className="icons">
                     <img src={iconLogin} alt="login" className="icon-img"/>
-                    <img src={iconBasket} alt="basket" className="icon-img"/>
+                    <Link to="/cart"> 
+                        <img src={iconBasket} alt="basket" className="icon-img"/>
+                    </Link>
                     <img src={iconAlarm} alt="alarm" className="icon-img"/>
                 </div>
             </div>
