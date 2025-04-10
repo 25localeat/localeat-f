@@ -14,7 +14,7 @@ const initialCartItems = [
   { id: 3, name: '약과', price: 5000, quantity: 5, checked: true },
 ];
 
-const Cart_General = () => {
+const CartGeneral = () => {
   const [cartItems, setCartItems] = useState(initialCartItems);
 
   const toggleAll = (e) => {
@@ -75,4 +75,4 @@ const Cart_General = () => {
   );
 };
 
-export default Cart_General;
+export default CartGeneral;
