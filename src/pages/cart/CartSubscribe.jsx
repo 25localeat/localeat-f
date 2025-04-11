@@ -1,22 +1,22 @@
 /*
-파일명 : CartGeneral.jsx
-파일설명 : 로컬잇 웹사이트의 장바구니/일반배송 UI
+파일명 : CartSubscribe.jsx
+파일설명 : 로컬잇 웹사이트의 장바구니/구독독 UI
 작성자 : 김소망
-기간 : 2025-04-10~
+기간 : 2025-04-11~
 */
 
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './CartGeneral.css';
 
-const initialCartItems = [
-  { id: 1, name: '약과', price: 2000, quantity: 4, checked: false },
-  { id: 2, name: '약과', price: 5000, quantity: 1, checked: true },
-  { id: 3, name: '약과', price: 5000, quantity: 5, checked: true },
+const initialSubscribeItems = [
+  { id: 1, name: '약과', price: 2000, quantity: 4, cycle: '1주', checked: false },
+  { id: 2, name: '약과', price: 5000, quantity: 1, cycle: '2개월', checked: true },
+  { id: 3, name: '약과', price: 5000, quantity: 5, cycle: '1주', checked: true },
 ];
 
-const CartGeneral = () => {
-  const [cartItems, setCartItems] = useState(initialCartItems);
+const CartSubscribe = () => {
+  const [cartItems, setCartItems] = useState(initialSubscribeItems);
   const [popupType, setPopupType] = useState(null);
   const [itemToDelete, setItemToDelete] = useState(null);
   const navigate = useNavigate();
@@ -32,7 +32,6 @@ const CartGeneral = () => {
     ));
   };
 
-  // 삭제 버튼 클릭시 팝업 
   const confirmDelete = (id) => {
     setItemToDelete(id);
     setPopupType('delete');
@@ -44,7 +43,6 @@ const CartGeneral = () => {
     setItemToDelete(null);
   };
 
-  //주문 버튼 클릭시 팝업
   const showOrderPopup = () => {
     setPopupType('order');
   };
@@ -59,8 +57,8 @@ const CartGeneral = () => {
       <h1>장바구니</h1>
 
       <div className="flex">
-        <button className="active">일반배송</button>
-        <button onClick={() => navigate('/cart-subscribe')}>구독</button>
+        <button onClick={() => navigate('/cart')}>일반배송</button>
+        <button className="active">구독</button>
         <button onClick={() => navigate('/cart-groupbuy')}>공동구매</button>
       </div>
 
@@ -77,6 +75,7 @@ const CartGeneral = () => {
             <th>가격</th>
             <th>수량</th>
             <th>소계</th>
+            <th>배송주기</th>
             <th>삭제</th>
           </tr>
         </thead>
@@ -88,6 +87,7 @@ const CartGeneral = () => {
               <td>{item.price}</td>
               <td>{item.quantity}</td>
               <td>{item.price * item.quantity}</td>
+              <td>{item.cycle}</td>
               <td><button className="delete-btn" onClick={() => confirmDelete(item.id)}>삭제</button></td>
             </tr>
           ))}
@@ -129,4 +129,4 @@ const CartGeneral = () => {
   );
 };
 
-export default CartGeneral;
+export default CartSubscribe;

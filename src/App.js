@@ -3,6 +3,8 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import './App.css';
 import Home from "./pages/home/Home";
 import CartGeneral from "./pages/cart/CartGeneral";
+import CartSubscribe from "./pages/cart/CartSubscribe";
+import CartGroupBuy from "./pages/cart/CartGroupBuy";
 import Navbar from "./components/Navbar/Navbar";
 import Footer from "./components/Footer/Footer";
 
@@ -16,6 +18,8 @@ function App() {
                   <Routes>
                       <Route path="/" element={<Home/>}/>
                       <Route path="/cart" element={<CartGeneral/>}/>
+                      <Route path="/cart-subscribe" element={<CartSubscribe />} />
+                      <Route path="/cart-groupbuy" element={<CartGroupBuy />} />
                   </Routes>
               </>
           </main>
