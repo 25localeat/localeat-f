@@ -30,11 +30,39 @@ const Popup = ({ type, onConfirm, onCancel }) => {
                     </>
                 )}
 
+                {type === 'register' && (
+                    <>
+                        <p>상품이 성공적으로 등록되었습니다!</p>
+                        <div className="btn-group">
+                            <button className="confirm" onClick={onConfirm}>확인</button>
+                        </div>
+                    </>
+                )}
+
+                {type === 'edit' && (
+                    <>
+                        <p>수정이 완료되었습니다!</p>
+                        <div className="btn-group">
+                            <button className="confirm" onClick={onConfirm}>확인</button>
+                        </div>
+                    </>
+                )}
+
+
                 {type === 'order' && (
                     <>
                         <p>감사합니다!<br />주문이 완료되었습니다!</p>
                         <div className="btn-group">
                             <button className="confirm" onClick={onConfirm}>홈으로</button>
+                        </div>
+                    </>
+                )}
+
+                {type === 'statusUpdated' && (
+                    <>
+                        <p>주문 상태가 저장되었습니다.</p>
+                        <div className="btn-group">
+                            <button className="confirm" onClick={onConfirm}>확인</button>
                         </div>
                     </>
                 )}

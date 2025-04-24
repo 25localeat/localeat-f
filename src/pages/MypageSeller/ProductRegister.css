@@ -1,0 +1,151 @@
+/*
+파일명 : ProductRegister.css
+파일설명 : 판매자 마이페이지 - 상품 등록 화면 디자인
+작성자 : 김소망
+작성일 : 2025-04-24
+*/
+
+.register-container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+    box-sizing: border-box;
+    background-color: white;
+    min-height: 100vh;
+}
+
+.page-title {
+    background-color: #DFF3E6;
+    width: 100%;
+    text-align: center;
+    font-size: 2rem;
+    font-weight: bold;
+    padding: 0.6rem 0;
+    border-radius: 4px;
+    margin-bottom: 0.5rem;
+}
+
+.form-box {
+    border: 1px solid #ccc;
+    padding: 2rem;
+    border-radius: 8px;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.form-box h2 {
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
+    color: black;
+}
+
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+select {
+    appearance: none;
+    background-image: url("data:image/svg+xml;utf8,<svg fill='gray' height='14' viewBox='0 0 24 24' width='14' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
+    background-repeat: no-repeat;
+    background-position: right 0.75rem center;
+    background-size: 1rem;
+    padding-right: 2rem;
+    cursor: pointer;
+}
+
+select,
+input[type="number"] {
+    font-size: 1rem;
+    padding: 0.5rem 0.75rem;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    width: 150px;
+    height: 40px;
+    line-height: 1.2;
+    appearance: none;
+    box-sizing: border-box;
+    background-color: white;
+}
+
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    justify-content: center;
+}
+
+.upload-box {
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+
+.image-upload .image-box {
+    width: 180px;
+    height: 180px;
+    border: 2px dashed #ccc;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    background-color: #f9f9f9;
+    margin: 0 auto;
+}
+
+.image-upload img:not(.camera-icon) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.input-text {
+    width: 100%;
+    padding: 0.5rem;
+    font-size: 1rem;
+    margin-bottom: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    box-sizing: border-box;
+}
+
+.textarea-box {
+    width: 100%;
+    height: 100px;
+    padding: 0.75rem;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    resize: vertical;
+    margin-bottom: 1.5rem;
+    box-sizing: border-box;
+}
+
+.submit-btn {
+    background-color: #03C75A;
+    color: white;
+    font-size: 1rem;
+    padding: 0.6rem 1.5rem;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    display: block;
+    margin: 0 auto;
+    transition: background-color 0.2s ease-in-out;
+}
+
+.submit-btn:hover {
+    background-color: #02b151;
+}
+
+.camera-icon {
+    width: 20px;
+    height: 20px;
+    margin-bottom: 0.5rem;
+}
