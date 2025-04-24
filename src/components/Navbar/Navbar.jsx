@@ -6,15 +6,29 @@
 작성자  : 정여진
 작성일  : 2025-04-09.~
 */
-import React from 'react';
+import React, {useState} from 'react';
 import './Navbar.css';
 import iconLogin from './logo-nav-login.png';
 import iconBasket from './logo-nav-basket.png';
 import iconAlarm from './logo-nav-alarm.jpg';
 import iconLogout from './logo-nav-logout.png';
 import { Link } from 'react-router-dom'; // 소망쓰가 추가했어요
+import AlarmDropdown from "./Alarm";
 
 const Navbar = () => {
+
+    const [isAlarmOpen, setIsAlarmOpen] = useState(false);
+
+    const [notifications, setNotifications] = useState([
+        { id: 1, text: "[공동구매] [상품명] 결제하신 공동구매는 참여 인원의 결제 미완료로 자동 취소되었습니다. 결제하신 금액은 3~5일 내 입력하신 계좌로 환불될 예정입니다. 같은 상품으로 공동구매를 다시 시작해보세요!" },
+        { id: 2, text: "[공동구매] [상품명] 공동구매 인원 모집이 완료되었습니다. 24시간 내에 구매완료하셔야 공동구매가 최종 성사됩니다." },
+        { id: 3, text: "[배송 예정 안내] [상품명]이 곧 배송될 예정입니다. 정기구독 일정에 따라 이번 주 [요일]에 발송됩니다." },
+    ]);
+
+    const toggleAlarm = () =>{
+        setIsAlarmOpen(prev => !prev);
+    };
+
     return (
         <header className="navbar">
             <div className="navbar-inner">
@@ -42,7 +56,23 @@ const Navbar = () => {
                     <Link to="/cart"> 
                         <img src={iconBasket} alt="basket" className="icon-img"/>
                     </Link>
-                    <img src={iconAlarm} alt="alarm" className="icon-img"/>
+                    <div className="alarm-icon-wrapper" style={{ position: 'relative' }}>
+                        <img
+                            src={iconAlarm}
+                            alt="alarm"
+                            className="icon-img"
+                            onClick={toggleAlarm}
+                            style={{ cursor: 'pointer' }}
+                        />
+                        {isAlarmOpen && (
+                            <AlarmDropdown
+                                notifications={notifications}
+                                onDelete={(id) => setNotifications(prev => prev.filter(n => n.id !== id))}
+                                onClose={() => setIsAlarmOpen(false)}
+                            />
+                        )}
+                    </div>
+
                 </div>
             </div>
         </header>
