@@ -8,6 +8,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './CartGeneral.css';
+import Popup from '../../components/Ui/Popup/Popup'; // 팝업 따로 했어여!
+
 
 const initialCartItems = [
   { id: 1, name: '약과', price: 2000, quantity: 4, checked: false },
@@ -97,33 +99,17 @@ const CartGeneral = () => {
       <button className="order-btn" onClick={showOrderPopup}>주문하기</button>
 
       {popupType && (
-        <div className="modal-overlay">
-          <div className="modal">
-            <button className="close" onClick={closePopup}>X</button>
-
-            {popupType === 'delete' && (
-              <>
-                <p>정말로 삭제하시겠습니까?</p>
-                <div className="btn-group">
-                  <button className="confirm" onClick={deleteItem}>예</button>
-                  <button className="cancel" onClick={closePopup}>아니오</button>
-                </div>
-              </>
-            )}
-
-            {popupType === 'order' && (
-              <>
-                <p>감사합니다!<br />주문이 완료되었습니다!</p>
-                <div className="btn-group">
-                  <button className="confirm" onClick={() => {
-                    setPopupType(null);
-                    navigate('/'); // 홈으로 이동
-                  }}>홈으로</button>
-                </div>
-              </>
-            )}
-          </div>
-        </div>
+          <Popup
+              type={popupType}
+              onCancel={closePopup}
+              onConfirm={() => {
+                if (popupType === 'delete') deleteItem();
+                if (popupType === 'order') {
+                  closePopup();
+                  navigate('/');
+                }
+              }}
+          />
       )}
     </div>
   );

@@ -8,6 +8,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './CartGeneral.css';
+import Popup from '../../components/Ui/Popup/Popup';
 
 const now = new Date();//이건 그냥 에시입니다 현재 시점이 담긴 시간
 const initialGroupBuyItems = [
@@ -135,33 +136,17 @@ const CartGroupBuy = () => {
             <button className="order-btn" onClick={showOrderPopup}>주문하기</button>
 
             {popupType && (
-                <div className="modal-overlay">
-                    <div className="modal">
-                        <button className="close" onClick={closePopup}>X</button>
-
-                        {popupType === 'delete' && (
-                            <>
-                                <p>정말로 삭제하시겠습니까?</p>
-                                <div className="btn-group">
-                                    <button className="confirm" onClick={deleteItem}>예</button>
-                                    <button className="cancel" onClick={closePopup}>아니오</button>
-                                </div>
-                            </>
-                        )}
-
-                        {popupType === 'order' && (
-                            <>
-                                <p>감사합니다!<br />주문이 완료되었습니다!</p>
-                                <div className="btn-group">
-                                    <button className="confirm" onClick={() => {
-                                        setPopupType(null);
-                                        navigate('/'); // 홈으로 이동
-                                    }}>홈으로</button>
-                                </div>
-                            </>
-                        )}
-                    </div>
-                </div>
+                <Popup
+                    type={popupType}
+                    onCancel={closePopup}
+                    onConfirm={() => {
+                        if (popupType === 'delete') deleteItem();
+                        if (popupType === 'order') {
+                            closePopup();
+                            navigate('/');
+                        }
+                    }}
+                />
             )}
         </div>
     );
