@@ -1,0 +1,42 @@
+/*
+파일명 : Footer.css
+파일설명 : Footer 컴포넌트의 레이아웃 및 스타일 정의
+작성자 : 정여진
+기간 : 2025-04-10.
+*/
+
+.footer {
+    width: 100%;
+    background-color: white;
+    padding: 30px 498px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    box-sizing: border-box;
+}
+
+.footer-links {
+    display: flex;
+    align-items: center;
+    gap: 40px;
+    height: 60px;
+}
+
+.footer-links img {
+    height: 24px;
+}
+
+.footer-url {
+    font-size: 16px;
+    font-family: 'Inter', sans-serif;
+    color: black;
+    font-weight: 400;
+}
+
+.footer-description {
+    font-size: 18px;
+    font-family: 'Pretendard', sans-serif;
+    color: black;
+    font-weight: 600;
+}

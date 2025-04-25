@@ -1,0 +1,122 @@
+/*
+파일명 : OrderManagement.css
+파일설명 : 판매자 마이페이지 - 주문관리리 화면 디자인
+작성자 : 김소망
+작성일 : 2025-04-25
+*/
+.mypage-wrapper {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+    box-sizing: border-box;
+    background-color: white;
+}
+
+.page-header {
+    background-color: #DFF3E6;
+    width: 100%;
+    text-align: center;
+    font-size: 2rem;
+    font-weight: bold;
+    padding: 0.6rem 0;
+    border-radius: 4px;
+    margin-bottom: 0.5rem;
+}
+
+.mypage-body {
+    margin-top: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+    align-items: stretch;
+}
+
+.sidebar {
+    flex: 0 0 200px;
+    padding: 2rem 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    border-right: 2px solid #03C75A;
+}
+
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.sidebar li {
+    font-size: 1.2rem;
+    margin: 3rem 0;
+    cursor: pointer;
+    text-align: center;
+    width: 100%;
+}
+
+.sidebar li.active {
+    color: #03C75A;
+    font-weight: bold;
+}
+
+.container {
+    flex: 1;
+    min-width: 0;
+    padding: 2rem 3rem;
+    box-sizing: border-box;
+    overflow-x: auto;
+}
+
+.section-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+    color: black;
+}
+
+.order-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+.order-table th,
+.order-table td {
+    padding: 0.75rem;
+    border-bottom: 1px solid #ddd;
+    word-break: keep-all;
+}
+
+.order-table thead {
+    background-color: #f0f0f0;
+}
+
+select {
+    padding: 0.3rem 0.5rem;
+    font-size: 1rem;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    margin-bottom: 1rem;
+}
+
+.complete-btn {
+    background-color: #03C75A;
+    color: white;
+    padding: 0.6rem 1.5rem;
+    font-size: 1rem;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-top: 1rem;
+    transition: background-color 0.2s ease-in-out;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.complete-btn:hover {
+    background-color: #02b151;
+}

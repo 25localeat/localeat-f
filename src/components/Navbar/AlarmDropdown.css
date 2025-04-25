@@ -1,0 +1,108 @@
+/*
+파일명  : Alarm.jsx
+파일설명 : 알람을 위한 CSS 화면입니다.
+작성자  : 정여진
+작성일  : 2025-04-24.
+*/
+.alarm-dropdown {
+    position: absolute;
+    top: 50px; /* 아이콘 밑에 적당히 띄우기 */
+    right: 0;
+    width: 320px;         /* 고정 너비 */
+    max-height: 400px;    /* 최대 높이 */
+    background: white;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    padding: 16px;
+    overflow-y: auto;
+    z-index: 1000;
+}
+
+/* 개별 알림 카드 */
+.alarm-card {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin-bottom: 12px;
+    background: #fff;
+    border-radius: 8px;
+    padding: 12px;
+    border: 1px solid #ddd;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+.icon {
+    width: 24px;
+    height: 24px;
+    position: relative;
+    flex-shrink: 0;
+}
+
+.dot {
+    width: 14px;
+    height: 14px;
+    background: black;
+    border-radius: 9999px;
+    position: absolute;
+    top: 4px;
+    left: 5px;
+}
+
+.bar1, .bar2 {
+    width: 2.28px;
+    background: white;
+    position: absolute;
+}
+
+.bar1 {
+    height: 6.2px;
+    top: 9.34px;
+    left: 11px;
+}
+
+.bar2 {
+    height: 2.48px;
+    top: 5.62px;
+    left: 11px;
+}
+
+.alarm-text {
+    flex: 1;
+    font-size: 14px;
+    font-family: 'Noto Sans KR', sans-serif;
+    font-weight: 300;
+    color: #333;
+    word-break: keep-all;
+    line-height: 1.5;
+}
+
+.no-alarm {
+    text-align: center;
+    color: gray;
+    padding: 40px 0;
+    font-size: 15px;
+}
+
+.dropdown-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.close-btn {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+}
+
+.alarm-close {
+    width: 14px;
+    height: 14px;
+    margin-left: 8px;
+    cursor: pointer;
+    align-self: flex-start;
+}
