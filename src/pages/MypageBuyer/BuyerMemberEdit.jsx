@@ -1,16 +1,16 @@
 /* 
 파일명 : MemberEdit.jsx
-파일설명 : 로컬잇 웹사이트의 판매자 마이페이지/화원정보수정 UI
+파일설명 : 로컬잇 웹사이트의 구매자 마이페이지/화원정보수정 UI
 작성자 : 김소망
 기간 : 2025-04-25~
 */
 
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import './MemberEdit.css';
+import './BuyerMemberEdit.css';
 import Popup from '../../components/Ui/Popup/Popup';
 
-const MemberEdit = () => {
+const BuyerMemberEdit = () => {
     const navigate = useNavigate();
     const [memberInfo, setMemberInfo] = useState({
         id: 'asddf',
@@ -48,8 +48,11 @@ const MemberEdit = () => {
             <div className="mypage-body">
                 <div className="sidebar">
                     <ul>
-                        <li onClick={() => navigate('/SellerMypage')}>상품 목록</li>
-                        <li onClick={() => navigate('/mypage/orders')}>주문 관리</li>
+                        <li onClick={() => navigate('/mypage/buyer/orders')}>주문 내역</li>
+                        <li onClick={() => navigate('/mypage/buyer/review')}>리뷰 관리</li>
+                        <li onClick={() => navigate('/mypage/buyer/subscribe')}>구독 관리</li>
+                        <li onClick={() => navigate('/mypage/buyer/wish')}>찜 관리</li>
+                        <li onClick={() => navigate('/mypage/buyer/groupBuy')}>공동구매 현황</li>
                         <li className="active">회원 정보 수정</li>
                     </ul>
                 </div>
@@ -64,7 +67,7 @@ const MemberEdit = () => {
                                 <td></td>
                             </tr>
                             <tr>
-                                <td className="label-cell">사업자명</td>
+                                <td className="label-cell">이름</td>
                                 <td>
                                     {editMode.name ? (
                                         <input name="name" value={memberInfo.name} onChange={handleChange} />
@@ -75,15 +78,15 @@ const MemberEdit = () => {
                                 <td><button className="edit-btn" onClick={() => toggleEdit('name')}>변경</button></td>
                             </tr>
                             <tr>
-                                <td className="label-cell">사업자번호</td>
+                                <td className="label-cell">휴대폰번호</td>
                                 <td>
-                                    {editMode.businessNumber ? (
-                                        <input name="businessNumber" value={memberInfo.businessNumber} onChange={handleChange} />
+                                    {editMode.phoneNumber ? (
+                                        <input name="phoneNumber" value={memberInfo.phoneNumber} onChange={handleChange} />
                                     ) : (
-                                        memberInfo.businessNumber
+                                        memberInfo.phoneNumber
                                     )}
                                 </td>
-                                <td><button className="edit-btn" onClick={() => toggleEdit('businessNumber')}>변경</button></td>
+                                <td><button className="edit-btn" onClick={() => toggleEdit('phoneNumber')}>변경</button></td>
                             </tr>
                             <tr>
                                 <td className="label-cell">이메일</td>
@@ -108,7 +111,7 @@ const MemberEdit = () => {
                                 <td><button className="edit-btn" onClick={() => toggleEdit('password')}>변경</button></td>
                             </tr>
                             <tr>
-                                <td className="label-cell">사업장주소</td>
+                                <td className="label-cell">주소</td>
                                 <td>
                                     <select name="region" value={memberInfo.region} onChange={handleChange}>
                                         <option value="">지역 선택</option>
@@ -136,4 +139,4 @@ const MemberEdit = () => {
     );
 };
 
-export default MemberEdit;
+export default BuyerMemberEdit;

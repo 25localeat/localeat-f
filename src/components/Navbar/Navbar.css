@@ -78,15 +78,25 @@
     font-weight: 400;
 }
 
+/*추가*/
+.menu-item {
+    text-decoration: none;
+    color: inherit;
+    margin: 0 10px;
+    cursor: pointer;
+}
+
 .icons {
     display: flex;
     gap: 20px;
 }
+
 .icon-img {
     width: 30px;
     height: 30px;
     object-fit: contain;
 }
+
 .icon-button {
     width: 50px;
     height: 50px;
