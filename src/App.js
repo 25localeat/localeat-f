@@ -17,6 +17,9 @@ import GroupBuyStatus from './pages/MypageBuyer/GroupBuyStatus';
 import BuyerMemberEdit from './pages/MypageBuyer/BuyerMemberEdit';
 import Navbar from "./components/Navbar/Navbar";
 import Footer from "./components/Footer/Footer";
+import Login from './pages/Login/Login'
+import Agreement from './pages/SignUp/Agreement'
+import FormConsumer from './pages/SignUp/FormConsumer'
 
 function App() {
     return (

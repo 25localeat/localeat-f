@@ -1,0 +1,108 @@
+
+.login-container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+    flex-shrink: 0;
+}
+
+.login-box {
+    width: 100%;
+    height: 960px;
+    flex-shrink: 0;
+    background: url('./박스 이미지.png') lightgray 50% / cover no-repeat;
+}
+
+.overlay {
+    width: 100%;
+    height: 960px;
+    flex-shrink: 0;
+    background: rgba(0, 0, 0, 0.29);
+    display: flex;
+    flex-direction: column;
+    align-items: center;  /* 수평 중앙 정렬 */
+}
+
+.login-title {
+    color: #FFF;
+    font-family: Pretendard;
+    font-size: 34px;
+    font-style: normal;
+    font-weight: 800;
+    line-height: normal;
+    margin-top: 154px;
+    margin-bottom: 110px;
+}
+
+.input-box-wrapper {
+    width: 400px;
+    height: 84px;
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.input-box {
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.1);
+  border: 4px solid white;
+  border-radius: 15px;
+  display: flex;
+  align-items: center;
+  margin-bottom: 16px;
+  padding: 0 20px;
+}
+
+.input-box input {
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: white;
+  font-size: 20px;
+  font-family: 'Pretendard', sans-serif;
+}
+
+.input-box input::placeholder {
+  color: white; /* placeholder 색상 변경 */
+}
+
+.input-box, .login-button {
+  box-sizing: border-box;
+}
+
+.login-button {
+width: 400px;
+height: 84px;
+flex-shrink: 0;
+border-radius: 15px;
+border: none;
+background: #03C75A;
+color: #FFF;
+font-family: Pretendard;
+font-size: 30px;
+font-style: normal;
+font-weight: 800;
+line-height: normal;
+margin-top: 37px;
+}
+
+.signup-text {
+color: #FFF;
+font-family: Pretendard;
+font-size: 24px;
+font-style: normal;
+font-weight: 800;
+line-height: normal;
+}
+
+.signUpLink {
+color: #03C75A;
+font-family: Pretendard;
+font-size: 24px;
+font-style: normal;
+font-weight: 800;
+line-height: normal;
+}
