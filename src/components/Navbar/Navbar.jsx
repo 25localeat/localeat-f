@@ -6,7 +6,7 @@
 작성자  : 정여진
 작성일  : 2025-04-09.~
 */
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import './Navbar.css';
 import iconLogin from './logo-nav-login.png';
 import iconBasket from './logo-nav-basket.png';
@@ -25,7 +25,7 @@ const Navbar = () => {
         { id: 3, text: "[배송 예정 안내] [상품명]이 곧 배송될 예정입니다. 정기구독 일정에 따라 이번 주 [요일]에 발송됩니다." },
     ]);
 
-    const toggleAlarm = () =>{
+    const toggleAlarm = () => {
         setIsAlarmOpen(prev => !prev);
     };
 
@@ -45,16 +45,16 @@ const Navbar = () => {
                 </div>
 
                 <nav className="menu">
-                    <span>마이페이지</span>
-                    <span>구독</span>
+                    <Link to="/mypage/buyer/orders" className="menu-item">마이페이지</Link>
+                    <Link to="/mypage/buyer/subscribe" className="menu-item">구독</Link>
                     <span>공동구매</span>
-                    <span>찜</span>
+                    <Link to="/mypage/buyer/wish" className="menu-item">찜</Link>
                 </nav>
 
                 <div className="icons">
-                    <img src={iconLogin} alt="login" className="icon-img"/>
-                    <Link to="/cart"> 
-                        <img src={iconBasket} alt="basket" className="icon-img"/>
+                    <img src={iconLogin} alt="login" className="icon-img" />
+                    <Link to="/cart">
+                        <img src={iconBasket} alt="basket" className="icon-img" />
                     </Link>
                     <div className="alarm-icon-wrapper" style={{ position: 'relative' }}>
                         <img

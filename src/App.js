@@ -9,6 +9,12 @@ import ProductList from './pages/MypageSeller/ProductList';
 import ProductRegister from './pages/MypageSeller/ProductRegister';
 import OrderManagement from './pages/MypageSeller/OrderManagement';
 import MemberEdit from './pages/MypageSeller/MemberEdit';
+import BuyerOrderHistory from './pages/MypageBuyer/BuyerOrderHistory';
+import BuyerReviewManage from './pages/MypageBuyer/BuyerReviewManage';
+import SubscribeManage from './pages/MypageBuyer/SubscribeManage';
+import WishlistManage from './pages/MypageBuyer/WishlistManage';
+import GroupBuyStatus from './pages/MypageBuyer/GroupBuyStatus';
+import BuyerMemberEdit from './pages/MypageBuyer/BuyerMemberEdit';
 import Navbar from "./components/Navbar/Navbar";
 import Footer from "./components/Footer/Footer";
 
@@ -28,6 +34,12 @@ function App() {
                         <Route path="/mypage/register" element={<ProductRegister />} />
                         <Route path="/mypage/orders" element={<OrderManagement />} />
                         <Route path="/mypage/member-edit" element={<MemberEdit />} />
+                        <Route path="/mypage/buyer/orders" element={<BuyerOrderHistory />} />
+                        <Route path="/mypage/buyer/review" element={<BuyerReviewManage />} />
+                        <Route path="/mypage/buyer/subscribe" element={<SubscribeManage />} />
+                        <Route path="/mypage/buyer/wish" element={<WishlistManage />} />
+                        <Route path="/mypage/buyer/groupBuy" element={<GroupBuyStatus />} />
+                        <Route path="/mypage/buyer/member-edit" element={<BuyerMemberEdit />} />
                     </Routes>
                 </>
             </main>
