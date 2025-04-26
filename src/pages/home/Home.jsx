@@ -13,9 +13,18 @@ import bannerImage from './home-banner-image.png';
 import carrotImg from './carrot.png';
 import ProductCard from "../../components/ProductCard/ProductCard";
 import FloatingButton from "./FloatingButton"; // 임시 이미지
+import {useNavigate} from "react-router-dom";
+import {ROUTES} from "../../components/routes";
 
 /* 임시로. 나중에 데이터에서 가져올 것. */
 const products = [
+    {
+        image: carrotImg,
+        title: '국내산 세척당근',
+        originalPrice: 2000,
+        discountPrice: 1300,
+        tags: ['강원', 'GOOD'],
+    },
     {
         image: carrotImg,
         title: '국내산 세척당근',
@@ -69,6 +78,14 @@ const products = [
 ];
 
 const Home = () => {
+
+    const navigate = useNavigate();
+
+    const handleTagClick = () => {
+        navigate(ROUTES.SEARCH);
+        window.scrollTo(0,0);
+    }
+
     const regionTags = getTagsByType('region');
     return (
         <div className="banner-container">
@@ -78,22 +95,24 @@ const Home = () => {
                 alt="배너"
             />
 
-            <FloatingButton onClick={() => window.scrollTo(0, 1000)} />
+            {/*알뜰상품 바로가기 버튼*/}
+            <FloatingButton onClick={handleTagClick}/>
+
             <div className="region-tags-wrapper">
-            <div className="region-tags">
-                {regionTags.map((tag, index) => (
-                    <TagBadge key={index} label={tag.label} bg={tag.bg} color={tag.color} />
-                ))}
-            </div>
+                <div className="region-tags">
+                    {regionTags.map((tag, index) => (
+                        <div key={index} onClick={handleTagClick} style={{cursor: 'pointer'}}>
+                            <TagBadge key={index} label={tag.label} bg={tag.bg} color={tag.color}/>
+                        </div>
+                    ))}
+                </div>
             </div>
             <div className="product-grid">
                 {products.map((product, i) => (
                     <ProductCard key={i}{...product}/>
                 ))}
-
             </div>
         </div>
-
     );
 };
 
