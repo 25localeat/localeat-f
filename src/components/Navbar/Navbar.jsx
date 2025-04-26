@@ -12,12 +12,18 @@ import iconLogin from './logo-nav-login.png';
 import iconBasket from './logo-nav-basket.png';
 import iconAlarm from './logo-nav-alarm.jpg';
 import iconLogout from './logo-nav-logout.png';
-import {Link, useNavigate} from 'react-router-dom'; // 소망쓰가 추가했어요
+import {Link, useNavigate} from 'react-router-dom';
 import AlarmDropdown from "./Alarm";
 import iconSearch from "./icon-search.png"
+import {ROUTES} from "../routes";
+
 const Navbar = () => {
 
     const navigate = useNavigate();
+
+    const handleSearchClick = () => {
+        navigate(ROUTES.SEARCH);
+    };
 
     const [isAlarmOpen, setIsAlarmOpen] = useState(false);
 
@@ -42,10 +48,14 @@ const Navbar = () => {
 
                 <div className="search-bar">
                     <input type="text" className="search-input" placeholder="검색어를 입력하세요" />
-                    <img src={iconSearch} alt="검색아이콘" className="icon-search" />
+                    <img
+                        src={iconSearch}
+                        alt="검색아이콘"
+                        className="icon-search"
+                        onClick={handleSearchClick}
+                        style={{cursor:'pointer'}}
+                    />
                 </div>
-
-
                 <nav className="menu">
                     <Link to="/mypage/buyer/orders" className="menu-item">마이페이지</Link>
                     <Link to="/mypage/buyer/subscribe" className="menu-item">구독</Link>
