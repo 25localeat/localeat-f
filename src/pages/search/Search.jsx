@@ -1,3 +1,10 @@
+/*
+파일명 : Search.jsx
+파일설명 : 검색 list를 보여주는 view 파일입니다.
+작성자 : 정여진
+기간 : 2025-04-26.
+*/
+
 import React from 'react';
 import './Search.css';
 import TagBadge from '../../components/Tag/TagBadge';
@@ -7,6 +14,13 @@ import ProductCard from '../../components/ProductCard/ProductCard';
 
 /* 임시로. 나중에 데이터에서 가져올 것. */
 const products = [
+    {
+        image: carrotImg,
+        title: '국내산 세척당근',
+        originalPrice: 2000,
+        discountPrice: 1300,
+        tags: ['강원', 'GOOD'],
+    },
     {
         image: carrotImg,
         title: '국내산 세척당근',
