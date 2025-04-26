@@ -12,10 +12,12 @@ import iconLogin from './logo-nav-login.png';
 import iconBasket from './logo-nav-basket.png';
 import iconAlarm from './logo-nav-alarm.jpg';
 import iconLogout from './logo-nav-logout.png';
-import { Link } from 'react-router-dom'; // 소망쓰가 추가했어요
+import {Link, useNavigate} from 'react-router-dom'; // 소망쓰가 추가했어요
 import AlarmDropdown from "./Alarm";
-
+import iconSearch from "./icon-search.png"
 const Navbar = () => {
+
+    const navigate = useNavigate();
 
     const [isAlarmOpen, setIsAlarmOpen] = useState(false);
 
@@ -32,17 +34,17 @@ const Navbar = () => {
     return (
         <header className="navbar">
             <div className="navbar-inner">
-                <div className="logo">
+                <Link className="logo" to="/">
                     <span className="logo-green">Local</span>
                     <span className="logo-pink">E</span>
                     <span className="logo-green">at</span>
-                </div>
+                </Link>
 
                 <div className="search-bar">
-                    <div className="search-input"></div>
-                    <div className="search-icon-circle"></div>
-                    <div className="search-icon-line"></div>
+                    <input type="text" className="search-input" placeholder="검색어를 입력하세요" />
+                    <img src={iconSearch} alt="검색아이콘" className="icon-search" />
                 </div>
+
 
                 <nav className="menu">
                     <Link to="/mypage/buyer/orders" className="menu-item">마이페이지</Link>
