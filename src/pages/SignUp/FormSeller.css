@@ -1,22 +1,22 @@
 /*
-파일명: FormConsumer.css
-파일 설명: 로컬잇 구매자 회원 가입 정보 입력 UI 디자인
+파일명: FormSeller.css
+파일 설명: 로컬잇 판매자 회원 가입 정보 입력 UI 디자인
 작성사: 김미현
-기간: 2025-04-12 ~
+기간: 2025-04-27 ~
 */
 
 .container {
     width: 100%;
     max-width: 1200px;
-    height: auto;
-    overflow-y: auto;  /* 세로 스크롤이 필요할 때만 표시 */
+    height: auto;  /* 고정 높이 삭제 */
+        overflow-y: auto;  /* 세로 스크롤이 필요할 때만 표시 */
     margin: 0 auto;
     padding: 2rem;
     flex-shrink: 0;
 }
 
 .title {
-  color: #000;
+  color: #000 !important ;
   text-align: center;
   font-family: Pretendard;
   font-size: 34px;
@@ -62,7 +62,7 @@ select {
   box-sizing: border-box;
   border: 1px solid #ccc;
   border-radius: 4px;
-    margin-right: 3%;
+  margin-right: 3%;
 }
 
 .id-check-button {
