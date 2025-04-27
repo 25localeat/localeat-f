@@ -1,15 +1,15 @@
 /*
-파일명: FormConsumer.jsx
-파일 설명: 로컬잇 구매자 회원 가입 정보 입력 페이지
+파일명: FormSeller.jsx
+파일 설명: 로컬잇 판매자 회원 가입 정보 입력 페이지
 작성사: 김미현
-기간: 2025-04-12 ~
+기간: 2025-04-27 ~
 */
 
 import React from 'react';
 import { Link } from 'react-router-dom';
-import './FormConsumer.css';
+import './FormSeller.css';
 
-const FormConsumer = () => {
+const FormSeller = () => {
   return (
     <div className="container">
       <p className="title">회원가입</p>
@@ -36,15 +36,15 @@ const FormConsumer = () => {
               </td>
             </tr>
             <tr>
-              <th>이름</th>
+              <th>사업자 명</th>
               <td>
-                <input type="text" placeholder="이름을 입력하세요." />
+                <input type="text" placeholder="사업자 명을 입력하세요." />
               </td>
             </tr>
             <tr>
-              <th>생년월일</th>
+              <th>사업자 번호</th>
               <td>
-                <input type="text" placeholder="YYYY-MM-DD" />
+                <input type="text" placeholder="사업자 번호를 입력하세요." />
               </td>
             </tr>
             <tr>
@@ -54,7 +54,7 @@ const FormConsumer = () => {
               </td>
             </tr>
             <tr>
-              <th>배송지 입력</th>
+              <th>사업자 주소</th>
               <td>
                 <select>
                   <option>지역 선택</option>
@@ -67,7 +67,7 @@ const FormConsumer = () => {
                   <option>경남/부산/울산</option>
                   <option>제주</option>
                 </select>
-                <input type="text" placeholder="배송지를 입력하세요." />
+                <input type="text" placeholder="사업장 주소를 입력하세요." />
               </td>
             </tr>
             <tr>
@@ -88,4 +88,4 @@ const FormConsumer = () => {
   );
 };
 
-export default FormConsumer;
+export default FormSeller;

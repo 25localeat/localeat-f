@@ -64,7 +64,9 @@ const Navbar = () => {
                 </nav>
 
                 <div className="icons">
-                    <img src={iconLogin} alt="login" className="icon-img" />
+                    <Link to="/login">
+                        <img src={iconLogin} alt="login" className="icon-img" />
+                    </Link>
                     <Link to="/cart">
                         <img src={iconBasket} alt="basket" className="icon-img" />
                     </Link>

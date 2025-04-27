@@ -20,7 +20,10 @@ import Navbar from "./components/Navbar/Navbar";
 import Footer from "./components/Footer/Footer";
 import Login from './pages/Login/Login'
 import Agreement from './pages/SignUp/Agreement'
+import SelectType from './pages/SignUp/SelectType'
 import FormConsumer from './pages/SignUp/FormConsumer'
+import FormSeller from './pages/SignUp/FormSeller'
+import Complete from './pages/SignUp/Complete'
 
 function App() {
     return (
@@ -46,6 +49,12 @@ function App() {
                         <Route path="/mypage/buyer/wish" element={<WishlistManage />} />
                         <Route path="/mypage/buyer/groupBuy" element={<GroupBuyStatus />} />
                         <Route path="/mypage/buyer/member-edit" element={<BuyerMemberEdit />} />
+                        <Route path="/login" element={<Login />} />
+                        <Route path="/signUp" element={<Agreement />} />
+                        <Route path="/signUp/selectType" element={<SelectType />} />
+                        <Route path="/signUp/consumer/form" element={<FormConsumer />} />
+                        <Route path="/signUp/seller/form" element={<FormSeller />} />
+                        <Route path="/signUp/complete" element={<Complete />} />
                     </Routes>
                 </>
             </main>
