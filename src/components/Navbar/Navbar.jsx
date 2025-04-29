@@ -59,7 +59,7 @@ const Navbar = () => {
                 <nav className="menu">
                     <Link to="/mypage/buyer/orders" className="menu-item">마이페이지</Link>
                     <Link to="/mypage/buyer/subscribe" className="menu-item">구독</Link>
-                    <span>공동구매</span>
+                    <Link to="/groupBuy" className="menu-item">공동구매</Link>
                     <Link to="/mypage/buyer/wish" className="menu-item">찜</Link>
                 </nav>
 

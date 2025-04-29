@@ -24,6 +24,11 @@ import SelectType from './pages/SignUp/SelectType'
 import FormConsumer from './pages/SignUp/FormConsumer'
 import FormSeller from './pages/SignUp/FormSeller'
 import Complete from './pages/SignUp/Complete'
+import ViewGroupBuy from './pages/GroupBuy/ViewGroupBuy'
+import CreateGroupBuy from './pages/GroupBuy/CreateGroupBuy'
+import JoinGroupBuy from './pages/GroupBuy/JoinGroupBuy'
+import GroupBuyDetail from './pages/GroupBuy/GroupBuyDetail'
+import GroupBuyList from './pages/GroupBuy/GroupBuyList'
 
 function App() {
     return (
@@ -55,6 +60,11 @@ function App() {
                         <Route path="/signUp/consumer/form" element={<FormConsumer />} />
                         <Route path="/signUp/seller/form" element={<FormSeller />} />
                         <Route path="/signUp/complete" element={<Complete />} />
+                        <Route path="/groupBuy" element={<GroupBuyList />} />
+                        <Route path="/groupBuy/view" element={<ViewGroupBuy />} />
+                        <Route path="/groupBuy/create" element={<CreateGroupBuy />} />
+                        <Route path="/groupBuy/join" element={<JoinGroupBuy />} />
+                        <Route path="/groupBuy/detail" element={<GroupBuyDetail />} />
                     </Routes>
                 </>
             </main>
