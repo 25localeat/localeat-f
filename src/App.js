@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import './App.css';
 import Home from "./pages/home/Home";
+import Search from "./pages/search/Search";
 import CartGeneral from "./pages/cart/CartGeneral";
 import CartSubscribe from "./pages/cart/CartSubscribe";
 import CartGroupBuy from "./pages/cart/CartGroupBuy";
@@ -23,6 +24,13 @@ import SelectType from './pages/SignUp/SelectType'
 import FormConsumer from './pages/SignUp/FormConsumer'
 import FormSeller from './pages/SignUp/FormSeller'
 import Complete from './pages/SignUp/Complete'
+import ViewGroupBuy from './pages/GroupBuy/ViewGroupBuy'
+import CreateGroupBuy from './pages/GroupBuy/CreateGroupBuy'
+import JoinGroupBuy from './pages/GroupBuy/JoinGroupBuy'
+import GroupBuyDetail from './pages/GroupBuy/GroupBuyDetail'
+import GroupBuyList from './pages/GroupBuy/GroupBuyList'
+import ProductDetail from './pages/productDetail/ProductDetail'
+import ReviewForm from "./pages/review/ReviewForm";
 
 function App() {
     return (
@@ -33,6 +41,10 @@ function App() {
                 <>
                     <Routes>
                         <Route path="/" element={<Home />} />
+                        <Route path="/search" element={<Search/>} />
+
+                        <Route path="/product/:id" element={<ProductDetail />} />
+                        <Route path="/review/write/:orderId" element={<ReviewForm />} />
                         <Route path="/cart" element={<CartGeneral />} />
                         <Route path="/cart-subscribe" element={<CartSubscribe />} />
                         <Route path="/cart-groupbuy" element={<CartGroupBuy />} />
@@ -52,6 +64,11 @@ function App() {
                         <Route path="/signUp/consumer/form" element={<FormConsumer />} />
                         <Route path="/signUp/seller/form" element={<FormSeller />} />
                         <Route path="/signUp/complete" element={<Complete />} />
+                        <Route path="/groupBuy" element={<GroupBuyList />} />
+                        <Route path="/groupBuy/view" element={<ViewGroupBuy />} />
+                        <Route path="/groupBuy/create" element={<CreateGroupBuy />} />
+                        <Route path="/groupBuy/join" element={<JoinGroupBuy />} />
+                        <Route path="/groupBuy/detail" element={<GroupBuyDetail />} />
                     </Routes>
                 </>
             </main>

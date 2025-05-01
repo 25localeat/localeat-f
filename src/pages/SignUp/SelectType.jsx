@@ -20,7 +20,7 @@ const SelectType = () => {
         <div class="container">
             <div className="box">
                 <div className="overlay">
-                    <p className="title"> {guide}</p>
+                    <p className="title">{guide}</p>
 
                     <div className="member-box-wrapper">
                         <Link to="/signUp/consumer/form" style={{textDecoration: "none"}}>

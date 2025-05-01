@@ -1,0 +1,25 @@
+/*
+파일명: PartiGroupBuy.css
+파일 설명: 로컬잇 공동구매 참여하기 UI 디자인
+작성자: 김미현
+기간: 2025-04-28 ~
+*/
+
+.container {
+    width: 100%;
+    max-width: 1200px;
+    height: auto;
+    margin: 0 auto;
+    padding: 30px;
+    font-family: 'Pretendard', sans-serif;
+}
+
+.title {
+    font-family: Pretendard;
+    font-size: 34px;
+    font-weight: bold;
+    text-align: center;
+    margin-top: 0px;
+    margin-bottom: 20px;
+    color: #000;
+}
