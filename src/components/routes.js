@@ -9,4 +9,5 @@
 export const ROUTES = {
     HOME: '/',
     SEARCH: '/search',
+    PRODUCT_DETAIL: '/product/:id',
 };

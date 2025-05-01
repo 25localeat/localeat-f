@@ -66,6 +66,17 @@ const Popup = ({ type, onConfirm, onCancel }) => {
                         </div>
                     </>
                 )}
+
+                {type === 'loginRequired' && (
+                    <>
+                        <p>로그인 후 이용할 수 있습니다.<br />로그인 페이지로 이동하시겠습니까?</p>
+                        <div className="btn-group">
+                            <button className="confirm" onClick={onConfirm}>예</button>
+                            <button className="cancel" onClick={onCancel}>아니오</button>
+                        </div>
+                    </>
+                )}
+
             </div>
         </div>
     );
