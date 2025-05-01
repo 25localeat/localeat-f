@@ -29,6 +29,8 @@ import CreateGroupBuy from './pages/GroupBuy/CreateGroupBuy'
 import JoinGroupBuy from './pages/GroupBuy/JoinGroupBuy'
 import GroupBuyDetail from './pages/GroupBuy/GroupBuyDetail'
 import GroupBuyList from './pages/GroupBuy/GroupBuyList'
+import ProductDetail from './pages/productDetail/ProductDetail'
+import ReviewForm from "./pages/review/ReviewForm";
 
 function App() {
     return (
@@ -41,6 +43,8 @@ function App() {
                         <Route path="/" element={<Home />} />
                         <Route path="/search" element={<Search/>} />
 
+                        <Route path="/product/:id" element={<ProductDetail />} />
+                        <Route path="/review/write/:orderId" element={<ReviewForm />} />
                         <Route path="/cart" element={<CartGeneral />} />
                         <Route path="/cart-subscribe" element={<CartSubscribe />} />
                         <Route path="/cart-groupbuy" element={<CartGroupBuy />} />
