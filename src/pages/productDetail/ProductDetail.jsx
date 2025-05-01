@@ -129,15 +129,16 @@ export default function ProductDetail() {
     };
 
     const handleOrder = () => {
+        /*
         if (!user.isLoggedIn) {
             setShowLoginPopup(true);
             return;
-        }
+        }*/
 
         if (isSubscribeSelected) {
             navigate('/order-subscribe');
         } else {
-            navigate('/order');
+            navigate('/mypage/buyer/orders');
         }
     };
 
@@ -441,7 +442,9 @@ export default function ProductDetail() {
                         {isSubscribeSelected ? (
                             <button className="purchase-button" onClick={handleOrder} disabled={user.role === 'SELLER'}>구독하기</button>
                         ) : (
-                            <button className="purchase-button" onClick={handleOrder} disabled={user.role === 'SELLER'}>구매하기</button>
+                            //<button className="purchase-button" onClick={handleOrder} disabled={user.role === 'SELLER'}>구매하기</button>
+                            // 테스트용
+                            <button className="purchase-button" onClick={handleOrder}>구매하기</button>
                         )}
                     </div>
 
@@ -520,7 +523,6 @@ export default function ProductDetail() {
                                 ))}
                             </div>
                         </div>
-
 
                         {/* 총개수 + 정렬 */}
                         <div className="review-header">
