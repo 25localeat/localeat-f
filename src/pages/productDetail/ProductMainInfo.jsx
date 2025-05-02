@@ -60,7 +60,7 @@ const ProductMainInfo = ({
                                 공동구매
                             </button>
                         )}
-                        <button className="wishlist-button" onClick={onWishToggle} disabled={user.role === 'SELLER'}>
+                        <button className="wishlist-button" onClick={onWishToggle} disabled={user?.role === 'SELLER'}>
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
                                 viewBox="-15 0 600 600"

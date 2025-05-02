@@ -1,41 +1,57 @@
-/*
-파일명 : ProductDetail.css
-파일설명 : 로컬잇 웹사이트의 상품 상세페이지 디자인
-작성자 : 김민하
-기간 : 2025-04-10~
-*/
+/* ProductDetail.css */
 
 .product-detail-page {
     max-width: 1500px;
-    width: 100%;
-    margin: 40px auto;
-    padding: 0 1rem;
-    box-sizing: border-box;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+    font-family: 'Pretendard', sans-serif;
 }
 
-.product-detail-main {
-    display: flex;
-    gap: 2rem;
-    align-items: flex-start;
-}
-
-.product-image-wrapper {
-    flex: 0 0 50%;   /* 좌측 50% */
+/*───────────────    하단 탭    ───────────────*/
+.product-detail-tabs {
     display: flex;
     justify-content: center;
-    align-items: flex-start;
+    margin-top: 5rem;
 }
 
-.product-image {
-    width: 100%;
-    max-width: 650px;
-    border-radius: 8px;
-    object-fit: cover;
+.tab {
+    width: 500px;
+    border: 1px solid #D9D9D9;
+    border-bottom: none;
+    background-color: #f9f9f9;
+    font-family: "Pretendard Variable";
+    font-size: 18px;
+    font-weight: 400;
+    color: #000;
+    padding: 12px 24px;
+    cursor: pointer;
+    outline: none;
+    margin-right: -1px;
+    position: relative;
+    border-bottom: 1px solid #D9D9D9; /* 하단 선 공통 */
 }
 
-.detail-right {
-    flex: 1;        /* 우측 나머지 */
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
+.tab.active {
+    color: #03c75a;
+    background-color: white;
+    border-bottom: 1px solid transparent; /* 하단만 투명 */
+}
+/* 탭 내용 출력 영역 */
+.product-tab-content {
+    max-width: 1500px;
+    padding: 2rem;
+    background-color: white;
+    border-top: none;
+}
+
+.detail-heading {
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+
+.detail-text {
+    font-size: 16px;
+    color: #333;
+    line-height: 1.6;
 }
