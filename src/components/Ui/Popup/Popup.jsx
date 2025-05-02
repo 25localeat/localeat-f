@@ -77,34 +77,52 @@ const Popup = ({ type, onConfirm, onCancel }) => {
                     </>
                 )}
 
-                {type === 'login-error' && (
-                    <>
-                        <p>아이디와 비밀번호를 모두 입력해주세요!</p>
-                        <div className="btn-group">
-                            <button className="confirm" onClick={onConfirm}>확인</button>
-                        </div>
-                    </>
-                )}
+{type === 'cartAdded' && (
+  <>
+    <p>장바구니에 추가되었습니다.</p>
+    <div className="btn-group">
+      <button className="confirm" onClick={onConfirm}>장바구니 보기</button>
+      <button className="cancel" onClick={onCancel}>계속 쇼핑</button>
+    </div>
+  </>
+)}
 
+{type === 'paymentComplete' && (
+  <>
+    <p>결제가 완료되었습니다!</p>
+    <div className="btn-group">
+      <button className="confirm" onClick={onConfirm}>주문 내역 보기</button>
+    </div>
+  </>
+)}
 
-                {type === 'login-id-error' && (
-                    <>
-                        <p>아이디를 입력해주세요!</p>
-                        <div className="btn-group">
-                            <button className="confirm" onClick={onConfirm}>확인</button>
-                        </div>
-                    </>
-                )}
+{type === 'login-error' && (
+  <>
+    <p>아이디와 비밀번호를 모두 입력해주세요!</p>
+    <div className="btn-group">
+      <button className="confirm" onClick={onConfirm}>확인</button>
+    </div>
+  </>
+)}
 
-                {type === 'login-pwd-error' && (
-                    <>
-                        <p>비밀번호를 입력해주세요!</p>
-                        <div className="btn-group">
-                            <button className="confirm" onClick={onConfirm}>확인</button>
-                        </div>
-                    </>
-                )}
-                
+{type === 'login-id-error' && (
+  <>
+    <p>아이디를 입력해주세요!</p>
+    <div className="btn-group">
+      <button className="confirm" onClick={onConfirm}>확인</button>
+    </div>
+  </>
+)}
+
+{type === 'login-pwd-error' && (
+  <>
+    <p>비밀번호를 입력해주세요!</p>
+    <div className="btn-group">
+      <button className="confirm" onClick={onConfirm}>확인</button>
+    </div>
+  </>
+)}
+
             </div>
         </div>
     );
