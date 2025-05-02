@@ -27,31 +27,21 @@ const ProductMainInfo = ({
 
     return (
         <div className="product-detail-main">
-
-            {/* 이미지 영역 */}
             <div className="product-image-wrapper">
-                <img
-                    src={product.images[0].imageUrl}
-                    alt={product.productName}
-                    className="product-image"
-                />
+                <img src={product.images?.[0] || '/images/default.png'} alt="상품 이미지" className="product-image" />
             </div>
 
-            {/* 정보 영역 */}
             <div className="product-info">
-
-                {/* 태그 */}
                 <div className="product-tags">
                     <TagBadge {...getTagByLabel(product.local)} />
-                    <TagBadge {...getTagByLabel(product.productGrade === 'B' ? 'GOOD' : 'PERFECT')} />
-                    {product.isGroupBuy && <TagBadge {...getTagByLabel('공동구매 가능')} />}
+                    <TagBadge {...getTagByLabel(product.productgrade === 'B' ? 'GOOD' : 'PERFECT')} />
+                    {product.is_group_buy && <TagBadge {...getTagByLabel('공동구매 가능')} />}
                 </div>
 
-                {/* 상품명 + 버튼 */}
                 <div className="product-title-box">
-                    <h1 className="product-name">{product.productName}</h1>
+                    <h1 className="product-name">{product.product_name}</h1>
                     <div className="product-buttons">
-                        {product.isGroupBuy && (
+                        {product.is_group_buy && (
                             <button
                                 className="group-buy-button"
                                 onClick={onGroupBuy}
@@ -79,32 +69,33 @@ const ProductMainInfo = ({
                     </div>
                 </div>
 
-                {/* 가격 영역 */}
                 <div className="price-box">
-                    {product.productGrade === 'B' && (
+                    {product.productgrade === 'B' && (
                         <>
-                            <span className="discount-rate">{product.gradeDiscountRate * 100}%</span>
-                            <span className="original-price">{product.price.toLocaleString()}원</span>
+                            <span className="discount-rate">{product.grade_discount_rate * 100}%</span>
+                            <span className="original-price">
+                                {typeof product.price === 'number' ? product.price.toLocaleString() : ''}원
+                            </span>
                         </>
                     )}
-                    <span className="final-price">{purchasePrice.toLocaleString()}원</span>
+                    <span className="final-price">
+                        {typeof purchasePrice === 'number' ? purchasePrice.toLocaleString() : ''}원
+                    </span>
                 </div>
 
-                {/* 배송비 / 구독 할인 */}
                 <div className="product-info-box">
                     <div className="info-labels">
                         <div>배송비</div>
-                        {product.productGrade === 'B' && <div>GOOD</div>}
+                        {product.productgrade === 'B' && <div>GOOD</div>}
                     </div>
                     <div className="info-values">
-                        <div>{product.deliveryFee.toLocaleString()}원</div>
-                        {product.productGrade === 'B' && (
-                            <div>{product.gradeDiscountRate * 100}% 할인</div>
+                        <div>{typeof product.delivery_fee === 'number' ? product.delivery_fee.toLocaleString() : ''}원</div>
+                        {product.productgrade === 'B' && (
+                            <div>{product.grade_discount_rate * 100}% 할인</div>
                         )}
                     </div>
                 </div>
 
-                {/* 구매 방식 라디오 */}
                 <div className="purchase-method-box">
                     <label className="radio-option">
                         <input
@@ -116,7 +107,9 @@ const ProductMainInfo = ({
                         />
                         <span className="radio-label">
                             1회 구매
-                            <span className="price-text">{purchasePrice.toLocaleString()}원</span>
+                            <span className="price-text">
+                                {typeof purchasePrice === 'number' ? purchasePrice.toLocaleString() : ''}원
+                            </span>
                         </span>
                     </label>
 
@@ -130,13 +123,14 @@ const ProductMainInfo = ({
                         />
                         <span className="radio-label">
                             구독하기
-                            <span className="price-text">{subscribePrice.toLocaleString()}원</span>
+                            <span className="price-text">
+                                {typeof subscribePrice === 'number' ? subscribePrice.toLocaleString() : ''}원
+                            </span>
                         </span>
-                        <span className="badge">{product.subscriptionDiscountRate * 100}% 추가할인</span>
+                        <span className="badge">{product.subscription_discount_rate * 100}% 추가할인</span>
                     </label>
                 </div>
 
-                {/* 구독 옵션 */}
                 {isSubscribeSelected && (
                     <div className="subscribe-options">
                         <div className="form-group">
@@ -169,17 +163,17 @@ const ProductMainInfo = ({
                     </div>
                 )}
 
-                {/* 수량 + 총 금액 */}
                 <div className="quantity-price-row">
                     <div className="quantity-box">
                         <button onClick={() => setQuantity(q => Math.max(1, q - 1))}>-</button>
                         <span>{quantity}</span>
                         <button onClick={() => setQuantity(q => q + 1)}>+</button>
                     </div>
-                    <div className="total-price">총 상품금액: {finalPrice.toLocaleString()}원</div>
+                    <div className="total-price">
+                        총 상품금액: {typeof finalPrice === 'number' ? finalPrice.toLocaleString() : ''}원
+                    </div>
                 </div>
 
-                {/* 장바구니 / 구매 / 구독 버튼 */}
                 <div className="purchase-buttons">
                     <button
                         className="cart-button"
@@ -194,7 +188,6 @@ const ProductMainInfo = ({
                         {isSubscribeSelected ? '구독하기' : '구매하기'}
                     </button>
                 </div>
-
             </div>
         </div>
     );
