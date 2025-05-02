@@ -77,6 +77,24 @@ const Popup = ({ type, onConfirm, onCancel }) => {
                     </>
                 )}
 
+                {type === 'cartAdded' && (
+                    <>
+                        <p>장바구니에 추가되었습니다.</p>
+                        <div className="btn-group">
+                            <button className="confirm" onClick={onConfirm}>장바구니 보기</button>
+                            <button className="cancel"  onClick={onCancel}>계속 쇼핑</button>
+                        </div>
+                    </>
+                )}
+
+                {type === 'paymentComplete' && (
+                    <>
+                        <p>결제가 완료되었습니다!</p>
+                        <div className="btn-group">
+                        <button className="confirm" onClick={onConfirm}>주문 내역 보기</button>
+                        </div>
+                    </>
+                )}
             </div>
         </div>
     );
