@@ -66,7 +66,7 @@ const Popup = ({ type, onConfirm, onCancel }) => {
                         </div>
                     </>
                 )}
-
+                
                 {type === 'loginRequired' && (
                     <>
                         <p>로그인 후 이용할 수 있습니다.<br />로그인 페이지로 이동하시겠습니까?</p>
@@ -77,24 +77,52 @@ const Popup = ({ type, onConfirm, onCancel }) => {
                     </>
                 )}
 
-                {type === 'cartAdded' && (
-                    <>
-                        <p>장바구니에 추가되었습니다.</p>
-                        <div className="btn-group">
-                            <button className="confirm" onClick={onConfirm}>장바구니 보기</button>
-                            <button className="cancel"  onClick={onCancel}>계속 쇼핑</button>
-                        </div>
-                    </>
-                )}
+{type === 'cartAdded' && (
+  <>
+    <p>장바구니에 추가되었습니다.</p>
+    <div className="btn-group">
+      <button className="confirm" onClick={onConfirm}>장바구니 보기</button>
+      <button className="cancel" onClick={onCancel}>계속 쇼핑</button>
+    </div>
+  </>
+)}
 
-                {type === 'paymentComplete' && (
-                    <>
-                        <p>결제가 완료되었습니다!</p>
-                        <div className="btn-group">
-                        <button className="confirm" onClick={onConfirm}>주문 내역 보기</button>
-                        </div>
-                    </>
-                )}
+{type === 'paymentComplete' && (
+  <>
+    <p>결제가 완료되었습니다!</p>
+    <div className="btn-group">
+      <button className="confirm" onClick={onConfirm}>주문 내역 보기</button>
+    </div>
+  </>
+)}
+
+{type === 'login-error' && (
+  <>
+    <p>아이디와 비밀번호를 모두 입력해주세요!</p>
+    <div className="btn-group">
+      <button className="confirm" onClick={onConfirm}>확인</button>
+    </div>
+  </>
+)}
+
+{type === 'login-id-error' && (
+  <>
+    <p>아이디를 입력해주세요!</p>
+    <div className="btn-group">
+      <button className="confirm" onClick={onConfirm}>확인</button>
+    </div>
+  </>
+)}
+
+{type === 'login-pwd-error' && (
+  <>
+    <p>비밀번호를 입력해주세요!</p>
+    <div className="btn-group">
+      <button className="confirm" onClick={onConfirm}>확인</button>
+    </div>
+  </>
+)}
+
             </div>
         </div>
     );
