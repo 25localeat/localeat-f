@@ -38,7 +38,7 @@ const FormConsumer = () => {
     }
 
     try {
-      const res = await axios.get(`/api/users/check-id?userId=${form.userId}`);
+      const res = await axios.get(`/signUp/consumer/check-id?userId=${form.userId}`);
       if (res.data === true) {
         setIdCheckResult(false);
         alert("이미 사용 중인 아이디입니다.");
