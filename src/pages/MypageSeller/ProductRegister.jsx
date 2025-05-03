@@ -8,8 +8,11 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import './ProductRegister.css';
 import Popup from '../../components/Ui/Popup/Popup';
+import axios from 'axios';
 
 const ProductRegister = () => {
+
+
     const navigate = useNavigate();
     const location = useLocation();
     const editData = location.state?.editData || null;
@@ -61,26 +64,33 @@ const ProductRegister = () => {
         }
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
-        const newProduct = {
-            ...formData,
-            id: editData ? editData.id : Date.now(),
-            imagePreview,
+        const payload = {
+            product_name: formData.name,
+            price: Number(formData.price),
+            local: formData.region,
+            is_group_buy: formData.groupbuy === 'O',
+            max_participants: Number(formData.limit),
+            is_grade_b: formData.cheap === 'O',
+            description: formData.description,
+            // 필요시 추가 필드: product_grade, subscription_discount_rate 등
         };
 
-        const existing = JSON.parse(localStorage.getItem("products")) || [];
-
-        let updated;
-        if (editData) {
-            updated = existing.map(p => p.id === editData.id ? newProduct : p);
-        } else {
-            updated = [newProduct, ...existing];
+        try {
+            if (editData) {
+                // 수정
+                await axios.put(`/api/products/${editData.id}`, payload);
+            } else {
+                // 등록
+                await axios.post('/api/products', payload);
+            }
+            setPopupType(editData ? 'edit' : 'register');
+        } catch (error) {
+            console.error("상품 등록/수정 실패", error);
+            alert("저장 실패");
         }
-
-        localStorage.setItem("products", JSON.stringify(updated));
-        setPopupType(editData ? 'edit' : 'register');
     };
 
     const closePopup = () => {
