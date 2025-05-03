@@ -4,10 +4,15 @@ import TabReview from "./TabReview";
 import TabInquiry from "./TabInquiry";
 import tomatoImg from './tomato.png';
 import Popup from '../../components/Ui/Popup/Popup';
-import { useNavigate } from 'react-router-dom';
+import {useNavigate, useParams} from 'react-router-dom';
 import './ProductDetail.css'
+import axios from "../../components/api/axios";
 
 const ProductDetail = () => {
+
+    const { productId } = useParams();
+    const navigate = useNavigate();
+
     const [product, setProduct] = useState(null);
     const [user, setUser] = useState(null);
     const [reviewData, setReviewData] = useState([]);
@@ -25,26 +30,23 @@ const ProductDetail = () => {
 
 
 
-    const navigate = useNavigate();
-
     useEffect(() => {
-        setProduct({
-            productId: 1,
-            productName: '싱싱한 토마토',
-            price: 10000,
-            subscriptionDiscountRate: 0.1,
-            gradeDiscountRate: 0.1,
-            isSubscription: true,
-            isGroupBuy: true,
-            local: '서울/경기/인천',
-            productGrade: 'B',
-            deliveryFee: 3000,
-            description: '지역 농장에서 갓 수확한 신선한 토마토입니다.',
-            images: [{ imageId: 1, imageUrl: tomatoImg }],
-        });
+            console.log('✅ 요청할 productId:', productId);
+            const fetchProduct = async () => {
+                try {
+                    const res = await axios.get(`/api/products/${productId}`);
+                    console.log('✅ 응답 받은 product:', res.data);
+                    setProduct(res.data);
+                } catch (err) {
+                    console.error('상품 정보를 불러오는데 실패했습니다.', err);
+                }
+            };
+
+            if (productId) fetchProduct();
+
         setUser({
             isLoggedIn: true,
-            role: 'SELLER',
+            role: 'SELLER', //  CONSUMER
             userId: 'testUser',
         });
         setReviewData([
@@ -95,14 +97,15 @@ const ProductDetail = () => {
             },
         ]);
 
-    }, []);
+    }, [productId]);
 
-    if (!product || !user) return null;
+    if (!product || !user) return <div>로딩 중...</div>;
 
     // 1회 구매 시 적용되는 실제 가격 (B급은 10% 할인, A급은 그대로)
-    const purchasePrice = product.productGrade === 'B'
-        ? Math.floor(product.price * (1 - product.gradeDiscountRate))
+    const purchasePrice = product.productgrade === 'B'
+        ? Math.floor(product.price * (1 - product.grade_discount_rate))
         : product.price;
+
 
     // 구독 시 할인 적용된 가격
     const subscribePrice = Math.floor(purchasePrice * (1 - product.subscriptionDiscountRate));
