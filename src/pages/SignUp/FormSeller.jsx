@@ -13,7 +13,7 @@ import './FormSeller.css';
 
 const FormSeller = () => {
   const navigate = useNavigate();
-  const [setIdCheckResult] = useState(null);
+  const [idCheckResult, setIdCheckResult] = useState(null);
   const [popupType, setPopupType] = useState(null);
 
   const [form, setForm] = useState({
