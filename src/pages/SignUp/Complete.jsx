@@ -1,7 +1,7 @@
 /*
 파일명: Complete.css
 파일 설명: 로컬잇 회원가입 완료 페이지
-작성사: 김미현
+작성자: 김미현
 기간: 2025-04-27 ~
 */
 
@@ -17,14 +17,14 @@ const guide = `
 
 const Complete = () => {
     return (
-        <div class="container">
-            <div className="box">
-                <div className="overlay">
-                    <p className="title"> {guide}</p>
+        <div class="cmp-container">
+            <div className="cmp-box">
+                <div className="cmp-overlay">
+                    <p className="cmp-title"> {guide}</p>
 
-                    <div className="wrapper">
+                    <div className="cmp-wrapper">
                         <Link to="/login" style={{textDecoration: "none"}}>
-                            <button className="login-button">로그인 하러 가기</button>
+                            <button className="cmp-button">로그인 하러 가기</button>
                         </Link>
                     </div>
                 </div>

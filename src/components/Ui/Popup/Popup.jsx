@@ -186,7 +186,24 @@ const Popup = ({ type, onConfirm, onCancel }) => {
   </>
 )}
 
+                {type === 'login-pwd-error' && (
+                    <>
+                        <p>비밀번호를 입력해주세요!</p>
+                        <div className="btn-group">
+                            <button className="confirm" onClick={onConfirm}>확인</button>
+                        </div>
+                    </>
+                )}
 
+                {type === 'agree-Warning' && (
+                    <>
+                        <p>이용약관에 동의하지 않으면 가입할 수 없습니다.</p>
+                        <div className="btn-group">
+                            <button className="confirm" onClick={onConfirm}>확인</button>
+                        </div>
+                    </>
+                )}
+                
             </div>
         </div>
     );
