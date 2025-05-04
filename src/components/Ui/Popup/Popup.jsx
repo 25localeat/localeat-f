@@ -77,24 +77,114 @@ const Popup = ({ type, onConfirm, onCancel }) => {
                     </>
                 )}
 
-                {type === 'login-error' && (
-                    <>
-                        <p>아이디와 비밀번호를 모두 입력해주세요!</p>
-                        <div className="btn-group">
-                            <button className="confirm" onClick={onConfirm}>확인</button>
-                        </div>
-                    </>
-                )}
+{type === 'cartAdded' && (
+  <>
+    <p>장바구니에 추가되었습니다.</p>
+    <div className="btn-group">
+      <button className="confirm" onClick={onConfirm}>장바구니 보기</button>
+      <button className="cancel" onClick={onCancel}>계속 쇼핑</button>
+    </div>
+  </>
+)}
 
+{type === 'paymentComplete' && (
+  <>
+    <p>결제가 완료되었습니다!</p>
+    <div className="btn-group">
+      <button className="confirm" onClick={onConfirm}>주문 내역 보기</button>
+    </div>
+  </>
+)}
 
-                {type === 'login-id-error' && (
-                    <>
-                        <p>아이디를 입력해주세요!</p>
-                        <div className="btn-group">
-                            <button className="confirm" onClick={onConfirm}>확인</button>
-                        </div>
-                    </>
-                )}
+{type === 'login-error' && (
+  <>
+    <p>로그인이 실패했습니다.</p>
+    <div className="btn-group">
+      <button className="confirm" onClick={onConfirm}>확인</button>
+    </div>
+  </>
+)}
+
+{type === 'id-pwd-error' && (
+  <>
+    <p>아이디와 비밀번호를 모두 입력해주세요.</p>
+    <div className="btn-group">
+      <button className="confirm" onClick={onConfirm}>확인</button>
+    </div>
+  </>
+)}
+
+{type === 'id-error' && (
+  <>
+    <p>아이디를 입력해주세요.</p>
+    <div className="btn-group">
+      <button className="confirm" onClick={onConfirm}>확인</button>
+    </div>
+  </>
+)}
+
+{type === 'pwd-error' && (
+  <>
+    <p>비밀번호를 입력해주세요.</p>
+    <div className="btn-group">
+      <button className="confirm" onClick={onConfirm}>확인</button>
+    </div>
+  </>
+)}
+
+{type === 'signUp-id-fail' && (
+  <>
+    <p>중복된 아이디입니다.</p>
+    <div className="btn-group">
+      <button className="confirm" onClick={onConfirm}>확인</button>
+    </div>
+  </>
+)}
+
+{type === 'signUp-id-success' && (
+  <>
+    <p>사용 가능한 아이디입니다.</p>
+    <div className="btn-group">
+      <button className="confirm" onClick={onConfirm}>확인</button>
+    </div>
+  </>
+)}
+
+{type === 'signUp-id-error' && (
+  <>
+    <p>중복 확인 중 오류가 발생했습니다.</p>
+    <div className="btn-group">
+      <button className="confirm" onClick={onConfirm}>확인</button>
+    </div>
+  </>
+)}
+
+{type === 'signUp-password-error' && (
+  <>
+    <p>비밀번호가 일치하지 않습니다.</p>
+    <div className="btn-group">
+      <button className="confirm" onClick={onConfirm}>확인</button>
+    </div>
+  </>
+)}
+
+{type === 'signUp-local-error' && (
+  <>
+    <p>지역 선택을 해 주세요.</p>
+    <div className="btn-group">
+      <button className="confirm" onClick={onConfirm}>확인</button>
+    </div>
+  </>
+)}
+
+{type === 'signUp-error' && (
+  <>
+    <p>회원가입에 실패했습니다.</p>
+    <div className="btn-group">
+      <button className="confirm" onClick={onConfirm}>확인</button>
+    </div>
+  </>
+)}
 
                 {type === 'login-pwd-error' && (
                     <>

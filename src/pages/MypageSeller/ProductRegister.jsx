@@ -1,15 +1,17 @@
 /*
 파일명 : ProductRegister.jsx
 파일설명 : 로컬잇 웹사이트의 판매자 마이페이지/상품등록록 UI
-작성자 : 김소망
+작성자 : 김소망(프론트), 정여진(백엔드 일부 수정)
 기간 : 2025-04-24~
 */
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import './ProductRegister.css';
 import Popup from '../../components/Ui/Popup/Popup';
+import axios from 'axios';
 
 const ProductRegister = () => {
+
     const navigate = useNavigate();
     const location = useLocation();
     const editData = location.state?.editData || null;
@@ -25,8 +27,33 @@ const ProductRegister = () => {
         image: null,
     });
 
+    const [regionOptions, setRegionOptions] = useState([]);
+    const [groupBuyOptions, setGroupBuyOptions] = useState([]);
+    const [gradeBOptions, setGradeBOptions] = useState([]);
     const [imagePreview, setImagePreview] = useState(null);
     const [popupType, setPopupType] = useState(null);
+
+
+    const LOCAL_TYPE_MAP = {
+        SGI: '서울/경기/인천',
+        GANGWON: '강원',
+        CHUNGCHEONG: '충청',
+        JEONBUK: '전북',
+        JNGJ: '전남/광주',
+        DGGB: '대구/경북',
+        GNBNUL: '경남/부산/울산',
+        JEJU: '제주'
+    };
+
+    const REVERSE_LOCAL_TYPE_MAP = Object.fromEntries(
+        Object.entries(LOCAL_TYPE_MAP).map(([key, value]) => [value, key])
+    );
+
+    useEffect(() => {
+        axios.get('/api/products/local').then(res => setRegionOptions(res.data));
+        axios.get('/api/products/group-buy').then(res => setGroupBuyOptions(res.data));
+        axios.get('/api/products/grade-b').then(res => setGradeBOptions(res.data));
+    }, []);
 
     useEffect(() => {
         if (editData) {
@@ -61,26 +88,32 @@ const ProductRegister = () => {
         }
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
-        const newProduct = {
-            ...formData,
-            id: editData ? editData.id : Date.now(),
-            imagePreview,
+        const payload = {
+            product_name: formData.name,
+            price: Number(formData.price),
+            local: formData.region,
+            is_group_buy: formData.groupbuy === 'O' ? 'TRUE' : 'FALSE',
+            product_grade: formData.cheap === 'O' ? 'B' : 'A',
+            max_participants: Number(formData.limit),
+            description: formData.description,
         };
 
-        const existing = JSON.parse(localStorage.getItem("products")) || [];
-
-        let updated;
-        if (editData) {
-            updated = existing.map(p => p.id === editData.id ? newProduct : p);
-        } else {
-            updated = [newProduct, ...existing];
+        try {
+            if (editData) {
+                // 수정
+                await axios.put(`/api/products/${editData.id}`, payload);
+            } else {
+                // 등록
+                await axios.post('/api/products', payload);
+            }
+            setPopupType(editData ? 'edit' : 'register');
+        } catch (error) {
+            console.error("상품 등록/수정 실패", error);
+            alert("저장 실패");
         }
-
-        localStorage.setItem("products", JSON.stringify(updated));
-        setPopupType(editData ? 'edit' : 'register');
     };
 
     const closePopup = () => {
@@ -97,20 +130,16 @@ const ProductRegister = () => {
                     <div className="row">
                         <select name="region" value={formData.region} onChange={handleChange}>
                             <option value="">지역</option>
-                            <option>서울/경기/인천</option>
-                            <option>강원</option>
-                            <option>충청</option>
-                            <option>전북</option>
-                            <option>전남/광주</option>
-                            <option>대구/경북</option>
-                            <option>경남/부산/울산</option>
-                            <option>제주</option>
+                            {regionOptions.map((r) => (
+                                <option key={r} value={r}>{LOCAL_TYPE_MAP[r] || r}</option>
+                            ))}
                         </select>
 
                         <select name="groupbuy" value={formData.groupbuy} onChange={handleChange}>
                             <option value="">공동 구매</option>
-                            <option>O</option>
-                            <option>X</option>
+                            {groupBuyOptions.map((g) => (
+                                <option key={g} value={g}>{g}</option>
+                            ))}
                         </select>
 
                         <select name="limit" value={formData.limit} onChange={handleChange}>
@@ -122,8 +151,9 @@ const ProductRegister = () => {
 
                         <select name="cheap" value={formData.cheap} onChange={handleChange}>
                             <option value="">알뜰상품</option>
-                            <option>O</option>
-                            <option>X</option>
+                            {gradeBOptions.map((c) => (
+                                <option key={c} value={c}>{c}</option>
+                            ))}
                         </select>
 
                         <input
@@ -182,7 +212,6 @@ const ProductRegister = () => {
                     onConfirm={closePopup}
                 />
             )}
-
         </div>
     );
 };

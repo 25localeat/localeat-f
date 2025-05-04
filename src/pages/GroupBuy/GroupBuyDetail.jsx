@@ -59,7 +59,7 @@ const GroupBuyDetail = () => {
                     <div className="list-wrapper">
                         <p className="participants">참여인원</p>
                             <p className="count">( {list.parti_count} / {list.max_parti})</p>
-                            {list.participants.map((item) => (
+                            {list.participants?.map((item) => (
                                 <div key={item.id} className="list">
                                     <p className="list-text">
                                         아이디: {item.id} / 구매 수량: {item.buy}개
