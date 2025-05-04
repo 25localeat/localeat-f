@@ -98,6 +98,15 @@ const Popup = ({ type, onConfirm, onCancel }) => {
 
 {type === 'login-error' && (
   <>
+    <p>로그인이 실패했습니다.</p>
+    <div className="btn-group">
+      <button className="confirm" onClick={onConfirm}>확인</button>
+    </div>
+  </>
+)}
+
+{type === 'id-pwd-error' && (
+  <>
     <p>아이디와 비밀번호를 모두 입력해주세요.</p>
     <div className="btn-group">
       <button className="confirm" onClick={onConfirm}>확인</button>
