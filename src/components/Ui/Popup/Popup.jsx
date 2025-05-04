@@ -177,6 +177,15 @@ const Popup = ({ type, onConfirm, onCancel }) => {
   </>
 )}
 
+{type === 'signUp-error' && (
+  <>
+    <p>회원가입에 실패했습니다.</p>
+    <div className="btn-group">
+      <button className="confirm" onClick={onConfirm}>확인</button>
+    </div>
+  </>
+)}
+
 
             </div>
         </div>
