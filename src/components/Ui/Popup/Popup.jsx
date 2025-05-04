@@ -104,6 +104,15 @@ const Popup = ({ type, onConfirm, onCancel }) => {
                         </div>
                     </>
                 )}
+
+                {type === 'agree-Warning' && (
+                    <>
+                        <p>이용약관에 동의하지 않으면 가입할 수 없습니다.</p>
+                        <div className="btn-group">
+                            <button className="confirm" onClick={onConfirm}>확인</button>
+                        </div>
+                    </>
+                )}
                 
             </div>
         </div>

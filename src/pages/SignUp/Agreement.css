@@ -1,11 +1,11 @@
 /*
 파일명: Agreement.css
 파일 설명: 로컬잇 회원가입 약관동의 UI 디자인
-작성사: 김미현
+작성자: 김미현
 기간: 2025-04-10 ~
 */
 
-.container {
+.agr-container {
     width: 100%;
     max-width: 1200px;
     height: 960px;
@@ -14,16 +14,16 @@
     flex-shrink: 0;
 }
 
-.box {
+.agr-box {
     width: 100%;
     height: 100%;
     background: url('./박스 이미지.png') lightgray 50% / cover no-repeat;
 }
 
-.overlay {
+.agr-overlay {
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.60);
+    background: rgba(0, 0, 0, 0.29);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -31,7 +31,7 @@
     box-sizing: border-box;
 }
 
-.signUp-title {
+.agr-title {
   color: #FFFFFF;
   text-align: center;
   font-family: Pretendard;
