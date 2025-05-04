@@ -13,7 +13,7 @@ import './FormConsumer.css';
 
 const FormConsumer = () => {
   const navigate = useNavigate();
-  const [setIdCheckResult] = useState(null);
+  const [idCheckResult, setIdCheckResult] = useState(null);
   const [popupType, setPopupType] = useState(null);
 
   const [form, setForm] = useState({
@@ -47,7 +47,7 @@ const FormConsumer = () => {
       const res = await axios.get(`/signUp/consumer/check-id?userId=${form.userId}`);
       if (res.data === true) {
         setIdCheckResult(false);
-        setPopupType('id-error')
+        setPopupType('signUp-id-fail')
       } else {
         setIdCheckResult(true);
         setPopupType('signUp-id-success')
@@ -157,6 +157,13 @@ const FormConsumer = () => {
           <button className="signUpButton" type="submit">가입하기</button>
         </div>
       </form>
+      {popupType && (
+        <Popup
+          type={popupType}
+            onConfirm={closePopup}
+            onCancel={closePopup}
+        />
+      )}
     </div>
   );
 };
