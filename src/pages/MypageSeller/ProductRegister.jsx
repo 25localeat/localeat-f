@@ -1,7 +1,7 @@
 /*
 파일명 : ProductRegister.jsx
 파일설명 : 로컬잇 웹사이트의 판매자 마이페이지/상품등록록 UI
-작성자 : 김소망
+작성자 : 김소망(프론트), 정여진(백엔드 일부 수정)
 기간 : 2025-04-24~
 */
 import React, { useEffect, useState } from 'react';
@@ -32,6 +32,22 @@ const ProductRegister = () => {
     const [gradeBOptions, setGradeBOptions] = useState([]);
     const [imagePreview, setImagePreview] = useState(null);
     const [popupType, setPopupType] = useState(null);
+
+
+    const LOCAL_TYPE_MAP = {
+        SGI: '서울/경기/인천',
+        GANGWON: '강원',
+        CHUNGCHEONG: '충청',
+        JEONBUK: '전북',
+        JNGJ: '전남/광주',
+        DGGB: '대구/경북',
+        GNBNUL: '경남/부산/울산',
+        JEJU: '제주'
+    };
+
+    const REVERSE_LOCAL_TYPE_MAP = Object.fromEntries(
+        Object.entries(LOCAL_TYPE_MAP).map(([key, value]) => [value, key])
+    );
 
     useEffect(() => {
         axios.get('/api/products/local').then(res => setRegionOptions(res.data));
@@ -115,7 +131,7 @@ const ProductRegister = () => {
                         <select name="region" value={formData.region} onChange={handleChange}>
                             <option value="">지역</option>
                             {regionOptions.map((r) => (
-                                <option key={r} value={r}>{r}</option>
+                                <option key={r} value={r}>{LOCAL_TYPE_MAP[r] || r}</option>
                             ))}
                         </select>
 
