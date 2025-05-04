@@ -8,11 +8,13 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import Popup from '../../components/Ui/Popup/Popup';
 import './FormConsumer.css';
 
 const FormConsumer = () => {
   const navigate = useNavigate();
-  const [idCheckResult, setIdCheckResult] = useState(null);
+  const [setIdCheckResult] = useState(null);
+  const [popupType, setPopupType] = useState(null);
 
   const [form, setForm] = useState({
     userId: '',
@@ -31,9 +33,13 @@ const FormConsumer = () => {
     setForm((prev) => ({ ...prev, [name]: value }));
   };
 
+  const closePopup = () => {
+    setPopupType(null);
+  };
+
   const handleIdCheck = async () => {
     if (!form.userId.trim()) {
-      alert("아이디를 입력하세요.");
+      setPopupType('signUp-id-input')
       return;
     }
 
@@ -41,14 +47,14 @@ const FormConsumer = () => {
       const res = await axios.get(`/signUp/consumer/check-id?userId=${form.userId}`);
       if (res.data === true) {
         setIdCheckResult(false);
-        alert("이미 사용 중인 아이디입니다.");
+        setPopupType('id-error')
       } else {
         setIdCheckResult(true);
-        alert("사용 가능한 아이디입니다.");
+        setPopupType('signUp-id-success')
       }
     } catch (error) {
       console.error(error);
-      alert("중복 확인 중 오류 발생");
+      setPopupType('signUp-id-error')
     }
   };
 
@@ -56,12 +62,12 @@ const FormConsumer = () => {
     e.preventDefault();
 
     if (form.password !== form.confirmPassword) {
-      alert("비밀번호가 일치하지 않습니다.");
+      setPopupType('signUp-password-error')
       return;
     }
 
     if (form.local === '지역 선택') {
-      alert("지역을 선택해주세요.");
+      setPopupType('signUp-local-error')
       return;
     }
 
@@ -75,7 +81,7 @@ const FormConsumer = () => {
       navigate('/signUp/complete');
     } catch (error) {
       console.error(error);
-      alert("회원가입 실패");
+      setPopupType('signUp-error')
     }
   };
 

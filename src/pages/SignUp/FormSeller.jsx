@@ -13,7 +13,7 @@ import './FormSeller.css';
 
 const FormSeller = () => {
   const navigate = useNavigate();
-  const [idCheckResult, setIdCheckResult] = useState(null);
+  const [setIdCheckResult] = useState(null);
   const [popupType, setPopupType] = useState(null);
 
   const [form, setForm] = useState({
@@ -39,12 +39,12 @@ const FormSeller = () => {
 
   const handleIdCheck = async () => {
     if (!form.userId.trim()) {
-      alert("아이디를 입력하세요.");
+      setPopupType('id-error')
       return;
     }
 
     try {
-      const res = await axios.get(`/signUp/consumer/check-id?userId=${form.userId}`);
+      const res = await axios.get(`/signUp/seller/check-id?userId=${form.userId}`);
       if (res.data === true) {
         setIdCheckResult(false);
         setPopupType('signUp-id-fail')
@@ -91,7 +91,7 @@ const FormSeller = () => {
   return (
     <div className="container">
       <p className="title">회원가입</p>
-      <form>
+      <form onSubmit={handleSubmit}>
         <table>
           <tbody>
             <tr>
@@ -160,6 +160,14 @@ const FormSeller = () => {
                 <button className="signUpButton" type="submit">가입하기</button>
         </div>
       </form>
+
+      {popupType && (
+        <Popup
+          type={popupType}
+            onConfirm={closePopup}
+            onCancel={closePopup}
+        />
+      )}
     </div>
   );
 };
