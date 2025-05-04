@@ -8,6 +8,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './ProductList.css';
 import Popup from '../../components/Ui/Popup/Popup';
+import axios from "axios";
 
 function ProductList() {
     const [products, setProducts] = useState([]);
@@ -15,9 +16,25 @@ function ProductList() {
     const [itemToDelete, setItemToDelete] = useState(null);
     const navigate = useNavigate();
 
+    const localTypeToLabel = {
+        SGI: '서울/경기/인천',
+        GANGWON: '강원',
+        CHUNGCHEONG: '충청',
+        JEONBUK: '전북',
+        JNGJ: '전남/광주',
+        DGGB: '대구/경북',
+        GNBNUL: '경남/부산/울산',
+        JEJU: '제주',
+    };
+
     useEffect(() => {
-        const saved = JSON.parse(localStorage.getItem('products')) || [];
-        setProducts(saved);
+        axios.get('/api/products')
+            .then(res => {
+                setProducts(res.data);
+            })
+            .catch(err => {
+                console.error('상품 목록 불러오기 실패:', err);
+            });
     }, []);
 
     const openDeletePopup = (id) => {
@@ -77,12 +94,12 @@ function ProductList() {
                         <tbody>
                             {products.map((item, index) => (
                                 <tr key={index}>
-                                    <td>{item.name}</td>
-                                    <td>{item.groupbuy}</td>
-                                    <td>{item.cheap}</td>
-                                    <td>{item.region}</td>
-                                    <td>{item.price}</td>
-                                    <td>{new Date(item.id).toLocaleDateString()}</td>
+                                    <td>{item.product_name}</td>
+                                    <td>{item.is_group_buy ? 'O' : 'X'}</td>
+                                    <td>{item.is_grade_b === 'B' ? 'O' : 'X'}</td>
+                                    <td>{localTypeToLabel[item.local] || item.local}</td>
+                                    <td>{item.price.toLocaleString()}원</td>
+                                    <td>{new Date(item.create_at).toLocaleDateString()}</td>
                                     <td><button className="modify-btn" onClick={() => handleEdit(item)}>수정</button></td>
                                     <td><button className="delete-btn" onClick={() => openDeletePopup(item.id)}>삭제</button></td>
                                 </tr>
