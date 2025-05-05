@@ -5,7 +5,7 @@
 기간: 2025-04-28 ~
 */
 
-.container {
+.cgb-container {
     width: 100%;
     max-width: 1200px;
     height: auto;
@@ -14,7 +14,7 @@
     font-family: 'Pretendard', sans-serif;
 }
 
-.title {
+.cgb-title {
     font-size: 34px;
     font-weight: bold;
     text-align: center;
@@ -22,7 +22,7 @@
     font-family: 'Pretendard', sans-serif;
 }
 
-.next-button {
+.cgb-next-button {
     width: 199px;
     height: 50px;
     flex-shrink: 0;
@@ -39,21 +39,21 @@
     cursor: pointer;
 }
 
-.content-wrapper {
+.cgb-content-wrapper {
   display: flex;
   justify-content: space-between;
   gap: 40px;
 }
 
-.left-section, .right-section {
+.cgb-left-section, .cgb-right-section {
   flex: 1;
 }
 
-.section {
+.cgb-section {
   margin-bottom: 30px;
 }
 
-.section-title {
+.cgb-section-title {
     color: #000;
     font-family: Inter;
     font-size: 26px;
@@ -62,20 +62,20 @@
     line-height: normal;
 }
 
-.region-tags-wrapper {
+.cgb-region-tags-wrapper {
     display: flex;
     justify-content: center;
     margin-top: 3rem;
 }
 
-.region-tags {
+.cgb-region-tags {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 24px;
     justify-content: center;
 }
 
-.tag {
+.cgb-tag {
     padding: 0.5rem 1.25rem;
     border-radius: 999px;
     font-size: 1rem;
@@ -93,32 +93,32 @@
 .tag-6 { background-color: rgba(208, 176, 132, 0.1); }
 .tag-7 { background-color: rgba(189, 160, 203, 0.1); }
 
-.tag-item {
+.cgb-tag-item {
   cursor: pointer;
   transition: all 0.3s ease;
   display: inline-block;
 }
 
 /* 클릭 시 효과 */
-.tag-item.selected {
+.cgb-tag-item.selected {
   background-color: rgba(0, 0, 0, 0.65) !important;
   font-weight: bold;
 }
 
 /* TagBadge 내부의 .tag가 있다면, 해당 요소에 스타일을 적용하는 방법 */
-.tag-item.selected .tag {
+.cgb-tag-item.selected .tag {
   background-color: rgba(0, 0, 0, 0.65) !important;
   font-weight: bold;
 }
 
-.quantity-selector {
+.cgb-quantity-selector {
   display: flex;
   align-items: center;
   gap: 10px;
   margin-top: 10px;
 }
 
-.quantity-button {
+.cgb-quantity-button {
   width: 212.918px;
   height: 86.498px;
   flex-shrink: 0;
@@ -131,14 +131,14 @@
   border-radius: 0; /* 사각형 */
 }
 
-.quantity {
+.cgb-quantity {
   min-width: 30px;
   text-align: center;
   font-size: 18px;
   color: black;
 }
 
-.input-box {
+.cgb-input-box {
     width: 530px;
     height: 66px;
     flex-shrink: 0;
@@ -151,7 +151,7 @@
     background-color: #ffffff;
 }
 
-.button-wrapper {
+.cgb-button-wrapper {
   text-align: right;
   margin-top: 30px;
 }
