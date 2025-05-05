@@ -1,13 +1,14 @@
 /*
 파일명: Agreement.css
 파일 설명: 로컬잇 회원가입 약관동의 페이지
-작성사: 김미현
+작성자: 김미현
 기간: 2025-04-10 ~
 */
 
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './Agreement.css'
+import Popup from '../../components/Ui/Popup/Popup';
 
 const agreementText = `
     약관과 관련된
@@ -16,11 +17,31 @@ const agreementText = `
 `;
 
 const Agreement = () => {
+    const [popupType, setPopupType] = useState(null);
+    const [isChecked, setIsChecked] = useState(false);
+    const navigate = useNavigate();
+
+    const closePopup = () => {
+        setPopupType(null);
+    };
+
+    const handleCheckboxChange = (e) => {
+        setIsChecked(e.target.checked);
+    };
+
+    const handleAgreeClick = () => {
+        if (isChecked) {
+            navigate('/signUp/selectType');
+        } else {
+            setPopupType('agree-Warning'); // 팝업 타입을 커스터마이징 가능
+        }
+    };
+
     return (
-            <div className="container">
-                <div className="box">
-                    <div className="overlay">
-                        <p className="signUp-title">회원가입</p>
+            <div className="agr-container">
+                <div className="agr-box">
+                    <div className="agr-overlay">
+                        <p className="agr-title">회원가입</p>
 
                         <div className="agreement-wrapper">
                             <p className="agreement-ment">약관동의</p>
@@ -32,17 +53,24 @@ const Agreement = () => {
                             </p>
                         </div>
                         <div className="checkbox-container">
-                            <input type="checkbox" id="terms" />
+                            <input type="checkbox" id="terms"checked={isChecked}
+                            onChange={handleCheckboxChange}/>
                             <label htmlFor="terms">이용약관에 동의하시겠습니까?</label>
                         </div>
-                        <Link to="/signUp/selectType">
-                            <button className="agree-button">동의하고 가입하기</button>
-                        </Link>
+                        <button className="agree-button" onClick={handleAgreeClick}>
+                            동의하고 가입하기
+                        </button>
                     </div>
                 </div>
-            </div>
-
+                {popupType && (
+                    <Popup
+                        type={popupType}
+                        onConfirm={closePopup}
+                        onCancel={closePopup}
+                    />
+                )}
+        </div>
     );
 };
 
-export default Agreement
+export default Agreement;

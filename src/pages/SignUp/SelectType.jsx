@@ -1,7 +1,7 @@
 /*
 파일명: SelectType.css
 파일 설명: 로컬잇 회원 유형 선택 페이지
-작성사: 김미현
+작성자: 김미현
 기간: 2025-04-27 ~
 */
 
@@ -17,10 +17,10 @@ const guide = `
 
 const SelectType = () => {
     return (
-        <div class="container">
-            <div className="box">
-                <div className="overlay">
-                    <p className="title">{guide}</p>
+        <div class="st-container">
+            <div className="st-box">
+                <div className="st-overlay">
+                    <p className="st-title">{guide}</p>
 
                     <div className="member-box-wrapper">
                         <Link to="/signUp/consumer/form" style={{textDecoration: "none"}}>
