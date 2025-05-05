@@ -4,98 +4,103 @@
 작성자: 김민하
 기간: 2025-04-26 ~ 28
 */
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import './ReviewForm.css';
+import { useNavigate, useParams } from 'react-router-dom';
 
-export default function ReviewForm() {
-    // 폼 상태
-    const [rating, setRating] = useState(5);
+const ReviewForm = () => {
+    const { orderItemId } = useParams();
+    const [productName, setProductName] = useState('');
+    const [rating, setRating] = useState(0);
     const [content, setContent] = useState('');
-    const [files, setFiles] = useState([]);
+    const [images, setImages] = useState([]);
+    const [imagePreviews, setImagePreviews] = useState([]);
+    const navigate = useNavigate();
 
-    // 테스트용 제출 핸들러
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        console.log('리뷰 제출 데이터:', { rating, content, files });
-        alert('리뷰 제출 데이터가 콘솔에 찍혔습니다.');
-        // 폼 초기화
-        setRating(5);
-        setContent('');
-        setFiles([]);
+    // 상품명 조회
+    useEffect(() => {
+        axios.get(`/orders/item/${orderItemId}`)
+            .then((res) => setProductName(res.data.productName))
+            .catch(() => setProductName('상품명을 불러오지 못했습니다.'));
+    }, [orderItemId]);
+
+    // 이미지 업로드 핸들러
+    const handleImageChange = (e) => {
+        const files = Array.from(e.target.files);
+        const previews = files.map(file => URL.createObjectURL(file));
+        setImages(files);
+        setImagePreviews(previews);
     };
 
-    const handleFileChange = (e) => {
-        const selected = Array.from(e.target.files).slice(0, 4); // 최대 4장
-        setFiles(selected);
+    // 등록 버튼
+    const handleSubmit = async () => {
+        const formData = new FormData();
+        formData.append('orderItemId', orderItemId);
+        formData.append('rating', rating);
+        formData.append('content', content);
+        formData.append('userId', 1); // 임시 userId
+
+        images.forEach((img, i) => {
+            formData.append('images', img);
+        });
+
+        try {
+            await axios.post('/reviews', formData);
+            alert("리뷰 등록이 완료되었습니다.");
+            navigate('/mypage/buyer/review');
+        } catch (err) {
+            alert("리뷰 등록에 실패했습니다.");
+        }
     };
 
     return (
-        <div className="review-form-page">
-            <h1 className="review-form-page-title">리뷰 작성</h1>
-            <form className="review-form" onSubmit={handleSubmit}>
-                {/* 상품명, 등록일 (필요시 외부에서 props로 받을 수 있습니다) */}
-                <div className="form-group">
-                    <label>상품명</label>
-                    <input type="text" value="테스트 상품명" disabled />
-                </div>
-                <div className="form-group">
-                    <label>등록일</label>
-                    <input type="text" value="2025-05-01" disabled />
+        <div className="review-form">
+            <h2>리뷰 작성하기</h2>
+
+            <div className="form-table">
+                <div className="row">
+                    <div className="label">상품명</div>
+                    <div><input type="text" value={productName} readOnly /></div>
                 </div>
 
-                {/* 평점 선택 */}
-                <div className="form-group">
-                    <label>평점</label>
-                    <select
-                        value={rating}
-                        onChange={(e) => setRating(+e.target.value)}
-                    >
-                        {[5, 4, 3, 2, 1].map((n) => (
-                            <option key={n} value={n}>
-                                {n}점
-                            </option>
+                <div className="row">
+                    <div className="label">등록일</div>
+                    <div className="review-date">{new Date().toISOString().slice(0, 10)}</div>
+                </div>
+
+                <div className="row">
+                    <div className="label">평점</div>
+                    <div className="stars">
+                        {[1, 2, 3, 4, 5].map(n => (
+                            <span key={n} onClick={() => setRating(n)} style={{ cursor: 'pointer', color: n <= rating ? 'gold' : 'gray' }}>★</span>
                         ))}
-                    </select>
+                    </div>
                 </div>
 
-                {/* 리뷰 내용 */}
-                <div className="form-group">
-                    <label>리뷰 내용</label>
-                    <textarea
-                        value={content}
-                        onChange={(e) => setContent(e.target.value)}
-                        placeholder="리뷰를 작성해주세요"
-                        required
-                    />
+                <div className="row">
+                    <div className="label">내용</div>
+                    <div className="content">
+                    <textarea placeholder="상세리뷰를 작성해주세요" value={content} onChange={e => setContent(e.target.value)} />
+                    </div>
                 </div>
 
-                {/* 이미지 첨부 */}
-                <div className="form-group">
-                    <label>이미지 첨부 (최대 4장)</label>
-                    <input
-                        type="file"
-                        accept="image/*"
-                        multiple
-                        onChange={handleFileChange}
-                    />
-                    {files.length > 0 && (
-                        <div className="preview-images">
-                            {files.map((file, i) => (
-                                <img
-                                    key={i}
-                                    src={URL.createObjectURL(file)}
-                                    alt={`preview ${i}`}
-                                />
+                <div className="row photo-row">
+                    <div className="label">사진첨부</div>
+                    <div className="file-upload-wrapper">
+                        <input type="file" multiple accept="image/*" onChange={handleImageChange} />
+                        <div className="image-preview">
+                            {imagePreviews.map((src, i) => (
+                                <img key={i} src={src} alt={`미리보기 ${i}`} className="preview-img" />
                             ))}
                         </div>
-                    )}
+                    </div>
                 </div>
+            </div>
 
-                {/* 제출 버튼 */}
-                <div className="form-buttons">
-                    <button type="submit">리뷰 등록</button>
-                </div>
-            </form>
+            <button className="submit-btn" onClick={handleSubmit}>리뷰 등록하기</button>
         </div>
     );
-}
+};
+
+export default ReviewForm;
