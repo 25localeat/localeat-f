@@ -1,11 +1,11 @@
 /*
-파일명: PartiGroupBuy.css
-파일 설명: 로컬잇 공동구매 참여하기 UI 디자인
+파일명: JoinGroupBuy.css
+파일 설명: 로컬잇 공동구매 공동구매 참여하기기 UI 디자인
 작성자: 김미현
 기간: 2025-04-28 ~
 */
 
-.container {
+.jgb-container {
     width: 100%;
     max-width: 1200px;
     height: auto;
@@ -14,12 +14,144 @@
     font-family: 'Pretendard', sans-serif;
 }
 
-.title {
-    font-family: Pretendard;
+.jgb-title {
     font-size: 34px;
     font-weight: bold;
     text-align: center;
-    margin-top: 0px;
-    margin-bottom: 20px;
+    margin-bottom: 40px;
+    font-family: 'Pretendard', sans-serif;
+}
+
+.jgb-next-button {
+    width: 199px;
+    height: 50px;
+    flex-shrink: 0;
+    padding: 10px 20px;
+    border-radius: 15px;
+    background: rgba(3, 199, 90, 0.18);
+    border: none;
     color: #000;
+    font-family: Pretendard;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    cursor: pointer;
+}
+
+.jgb-content-wrapper {
+  display: flex;
+  justify-content: space-between;
+  gap: 40px;
+}
+
+.jgb-left-section, .jgb-right-section {
+  flex: 1;
+}
+
+.jgb-section {
+  margin-bottom: 30px;
+}
+
+.jgb-section-title {
+    color: #000;
+    font-family: Inter;
+    font-size: 26px;
+    font-style: normal;
+    margin-bottom: 10px;
+    line-height: normal;
+}
+
+.jgb-region-tags-wrapper {
+    display: flex;
+    justify-content: center;
+    margin-top: 3rem;
+}
+
+.jgb-region-tags {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    justify-content: center;
+}
+
+.jgb-tag {
+    padding: 0.5rem 1.25rem;
+    border-radius: 999px;
+    font-size: 1rem;
+    font-weight: 500;
+    color: black;
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+.tag-0 { background-color: rgba(171, 78, 82, 0.1); }
+.tag-1 { background-color: rgba(244, 166, 136, 0.1); }
+.tag-2 { background-color: rgba(110, 75, 53, 0.1); }
+.tag-3 { background-color: rgba(164, 215, 146, 0.1); }
+.tag-4 { background-color: rgba(0, 178, 169, 0.1); }
+.tag-5 { background-color: rgba(116, 139, 171, 0.1); }
+.tag-6 { background-color: rgba(208, 176, 132, 0.1); }
+.tag-7 { background-color: rgba(189, 160, 203, 0.1); }
+
+.jgb-tag-item {
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: inline-block;
+}
+
+/* 클릭 시 효과 */
+.jgb-tag-item.selected {
+  background-color: rgba(0, 0, 0, 0.65) !important;
+  font-weight: bold;
+}
+
+/* TagBadge 내부의 .tag가 있다면, 해당 요소에 스타일을 적용하는 방법 */
+.jgb-tag-item.selected .tag {
+  background-color: rgba(0, 0, 0, 0.65) !important;
+  font-weight: bold;
+}
+
+.jgb-quantity-selector {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.jgb-quantity-button {
+  width: 212.918px;
+  height: 86.498px;
+  flex-shrink: 0;
+  aspect-ratio: 212.92/86.50;
+  background-color: white;
+  color: black;
+  border: 1px solid gray;
+  font-size: 20px;
+  cursor: pointer;
+  border-radius: 0; /* 사각형 */
+}
+
+.jgb-quantity {
+  min-width: 30px;
+  text-align: center;
+  font-size: 18px;
+  color: black;
+}
+
+.jgb-input-box {
+    width: 530px;
+    height: 66px;
+    flex-shrink: 0;
+    border-radius: 30px;
+    border: 2px solid #03C75A;
+    background: rgba(255, 255, 255, 0.30);
+    padding: 10px;
+    padding-left: 20px;
+    color: #000;
+    background-color: #ffffff;
+}
+
+.jgb-button-wrapper {
+  text-align: right;
+  margin-top: 30px;
 }
