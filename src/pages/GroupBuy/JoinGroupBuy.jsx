@@ -8,7 +8,7 @@
 
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import './CreateGroupBuy.css'
+import './JoinGroupBuy.css'
 import TagBadge from '../../components/Tag/TagBadge';
 import {getTagsByType} from '../../components/Tag/tags';
 
@@ -65,28 +65,24 @@ const JoinGroupBuy = () => {
     const regionTags = getTagsByType('region');
 
     return (
-        <div className="container">
-            <p className="title">공동 구매 만들기</p>
-            <div className="button-wrapper">
+        <div className="jgb-container">
+            <p className="jgb-title">공동 구매 참여하기</p>
+            <div className="jgb-button-wrapper">
                 <Link to="/groupBuy/detail">
-                    <button className="next-button">다음</button>
+                    <button className="jgb-next-button">다음</button>
                 </Link>
             </div>
-            <div className="content-wrapper">
-                <div className="left-section">
-                    <div className="section">
-                        <p className="section-title">지역 선택</p>
-                        <div className="region-tags-wrapper">
-                            <div className="region-tags">
-                                <RegionTags tags={regionTags} />
-                            </div>
-                        </div>
+            <div className="jgb-content-wrapper">
+                <div className="jgb-left-section">
+                    <div className="jgb-section">
+                        <p className="jgb-section-title">지역 선택</p>
+                        
                     </div>
 
-                    <div className="section">
-                        <p className="section-title">구매할 수량 선택</p>
-                        <div className="quantity-selector">
-                            <div className="quantity-selector">
+                    <div className="jgb-section">
+                        <p className="jgb-section-title">구매할 수량 선택</p>
+                        <div className="jgb-quantity-selector">
+                            <div className="jgb-quantity-selector">
                                 <button onClick={handleDecrease}>-</button>
                                 <span>{quantity}</span>
                                 <button onClick={handleIncrease}>+</button>
@@ -95,25 +91,25 @@ const JoinGroupBuy = () => {
                     </div>
                 </div>
 
-                <div className="right-section">
-                    <div className="section">
-                        <p className="section-title">공동 구매 설명</p>
-                        <input type="text" className="input-box" value={`${product.description}`} readOnly />
+                <div className="jgb-right-section">
+                    <div className="jgb-section">
+                        <p className="jgb-section-title">공동 구매 설명</p>
+                        <input type="text" className="jgb-input-box" value={`${product.description}`} readOnly />
                     </div>
 
-                    <div className="section">
-                        <p className="section-title">참여 인원 제한</p>
+                    <div className="jgb-section">
+                        <p className="jgb-section-title">참여 인원 제한</p>
                         <input
                             type="text"
-                            className="input-box"
+                            className="jgb-input-box"
                             value={`${product.max_parti}`}
                             readOnly
                         />
                     </div>
 
-                    <div className="section">
-                        <p className="section-title">마감 시간 선택</p>
-                        <input type="text" className="input-box" value={`${product.date}`} readOnly />
+                    <div className="jgb-section">
+                        <p className="jgb-section-title">마감 시간 선택</p>
+                        <input type="text" className="jgb-input-box" value={`${product.date}`} readOnly />
                     </div>
                 </div>
             </div>
