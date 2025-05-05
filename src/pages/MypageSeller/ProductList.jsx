@@ -42,11 +42,16 @@ function ProductList() {
         setPopupType('delete');
     };
 
-    const deleteProduct = () => {
-        const updated = products.filter(p => p.id !== itemToDelete);
-        setProducts(updated);
-        localStorage.setItem('products', JSON.stringify(updated));
-        closePopup();
+    const deleteProduct = async () => {
+        console.log("삭제 요청 실행됨, 삭제할 ID:", itemToDelete);
+        try {
+            await axios.delete(`/api/products/${itemToDelete}`);
+            const updated = products.filter(p => p.id !== itemToDelete);
+            setProducts(updated);
+        } catch (err) {
+            console.error('상품 삭제 실패:', err);
+            alert('삭제에 실패했습니다.');
+        }
     };
 
     const closePopup = () => {
