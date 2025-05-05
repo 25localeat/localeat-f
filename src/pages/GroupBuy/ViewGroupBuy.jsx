@@ -37,34 +37,34 @@ const groupBuyList = [
 
 const ViewGroupBuy = () => {
     return (
-        <div className="container">
-            <p className="title">공동 구매</p>
-            <div className="groupBuy-box">
-                <div className = "header-section">
-                    <div className="img-wrapper">
-                        <img className="product-image" src={product.image} alt="당근"/>
+        <div className="vgb-container">
+            <p className="vgb-title">공동 구매</p>
+            <div className="vgb-box">
+                <div className = "vgb-header-section">
+                    <div className="vgb-img-wrapper">
+                        <img className="vgb-product-image" src={product.image} alt="당근"/>
                     </div>
-                    <div className="product-info">
-                        <div className="top-row">
-                            <p className="product-name">{product.product_name}</p>
+                    <div className="vgb-product-info">
+                        <div className="vgb-top-row">
+                            <p className="vgb-product-name">{product.product_name}</p>
                             <Link to="/groupBuy/create">
-                                <button className="create-button">공동구매 만들기</button>
+                                <button className="vgb-create-button">공동구매 만들기</button>
                             </Link>
                         </div>
-                        <p className="groupBuy-guide">현재 상품에 대한 공동구매 진행 건은 다음과 같습니다.</p>
+                        <p className="vgb-guide">현재 상품에 대한 공동구매 진행 건은 다음과 같습니다.</p>
                     </div>
                 </div>
 
-                <hr className="divider" />
+                <hr className="vgb-divider" />
 
-                <div className="list-wrapper">
+                <div className="vgb-list-wrapper">
                     {groupBuyList.map((item) => (
-                        <div key={item.groupBuyId} className="list">
-                            <p className="list-text">
+                        <div key={item.groupBuyId} className="vgb-list">
+                            <p className="vgb-list-text">
                                 지역: {item.location} 상품명: {item.product_name} 모집인원 {item.parti_count}/{item.max_parti}
                             </p>
                             <Link to="/groupBuy/join">
-                                <button className="join-button">참여하기</button>
+                                <button className="vgb-join-button">참여하기</button>
                             </Link>
                         </div>
                     ))}

@@ -6,7 +6,8 @@
 */
 
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import './CreateGroupBuy.css'
 import TagBadge from '../../components/Tag/TagBadge';
 import {getTagsByType} from '../../components/Tag/tags';
@@ -46,7 +47,9 @@ const RegionTags = ({ tags }) => {
 
 
 const CreateGroupBuy = () => {
+    const navigate = useNavigate();
     const [quantity, setQuantity] = useState(1);
+    const [description, setDescription] = useState("");
 
     const handleIncrease = () => {
         setQuantity(prev => prev + 1);
@@ -56,31 +59,35 @@ const CreateGroupBuy = () => {
         if (quantity > 1) setQuantity(prev => prev - 1);
     };
 
+    const handleNext = () => {
+        navigate('/groupBuy/detail', {
+          state: {
+            quantity: quantity,
+            product: product,
+            description: description
+          }
+        });
+      };
+
     const regionTags = getTagsByType('region');
 
     return (
-        <div className="container">
-            <p className="title">공동 구매 만들기</p>
-            <div className="button-wrapper">
-                <Link to="/groupBuy/detail">
-                    <button className="next-button">다음</button>
-                </Link>
+        <div className="cgb-container">
+            <p className="cgb-title">공동 구매 만들기</p>
+            <div className="cgb-button-wrapper">
+                    <button className="cgb-next-button" onClick={handleNext}>다음</button>
             </div>
-            <div className="content-wrapper">
-                <div className="left-section">
-                    <div className="section">
-                        <p className="section-title">지역 선택</p>
-                        <div className="region-tags-wrapper">
-                            <div className="region-tags">
-                                <RegionTags tags={regionTags} />
-                            </div>
-                        </div>
+            <div className="cgb-content-wrapper">
+                <div className="cgb-left-section">
+                    <div className="cgb-section">
+                        <p className="cgb-section-title">지역 선택</p>
+                        
                     </div>
 
-                    <div className="section">
-                        <p className="section-title">구매할 수량 선택</p>
-                        <div className="quantity-selector">
-                            <div className="quantity-selector">
+                    <div className="cgb-section">
+                        <p className="cgb-section-title">구매할 수량 선택</p>
+                        <div className="cgb-quantity-selector">
+                            <div className="cgb-quantity-selector">
                                 <button onClick={handleDecrease}>-</button>
                                 <span>{quantity}</span>
                                 <button onClick={handleIncrease}>+</button>
@@ -89,25 +96,26 @@ const CreateGroupBuy = () => {
                     </div>
                 </div>
 
-                <div className="right-section">
-                    <div className="section">
-                        <p className="section-title">공동 구매 설명</p>
-                        <input type="text" className="input-box" placeholder="간략한 설명 입력칸입니다."/>
+                <div className="cgb-right-section">
+                    <div className="cgb-section">
+                        <p className="cgb-section-title">공동 구매 설명</p>
+                        <input type="text" name="description" value={description} className="cgb-input-box" placeholder="간략한 설명 입력칸입니다."/>
                     </div>
 
-                    <div className="section">
-                        <p className="section-title">참여 인원 제한</p>
+                    <div className="cgb-section">
+                        <p className="cgb-section-title">참여 인원 제한</p>
                         <input
                             type="text"
-                            className="input-box"
+                            className="cgb-input-box"
+                            name="max_parti"
                             value={`${product.max_parti}`}
                             readOnly
                         />
                     </div>
 
-                    <div className="section">
-                        <p className="section-title">마감 시간 선택</p>
-                        <input type="date" className="input-box" />
+                    <div className="cgb-section">
+                        <p className="cgb-section-title">마감 시간 선택</p>
+                        <input type="date" name="date" className="cgb-nput-box" />
                     </div>
                 </div>
             </div>

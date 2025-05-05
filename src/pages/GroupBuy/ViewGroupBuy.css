@@ -5,7 +5,7 @@
 기간: 2025-04-28 ~
 */
 
-.container {
+.vgb-container {
     width: 100%;
     max-width: 1200px;
     height: auto;
@@ -14,7 +14,7 @@
     font-family: 'Pretendard', sans-serif;
 }
 
-.title {
+.vgb-title {
     font-family: Pretendard;
     font-size: 34px;
     font-weight: bold;
@@ -24,7 +24,7 @@
 
 }
 
-.groupBuy-box {
+.vgb-box {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -32,7 +32,7 @@
     margin-bottom: 20px;
 }
 
-.header-section {
+.vgb-header-section {
     width: 100%;
     max-width: 1000px;
     display: flex;
@@ -41,33 +41,33 @@
     gap: 20px;
 }
 
-.img-wrapper {
+.vgb-img-wrapper {
     width: 160px;
     height: 160px;
     background-color: #d9d9d9;
     margin-right: 20px;
 }
 
-.product-image {
+.vgb-product-image {
     width: 160px;
     height: 160px;
     margin-right: 15px;
 }
 
-.product-info {
+.vgb-product-info {
     flex: 1;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
 }
 
-.top-row {
+.vgb-top-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-.product-name {
+.vgb-product-name {
     font-size: 32px;
     color: #000;
     font-family: 'Pretendard', sans-serif;
@@ -77,7 +77,7 @@
     margin: 0px;
 }
 
-.create-button {
+.vgb-create-button {
     width: 288px;
     height: 68px;
     flex-shrink: 0;
@@ -92,7 +92,7 @@
     align-self: flex-start;
 }
 
-.groupBuy-guide {
+.vgb-guide {
     font-size: 26px;
     color: #000;
     font-family: 'Pretendard', sans-serif;
@@ -101,14 +101,14 @@
     line-height: normal;
 }
 
-.divider {
+.vgb-divider {
     border: 1px solid #F0F0F0;;
     margin: 20px 0;
     max-width: 1000px;
     width: 100%;
 }
 
-.list-wrapper {
+.vgb-list-wrapper {
     display: flex;
     flex-direction: column;
     gap: 10px;
@@ -118,7 +118,7 @@
     margin: 0 auto;
 }
 
-.list {
+.vgb-list {
     max-width: 1000px;
     width: 100%;
     display: flex;
@@ -130,7 +130,7 @@
     background: rgba(217, 217, 217, 0.00);
 }
 
-.list-text {
+.vgb-list-text {
     font-size: 26px;
     color: #000;
     font-family: 'Pretendard', sans-serif;
@@ -140,7 +140,7 @@
     margin-left: 8px;
 }
 
-.join-button {
+.vgb-join-button {
     width: 179px;
     height: 40px;
     flex-shrink: 0;

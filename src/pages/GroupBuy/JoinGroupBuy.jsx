@@ -66,7 +66,7 @@ const JoinGroupBuy = () => {
 
     return (
         <div className="container">
-            <p className="title">공동 구매 만들기</p>
+            <p className="title">공동 구매 참여하기</p>
             <div className="button-wrapper">
                 <Link to="/groupBuy/detail">
                     <button className="next-button">다음</button>
