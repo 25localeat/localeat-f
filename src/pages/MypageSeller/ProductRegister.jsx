@@ -53,18 +53,31 @@ const ProductRegister = () => {
 
     useEffect(() => {
         if (editData) {
+            console.log("editData 값:", editData);
+
             setFormData({
                 region: editData.region,
                 groupbuy: editData.groupbuy,
                 limit: editData.limit,
                 cheap: editData.cheap,
                 price: editData.price,
-                name: editData.name,
+                name: editData.productName,
                 description: editData.description,
                 image: editData.image,
                 isSubscription: true,
             });
-            setImagePreview(editData.imagePreview || null);
+
+
+            // 이미지 blob 요청
+            axios.get(`/api/images/${editData.id}`, {
+                responseType: 'blob'
+            }).then(res => {
+                const url = URL.createObjectURL(res.data);
+                setImagePreview(url);
+            }).catch(err => {
+                console.error('이미지 로드 실패', err);
+                setImagePreview(null);
+            });
         }
     }, [editData]);
 
@@ -89,11 +102,10 @@ const ProductRegister = () => {
         e.preventDefault();
         console.log("전송 직전 이미지:", formData.image);
 
-        if (!formData.image) {
+        if (!formData.image && !editData) {
             alert("이미지를 업로드해주세요.");
             return;
         }
-
 
         const payload = {
             productName: formData.name,
@@ -105,8 +117,6 @@ const ProductRegister = () => {
             description: formData.description,
             isSubscription: true,
         };
-        console.log("파일명:", formData.image.name);
-        console.log("파일 크기:", formData.image.size);
 
         try {
             let productId;
@@ -121,7 +131,7 @@ const ProductRegister = () => {
             if (formData.image) {
                 const imageFormData = new FormData();
                 imageFormData.append("file", formData.image);
-                await axios.post(`/api/products/images/${productId}`, imageFormData, {
+                await axios.post(`/api/images/${productId}`, imageFormData, {
                     headers: { "Content-Type": "multipart/form-data" }
                 });
             }
@@ -145,29 +155,30 @@ const ProductRegister = () => {
                 <h2>{editData ? '상품 수정' : '상품 등록'}</h2>
                 <form onSubmit={handleSubmit}>
                     <div className="row">
+
                         <select name="region" value={formData.region} onChange={handleChange}>
-                            <option value="">지역</option>
+                            {!editData && <option value="">지역</option>}
                             {regionOptions.map((r) => (
                                 <option key={r} value={r}>{LOCAL_TYPE_MAP[r] || r}</option>
                             ))}
                         </select>
 
                         <select name="groupbuy" value={formData.groupbuy} onChange={handleChange}>
-                            <option value="">공동 구매</option>
+                            {!editData && <option value="">공동구매</option>}
                             {groupBuyOptions.map((g) => (
                                 <option key={g} value={g}>{g}</option>
                             ))}
                         </select>
 
                         <select name="limit" value={formData.limit} onChange={handleChange}>
-                            <option value="">공구제한인원</option>
+                            {!editData &&<option value="">공구제한인원</option>}
                             {Array.from({ length: 15 }, (_, i) => (
                                 <option key={i + 1}>{i + 1}</option>
                             ))}
                         </select>
 
                         <select name="cheap" value={formData.cheap} onChange={handleChange}>
-                            <option value="">알뜰상품</option>
+                            {!editData &&<option value="">알뜰상품</option>}
                             {gradeBOptions.map((c) => (
                                 <option key={c} value={c}>{c}</option>
                             ))}
