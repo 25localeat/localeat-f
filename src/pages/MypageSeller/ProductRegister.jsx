@@ -25,6 +25,7 @@ const ProductRegister = () => {
         name: '',
         description: '',
         image: null,
+        isSubscription: true
     });
 
     const [regionOptions, setRegionOptions] = useState([]);
@@ -61,6 +62,7 @@ const ProductRegister = () => {
                 name: editData.name,
                 description: editData.description,
                 image: editData.image,
+                isSubscription: true,
             });
             setImagePreview(editData.imagePreview || null);
         }
@@ -94,13 +96,14 @@ const ProductRegister = () => {
 
 
         const payload = {
-            product_name: formData.name,
+            productName: formData.name,
             price: Number(formData.price),
             local: formData.region,
-            is_group_buy: formData.groupbuy === 'O' ? 'TRUE' : 'FALSE',
-            product_grade: formData.cheap === 'O' ? 'B' : 'A',
-            max_participants: Number(formData.limit),
+            isGroupBuy: formData.groupbuy === 'O' ? 'TRUE' : 'FALSE',
+            productGrade: formData.cheap === 'O' ? 'B' : 'A',
+            maxParticipants: Number(formData.limit),
             description: formData.description,
+            isSubscription: true,
         };
         console.log("파일명:", formData.image.name);
         console.log("파일 크기:", formData.image.size);

@@ -5,11 +5,26 @@
 작성일 : 2025-04-24
 */
 
-import React from 'react';
+import React, {useEffect} from 'react';
 import './Popup.css';
 import iconClose from '../icon_x.png';
 
+
 const Popup = ({ type, onConfirm, onCancel }) => {
+    // 엔터 눌러도 팝업이 동작할 수 있도록 수정
+    useEffect(() => {
+        const handleKeyDown = (e) => {
+            if (e.key === 'Enter') {
+                onConfirm(); // ⏎ 엔터 → 확인
+            } else if (e.key === 'Escape') {
+                onCancel(); // esc 누르면 팝업 닫힘.
+            }
+        };
+
+        window.addEventListener('keydown', handleKeyDown);
+        return () => window.removeEventListener('keydown', handleKeyDown);
+    }, [onConfirm, onCancel]);
+
     return (
         <div className="modal-overlay" onClick={onCancel}>
             <div className="modal" onClick={(e) => e.stopPropagation()}>
@@ -51,7 +66,7 @@ const Popup = ({ type, onConfirm, onCancel }) => {
 
                 {type === 'order' && (
                     <>
-                        <p>감사합니다!<br />주문이 완료되었습니다!</p>
+                        <p>감사합니다<br />주문이 완료되었습니다.</p>
                         <div className="btn-group">
                             <button className="confirm" onClick={onConfirm}>홈으로</button>
                         </div>
@@ -89,7 +104,7 @@ const Popup = ({ type, onConfirm, onCancel }) => {
 
 {type === 'paymentComplete' && (
   <>
-    <p>결제가 완료되었습니다!</p>
+    <p>결제가 완료되었습니다</p>
     <div className="btn-group">
       <button className="confirm" onClick={onConfirm}>주문 내역 보기</button>
     </div>
@@ -98,7 +113,7 @@ const Popup = ({ type, onConfirm, onCancel }) => {
 
 {type === 'login-error' && (
   <>
-    <p>로그인이 실패했습니다.</p>
+    <p>로그인 실패했습니다.</p>
     <div className="btn-group">
       <button className="confirm" onClick={onConfirm}>확인</button>
     </div>
