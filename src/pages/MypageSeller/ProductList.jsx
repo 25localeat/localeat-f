@@ -42,11 +42,17 @@ function ProductList() {
         setPopupType('delete');
     };
 
-    const deleteProduct = () => {
-        const updated = products.filter(p => p.id !== itemToDelete);
-        setProducts(updated);
-        localStorage.setItem('products', JSON.stringify(updated));
-        closePopup();
+    const deleteProduct = async () => {
+        console.log("삭제 요청 실행됨, 삭제할 ID:", itemToDelete);
+        try {
+            await axios.delete(`/api/products/${itemToDelete}`);
+            const updated = products.filter(p => p.id !== itemToDelete); // 삭제 필터를 두고, 삭제된 상품을 제외한 새 배열로 갱신합니다.
+            setProducts(updated);
+            closePopup();
+        } catch (err) {
+            console.error('상품 삭제 실패:', err);
+            alert('삭제에 실패했습니다.');
+        }
     };
 
     const closePopup = () => {
@@ -95,11 +101,11 @@ function ProductList() {
                             {products.map((item, index) => (
                                 <tr key={index}>
                                     <td>{item.product_name}</td>
-                                    <td>{item.is_group_buy ? 'O' : 'X'}</td>
-                                    <td>{item.is_grade_b === 'B' ? 'O' : 'X'}</td>
+                                    <td>{item.isGroupBuy  ? 'O' : 'X'}</td>
+                                    <td>{item.productGrade  === 'B' ? 'O' : 'X'}</td>
                                     <td>{localTypeToLabel[item.local] || item.local}</td>
                                     <td>{item.price.toLocaleString()}원</td>
-                                    <td>{new Date(item.create_at).toLocaleDateString()}</td>
+                                    <td>{new Date(item.createAt).toLocaleDateString()}</td>
                                     <td><button className="modify-btn" onClick={() => handleEdit(item)}>수정</button></td>
                                     <td><button className="delete-btn" onClick={() => openDeletePopup(item.id)}>삭제</button></td>
                                 </tr>

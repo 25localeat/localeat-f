@@ -25,6 +25,7 @@ const ProductRegister = () => {
         name: '',
         description: '',
         image: null,
+        isSubscription: true
     });
 
     const [regionOptions, setRegionOptions] = useState([]);
@@ -32,7 +33,6 @@ const ProductRegister = () => {
     const [gradeBOptions, setGradeBOptions] = useState([]);
     const [imagePreview, setImagePreview] = useState(null);
     const [popupType, setPopupType] = useState(null);
-
 
     const LOCAL_TYPE_MAP = {
         SGI: '서울/경기/인천',
@@ -44,10 +44,6 @@ const ProductRegister = () => {
         GNBNUL: '경남/부산/울산',
         JEJU: '제주'
     };
-
-    const REVERSE_LOCAL_TYPE_MAP = Object.fromEntries(
-        Object.entries(LOCAL_TYPE_MAP).map(([key, value]) => [value, key])
-    );
 
     useEffect(() => {
         axios.get('/api/products/local').then(res => setRegionOptions(res.data));
@@ -66,6 +62,7 @@ const ProductRegister = () => {
                 name: editData.name,
                 description: editData.description,
                 image: editData.image,
+                isSubscription: true,
             });
             setImagePreview(editData.imagePreview || null);
         }
@@ -90,25 +87,45 @@ const ProductRegister = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        console.log("전송 직전 이미지:", formData.image);
+
+        if (!formData.image) {
+            alert("이미지를 업로드해주세요.");
+            return;
+        }
+
 
         const payload = {
-            product_name: formData.name,
+            productName: formData.name,
             price: Number(formData.price),
             local: formData.region,
-            is_group_buy: formData.groupbuy === 'O' ? 'TRUE' : 'FALSE',
-            product_grade: formData.cheap === 'O' ? 'B' : 'A',
-            max_participants: Number(formData.limit),
+            isGroupBuy: formData.groupbuy === 'O' ? 'TRUE' : 'FALSE',
+            productGrade: formData.cheap === 'O' ? 'B' : 'A',
+            maxParticipants: Number(formData.limit),
             description: formData.description,
+            isSubscription: true,
         };
+        console.log("파일명:", formData.image.name);
+        console.log("파일 크기:", formData.image.size);
 
         try {
+            let productId;
             if (editData) {
-                // 수정
                 await axios.put(`/api/products/${editData.id}`, payload);
+                productId = editData.id;
             } else {
-                // 등록
-                await axios.post('/api/products', payload);
+                const res = await axios.post('/api/products', payload);
+                productId = res.data.id; // 백엔드가 productId 반환해야 함
             }
+
+            if (formData.image) {
+                const imageFormData = new FormData();
+                imageFormData.append("file", formData.image);
+                await axios.post(`/api/products/images/${productId}`, imageFormData, {
+                    headers: { "Content-Type": "multipart/form-data" }
+                });
+            }
+
             setPopupType(editData ? 'edit' : 'register');
         } catch (error) {
             console.error("상품 등록/수정 실패", error);
