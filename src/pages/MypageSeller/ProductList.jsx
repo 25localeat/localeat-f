@@ -5,7 +5,7 @@
 기간 : 2025-04-24~
 */
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import {useLocation, useNavigate} from 'react-router-dom';
 import './ProductList.css';
 import Popup from '../../components/Ui/Popup/Popup';
 import axios from "axios";
@@ -15,6 +15,12 @@ function ProductList() {
     const [popupType, setPopupType] = useState(null);
     const [itemToDelete, setItemToDelete] = useState(null);
     const navigate = useNavigate();
+    const location = useLocation();
+    const editData = location.state?.editData || null;
+
+    useEffect(() => {
+        console.log("editData 확인:", editData);
+    }, [editData]);
 
     const localTypeToLabel = {
         SGI: '서울/경기/인천',
@@ -64,6 +70,10 @@ function ProductList() {
         navigate('/mypage/register', { state: { editData: product } });
     };
 
+    useEffect(() => {
+        console.log("editData 확인:", editData);
+    }, []);
+
     return (
         <div className="mypage-wrapper">
             <div className="page-header">마이페이지</div>
@@ -100,9 +110,9 @@ function ProductList() {
                         <tbody>
                             {products.map((item, index) => (
                                 <tr key={index}>
-                                    <td>{item.product_name}</td>
+                                    <td>{item.productName}</td>
                                     <td>{item.isGroupBuy  ? 'O' : 'X'}</td>
-                                    <td>{item.productGrade  === 'B' ? 'O' : 'X'}</td>
+                                    <td>{item.productGrade}</td>
                                     <td>{localTypeToLabel[item.local] || item.local}</td>
                                     <td>{item.price.toLocaleString()}원</td>
                                     <td>{new Date(item.createAt).toLocaleDateString()}</td>
