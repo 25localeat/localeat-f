@@ -10,18 +10,18 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import './JoinGroupBuy.css'
 import TagBadge from '../../components/Tag/TagBadge';
-import {getTagsByType} from '../../components/Tag/tags';
+import { getTagsByType } from '../../components/Tag/tags';
 
 const product = {
-    product_id : 1,
-    location:  "서울/인천/경기",
-    product_name : "당근",
+    product_id: 1,
+    location: "서울/인천/경기",
+    product_name: "당근",
     max_parti: 20,
 }
 
 const groupBuy = {
-    description : "공동구매 설명",
-    date : "2025-05-05"
+    description: "공동구매 설명",
+    date: "2025-05-05"
 };
 
 const RegionTags = ({ tags }) => {
@@ -32,17 +32,15 @@ const RegionTags = ({ tags }) => {
     };
 
     return (
-        <div className="region-tags-wrapper">
-            <div className="region-tags">
+        <div className="jgb-region-tags-wrapper">
+            <div className="jgb-region-tags">
                 {tags.map((tag, index) => (
-                    <div
-                        key={index}
-                        label={tag.label}       // tag의 label을 넘겨줌
-                        bg={tag.bg}             // tag의 bg를 넘겨줌
-                        color={tag.color}       // tag의 color를 넘겨줌
-                        selected={selectedIndex === index}
-                        onClick={() => handleClick(index)}
-                    >
+                    <div key={index} onClick={() => handleClick(index)}>
+                        <TagBadge
+                            label={tag.label}
+                            bg={tag.bg}
+                            color={tag.color}
+                        />
                     </div>
                 ))}
             </div>
@@ -76,17 +74,15 @@ const JoinGroupBuy = () => {
                 <div className="jgb-left-section">
                     <div className="jgb-section">
                         <p className="jgb-section-title">지역 선택</p>
-                        
+                        <RegionTags tags={regionTags} />
                     </div>
 
                     <div className="jgb-section">
                         <p className="jgb-section-title">구매할 수량 선택</p>
                         <div className="jgb-quantity-selector">
-                            <div className="jgb-quantity-selector">
-                                <button onClick={handleDecrease}>-</button>
-                                <span>{quantity}</span>
-                                <button onClick={handleIncrease}>+</button>
-                            </div>
+                            <button onClick={handleDecrease}>-</button>
+                            <span>{quantity}</span>
+                            <button onClick={handleIncrease}>+</button>
                         </div>
                     </div>
                 </div>
@@ -108,7 +104,7 @@ const JoinGroupBuy = () => {
                     </div>
 
                     <div className="jgb-section">
-                        <p className="jgb-section-title">마감 시간 선택</p>
+                        <p className="jgb-section-title">마감 시간</p>
                         <input type="text" className="jgb-input-box" value={`${product.date}`} readOnly />
                     </div>
                 </div>
