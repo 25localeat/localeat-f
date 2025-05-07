@@ -25,7 +25,8 @@ const ProductRegister = () => {
         name: '',
         description: '',
         image: null,
-        isSubscription: true
+        isSubscription: true,
+        sellerId:'',
     });
 
     const [regionOptions, setRegionOptions] = useState([]);
@@ -107,6 +108,9 @@ const ProductRegister = () => {
             return;
         }
 
+        const storedUser = JSON.parse(localStorage.getItem("user") || "{}");
+        const sellerId = storedUser.userId;
+
         const payload = {
             productName: formData.name,
             price: Number(formData.price),
@@ -116,6 +120,7 @@ const ProductRegister = () => {
             maxParticipants: Number(formData.limit),
             description: formData.description,
             isSubscription: true,
+            sellerId: sellerId,
         };
 
         try {
