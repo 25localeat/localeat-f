@@ -46,7 +46,7 @@
 .sidebar ul {
     list-style: none;
     padding: 0;
-    margin: 10;
+    margin: 10px;
 }
 
 .sidebar li {
@@ -125,6 +125,8 @@ table {
 
 th,
 td {
+    text-align:center;
+    vertical-align: middle;
     padding: 0.75rem;
     border-bottom: 1px solid #ddd;
     word-break: keep-all;
@@ -132,4 +134,9 @@ td {
 
 thead {
     background-color: #f0f0f0;
+}
+
+/* 등록일(날짜) 칸만 넓히기 */
+td:nth-child(6), th:nth-child(6) {
+    min-width: 130px;
 }
