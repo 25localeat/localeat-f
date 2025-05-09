@@ -1,3 +1,6 @@
+/*
+* 상품 판매 페이지 중 - 상품 부분만 모듈로 뺀 코드.
+* */
 import React from 'react';
 import TagBadge from '../../components/Tag/TagBadge';
 import { getTagByLabel } from '../../components/Tag/tags';
@@ -28,20 +31,24 @@ const ProductMainInfo = ({
     return (
         <div className="product-detail-main">
             <div className="product-image-wrapper">
-                <img src={product.images?.[0] || '/images/default.png'} alt="상품 이미지" className="product-image" />
+                <img
+                    src={product.imageUrl}
+                    alt="상품 이미지"
+                    className="product-image"
+                />
             </div>
 
             <div className="product-info">
                 <div className="product-tags">
                     <TagBadge {...getTagByLabel(product.local)} />
-                    <TagBadge {...getTagByLabel(product.productgrade === 'B' ? 'GOOD' : 'PERFECT')} />
-                    {product.is_group_buy && <TagBadge {...getTagByLabel('공동구매 가능')} />}
+                    <TagBadge {...getTagByLabel(product.productGrade === 'B' ? 'GOOD' : 'PERFECT')} />
+                    {product.isGroupBuy && <TagBadge {...getTagByLabel('공동구매 가능')} />}
                 </div>
 
                 <div className="product-title-box">
-                    <h1 className="product-name">{product.product_name}</h1>
+                    <h1 className="product-name">{product.productName}</h1>
                     <div className="product-buttons">
-                        {product.is_group_buy && (
+                        {product.isGroupBuy && (
                             <button
                                 className="group-buy-button"
                                 onClick={onGroupBuy}
@@ -70,9 +77,9 @@ const ProductMainInfo = ({
                 </div>
 
                 <div className="price-box">
-                    {product.productgrade === 'B' && (
+                    {product.productGrade === 'B' && (
                         <>
-                            <span className="discount-rate">{product.grade_discount_rate * 100}%</span>
+                            <span className="discount-rate">{product.gradeDiscountRate * 100}%</span>
                             <span className="original-price">
                                 {typeof product.price === 'number' ? product.price.toLocaleString() : ''}원
                             </span>
@@ -86,12 +93,12 @@ const ProductMainInfo = ({
                 <div className="product-info-box">
                     <div className="info-labels">
                         <div>배송비</div>
-                        {product.productgrade === 'B' && <div>GOOD</div>}
+                        {product.productGrade === 'B' && <div>GOOD</div>}
                     </div>
                     <div className="info-values">
-                        <div>{typeof product.delivery_fee === 'number' ? product.delivery_fee.toLocaleString() : ''}원</div>
-                        {product.productgrade === 'B' && (
-                            <div>{product.grade_discount_rate * 100}% 할인</div>
+                        <div>{typeof product.deliveryFee === 'number' ? product.deliveryFee.toLocaleString() : ''}원</div>
+                        {product.productGrade === 'B' && (
+                            <div>{product.gradeDiscountRate * 100}% 할인</div>
                         )}
                     </div>
                 </div>
@@ -127,7 +134,7 @@ const ProductMainInfo = ({
                                 {typeof subscribePrice === 'number' ? subscribePrice.toLocaleString() : ''}원
                             </span>
                         </span>
-                        <span className="badge">{product.subscription_discount_rate * 100}% 추가할인</span>
+                        <span className="badge">{product.subscriptionDiscountRate * 100}% 추가할인</span>
                     </label>
                 </div>
 

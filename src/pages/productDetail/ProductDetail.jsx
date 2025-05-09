@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import ProductMainInfo from './ProductMainInfo';
 import TabReview from "./TabReview";
 import TabInquiry from "./TabInquiry";
@@ -28,6 +28,12 @@ const ProductDetail = () => {
     const [activeTab, setActiveTab] = useState('detail');
     const [sortBy, setSortBy] = useState('latest');
 
+    // imageurl 넘기기
+    const imageUrl = useMemo(() => {
+        return product?.id
+            ? `/api/images/by-product/${product.id}`
+            : '/images/default.png';
+    }, [product]);
 
 
     useEffect(() => {
@@ -125,24 +131,52 @@ const ProductDetail = () => {
         setIsWish(prev => !prev);
     };
 
-    const handleCart = () => {
+    const handleCart = async () => {
         if (!user.isLoggedIn) {
             setPopupType('loginRequired');
             setShowPopup(true);
             return;
         }
-        setPopupType('cartAdded');
-        setShowPopup(true);
+        try {
+            await axios.post('/api/cart', {
+                productId: product.id,
+                quantity,
+                purchaseType,
+                ...(purchaseType === 'subscribe' && {
+                    deliveryCycle,
+                    deliveryPeriodInMonths
+                })
+            });
+            setPopupType('cartAdded');
+            setShowPopup(true);
+        } catch (err) {
+            console.error('장바구니 추가 실패:', err);
+            alert('장바구니 담기 중 오류가 발생했습니다.');
+        }
     };
 
-    const handleOrder = () => {
+    const handleOrder = async () => {
         if (!user.isLoggedIn) {
             setPopupType('loginRequired');
             setShowPopup(true);
             return;
         }
-        setPopupType('paymentComplete');
-        setShowPopup(true);
+        try {
+            await axios.post('/api/orders', {
+                productId: product.id,
+                quantity,
+                purchaseType,
+                ...(purchaseType === 'subscribe' && {
+                    deliveryCycle,
+                    deliveryPeriodInMonths
+                })
+            });
+            setPopupType('paymentComplete');
+            setShowPopup(true);
+        } catch (err) {
+            console.error('주문 실패:', err);
+            alert('주문 중 오류가 발생했습니다.');
+        }
     };
 
     const handleGroupBuy = () => {
@@ -151,7 +185,7 @@ const ProductDetail = () => {
             setShowPopup(true);
             return;
         }
-        navigate(`/groupBuy/detail`);
+        navigate(`/groupBuy/detail?productId=${product.id}`);
     };
 
     const handlePopupConfirm = () => {
@@ -169,7 +203,7 @@ const ProductDetail = () => {
     return (
         <div className="product-detail-page">
             <ProductMainInfo
-                product={product}
+                product={{ ...product, imageUrl }}
                 user={user}
                 isWish={isWish}
                 onWishToggle={handleWishToggle}
