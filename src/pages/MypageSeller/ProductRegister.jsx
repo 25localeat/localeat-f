@@ -116,7 +116,7 @@ const ProductRegister = () => {
 
         const payload = {
             productName: formData.name,
-            price: formData.price ? Number(formData.price) : null,
+            price: !isNaN(Number(formData.price)) ? Number(formData.price) : 0,
             local: formData.region || null,
             isGroupBuy: formData.groupbuy === 'O' ? true : formData.groupbuy === 'X' ? false : null,
             productGrade: formData.cheap === 'O' ? 'B' : formData.cheap === 'X' ? 'A' : null,

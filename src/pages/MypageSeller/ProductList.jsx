@@ -114,8 +114,10 @@ function ProductList() {
                                     <td>{item.isGroupBuy  ? 'O' : 'X'}</td>
                                     <td>{item.productGrade}</td>
                                     <td>{localTypeToLabel[item.local] || item.local}</td>
-                                    <td>{item.price.toLocaleString()}원</td>
-                                    <td>{new Date(item.createAt).toLocaleDateString()}</td>
+                                    <td>{item.price != null ? item.price.toLocaleString() + '원' : '가격 미정'}</td>
+                                    <td>
+                                        {item.createAt ? new Date(item.createAt).toLocaleDateString() : '등록일 없음'}
+                                    </td>
                                     <td><button className="modify-btn" onClick={() => handleEdit(item)}>수정</button></td>
                                     <td><button className="delete-btn" onClick={() => openDeletePopup(item.id)}>삭제</button></td>
                                 </tr>
