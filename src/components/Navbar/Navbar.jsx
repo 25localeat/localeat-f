@@ -4,7 +4,7 @@
           - 로고, 검색창, 메뉴 항목, 아이콘 렌더링
           - 전체 페이지에서 고정(top fixed)되어 사용
 작성자  : 정여진
-작성일  : 2025-04-09.~
+작성일  : 2025-04-09.~2025.04.14.
 */
 import React, { useState } from 'react';
 import './Navbar.css';
