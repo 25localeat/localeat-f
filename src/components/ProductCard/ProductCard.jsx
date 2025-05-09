@@ -5,10 +5,19 @@
 기간 : 2025-04-10.
 */
 import './ProductCard.css';
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
-const ProductCard = ({ image, tags, title, originalPrice, discountPrice }) => {
+
+const ProductCard = ({ id, image, tags, title, originalPrice, discountPrice}) => {
+    const navigate = useNavigate();
+
+    const handleClick = () => {
+        navigate(`/products/${id}`);
+    };
+
     return (
-        <div className="product-card">
+        <div className="product-card" onClick={handleClick} style={{ cursor: 'pointer' }}>
             <img className="product-img" src={image} alt={title} />
 
             <div className="tag-list">
