@@ -5,12 +5,14 @@
 기간: 2025-04-28 ~
 */
 
-
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './JoinGroupBuy.css'
 import TagBadge from '../../components/Tag/TagBadge';
 import { getTagsByType } from '../../components/Tag/tags';
+import axios from 'axios';
+import { useLocation } from 'react-router-dom';
+
 
 const product = {
     product_id: 1,
@@ -51,10 +53,27 @@ const RegionTags = ({ tags }) => {
 const JoinGroupBuy = () => {
     const [quantity, setQuantity] = useState(1);
     const navigate = useNavigate();
+    const location = useLocation();
+    const { groupBuyId } = location.state || { groupBuyId: 45 }; // 이전 페이지에서 넘겨줘야 함
 
-    const handleNext = () => {
-        navigate('/groupBuy/detail');
-    }
+    const handleNext = async () => {
+        try {
+            const userId = localStorage.getItem("userId"); // 로그인한 사용자 ID
+
+            await axios.post("/groupBuy/join", {
+                groupBuyId: groupBuyId,
+                quantity: quantity
+            }, {
+                headers: {
+                    "X-USER-ID": "consumertest"
+                }
+            });
+            navigate('/groupBuy/detail', { state: { groupBuyId } });
+
+        } catch (error) {
+            console.error("공동구매 참여 실패:", error);
+        }
+    };
 
     const handleIncrease = () => {
         setQuantity(prev => prev + 1);
