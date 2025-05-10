@@ -7,7 +7,7 @@
 
 
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import './JoinGroupBuy.css'
 import TagBadge from '../../components/Tag/TagBadge';
 import { getTagsByType } from '../../components/Tag/tags';
@@ -48,9 +48,13 @@ const RegionTags = ({ tags }) => {
     );
 };
 
-
 const JoinGroupBuy = () => {
     const [quantity, setQuantity] = useState(1);
+    const navigate = useNavigate();
+
+    const handleNext = () => {
+        navigate('/groupBuy/detail');
+    }
 
     const handleIncrease = () => {
         setQuantity(prev => prev + 1);
@@ -66,9 +70,7 @@ const JoinGroupBuy = () => {
         <div className="jgb-container">
             <p className="jgb-title">공동 구매 참여하기</p>
             <div className="jgb-button-wrapper">
-                <Link to="/groupBuy/detail">
-                    <button className="jgb-next-button">다음</button>
-                </Link>
+                <button className="jgb-next-button" onClick={handleNext}>다음</button>
             </div>
             <div className="jgb-content-wrapper">
                 <div className="jgb-left-section">

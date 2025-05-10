@@ -6,94 +6,97 @@
 */
 
 .jgb-container {
-    width: 100%;
-    max-width: 1200px;
-    height: auto;
-    margin: 0 auto;
-    padding: 30px;
-    font-family: 'Pretendard', sans-serif;
+  width: 100%;
+  max-width: 1200px;
+  height: auto;
+  margin: 0 auto;
+  padding: 30px;
+  font-family: 'Pretendard', sans-serif;
 }
 
 .jgb-title {
-    font-size: 34px;
-    font-weight: bold;
-    text-align: center;
-    margin-bottom: 40px;
-    font-family: 'Pretendard', sans-serif;
+  font-size: 34px;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 40px;
+  font-family: 'Pretendard', sans-serif;
 }
 
 .jgb-next-button {
-    width: 199px;
-    height: 50px;
-    flex-shrink: 0;
-    padding: 10px 20px;
-    border-radius: 15px;
-    background: rgba(3, 199, 90, 0.18);
-    border: none;
-    color: #000;
-    font-family: Pretendard;
-    font-size: 24px;
-    font-style: normal;
-    font-weight: 500;
-    line-height: normal;
-    cursor: pointer;
+  width: 199px;
+  height: 50px;
+  flex-shrink: 0;
+  padding: 10px 20px;
+  border-radius: 15px;
+  background: rgba(3, 199, 90, 0.18);
+  border: none;
+  color: #000;
+  font-family: Pretendard;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  cursor: pointer;
 }
 
 .jgb-content-wrapper {
-  display: flex;
-  justify-content: space-between;
-  gap: 40px;
+display: flex;
+justify-content: space-between;
+gap: 40px;
 }
 
 .jgb-left-section, .jgb-right-section {
-  flex: 1;
+flex: 1;
 }
 
 .jgb-section {
-  margin-bottom: 30px;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 10px;
+margin-bottom: 30px;
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+gap: 10px;
 }
 
 .jgb-section-title {
-    color: #000;
-    font-family: 'Pretendard', sans-serif;
-    font-weight: 700;
-    font-size: 26px;
-    font-style: normal;
-    margin-bottom: 10px;
-    line-height: normal;
+  color: #000;
+  font-family: 'Pretendard', sans-serif;
+  font-weight: 700;
+  font-size: 26px;
+  font-style: normal;
+  margin-bottom: 10px;
+  line-height: normal;
 }
 
 .jgb-region-tags-wrapper {
-    display: flex;
-    margin-top: 3rem;
-    margin-left: 0;
+  display: flex;
+  margin-top: 20px;
+  margin-left: 0;
 }
 
 .jgb-region-tags {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 24px;
-    justify-content: start;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  justify-content: start;
 }
 
 .jgb-tag {
-  display: block;
-  width: 100%;
-    padding: 0.5rem 1.25rem;
-    border-radius: 999px;
-    font-size: 1rem;
-    font-weight: 500;
-    color: black;
-    background-color: rgba(0, 0, 0, 0.05);
+display: block;
+width: 100%;
+  padding: 0.5rem 1.25rem;
+  border-radius: 999px;
+  font-size: 1rem;
+  font-weight: 500;
+  color: black;
+  background-color: rgba(0, 0, 0, 0.05);
 }
 
 .jgb-tag-item {
-  width: 180px;
-  text-align: center;
+width: 180px;
+text-align: center;
+cursor: pointer;
+transition: all 0.3s ease;
+display: inline-block;
 }
 
 .tag-0 { background-color: rgba(171, 78, 82, 0.1); }
@@ -105,83 +108,77 @@
 .tag-6 { background-color: rgba(208, 176, 132, 0.1); }
 .tag-7 { background-color: rgba(189, 160, 203, 0.1); }
 
-.jgb-tag-item {
-  cursor: pointer;
-  transition: all 0.3s ease;
-  display: inline-block;
-}
-
 /* 클릭 시 효과 */
 .jgb-tag-item.selected {
-  background-color: rgba(0, 0, 0, 0.65) !important;
-  font-weight: bold;
+background-color: rgba(0, 0, 0, 0.65) !important;
+font-weight: bold;
 }
 
 /* TagBadge 내부의 .tag가 있다면, 해당 요소에 스타일을 적용하는 방법 */
 .jgb-tag-item.selected .tag {
-  background-color: rgba(0, 0, 0, 0.65) !important;
-  font-weight: bold;
+background-color: rgba(0, 0, 0, 0.65) !important;
+font-weight: bold;
 }
 
 .jgb-quantity-selector {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-top: 10px;
-  border: 2px solid #bdbdbd;
-  border-radius: 20px;
-  padding: 16px 32px;
-  background: #fff;
-  width: fit-content;
-  min-width: 0;
-  max-width: 100%;
+display: flex;
+align-items: center;
+gap: 10px;
+margin-top: 10px;
+border: 2px solid #bdbdbd;
+border-radius: 20px;
+padding: 16px 32px;
+background: #fff;
+width: fit-content;
+min-width: 0;
+max-width: 100%;
 }
 
 .jgb-quantity-button {
-  width: 48px;         /* 적당한 크기 */
-  height: 48px;        /* 적당한 크기 */
-  background-color: white;
-  color: #333;
-  border: 1.5px solid #bdbdbd;
-  font-size: 32px;     /* 글씨 크게 */
-  cursor: pointer;
-  border-radius: 10px; /* 약간 둥글게 */
-  aspect-ratio: unset; /* 비율 고정 해제 */
-  flex-shrink: 0;
-  transition: background 0.2s;
-  font-family: 'Pretendard', sans-serif;
+width: 48px;         /* 적당한 크기 */
+height: 48px;        /* 적당한 크기 */
+background-color: white;
+color: #333;
+border: 1.5px solid #bdbdbd;
+font-size: 32px;     /* 글씨 크게 */
+cursor: pointer;
+border-radius: 10px; /* 약간 둥글게 */
+aspect-ratio: unset; /* 비율 고정 해제 */
+flex-shrink: 0;
+transition: background 0.2s;
+font-family: 'Pretendard', sans-serif;
 }
 
 .jgb-quantity {
-  min-width: 40px;
-  text-align: center;
-  font-size: 32px;   /* 숫자 크게 */
-  color: black;
-  font-family: 'Pretendard', sans-serif;
+min-width: 40px;
+text-align: center;
+font-size: 32px;   /* 숫자 크게 */
+color: black;
+font-family: 'Pretendard', sans-serif;
 }
 
 .jgb-quantity-button:hover {
-  background: #f5f5f5;
+background: #f5f5f5;
 }
 
 .jgb-input-box[readonly] {
-    width: 530px;
-    height: 66px;
-    flex-shrink: 0;
-    border-radius: 30px;
-    outline: none;
-    border: 2px solid #03C75A;
-    background: rgba(255, 255, 255, 0.30);
-    box-shadow: none;
-    padding: 10px;
-    padding-left: 20px;
-    color: #000;
-    background-color: #ffffff;
-    font-size: 24px;
-    font-family: 'Pretendard', sans-serif;
+  width: 530px;
+  height: 66px;
+  flex-shrink: 0;
+  border-radius: 30px;
+  outline: none;
+  border: 2px solid #03C75A;
+  background: rgba(255, 255, 255, 0.30);
+  box-shadow: none;
+  padding: 10px;
+  padding-left: 20px;
+  color: #000;
+  background-color: #ffffff;
+  font-size: 24px;
+  font-family: 'Pretendard', sans-serif;
 }
 
 .jgb-button-wrapper {
-  text-align: right;
-  margin-top: 30px;
+text-align: right;
+margin-top: 30px;
 }
