@@ -13,8 +13,8 @@ import TagBadge from '../../components/Tag/TagBadge';
 import { getTagsByType } from '../../components/Tag/tags';
 
 const product = {
-    product_id: 1,
-    location: "서울/인천/경기",
+    productId: 95,
+    location: "JEJU",
     product_name: "당근",
     max_parti: 20
 }
@@ -64,14 +64,14 @@ const CreateGroupBuy = () => {
             const userId = user?.userId;
 
 
-            const response = await axios.post("http://localhost:8080/api/groupbuys", {
-                productId: 95,
+            const response = await axios.post("/groupBuy/create", {
+                productId: product.productId,
                 description: description,
                 quantity: quantity,
                 deadline: deadline
             }, {
                 headers: {
-                    "X-USER-ID": userId
+                    "X-USER-ID": "as"
                 }
             });
 
