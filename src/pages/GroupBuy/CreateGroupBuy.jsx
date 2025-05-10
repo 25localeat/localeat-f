@@ -48,6 +48,7 @@ const CreateGroupBuy = () => {
     const navigate = useNavigate();
     const [quantity, setQuantity] = useState(1);
     const [description, setDescription] = useState("");
+    const [deadline, setDeadline] = useState("");
 
     const handleIncrease = () => {
         setQuantity(prev => prev + 1);
@@ -57,14 +58,32 @@ const CreateGroupBuy = () => {
         if (quantity > 1) setQuantity(prev => prev - 1);
     };
 
-    const handleNext = () => {
-        navigate('/groupBuy/detail', {
-            state: {
+    const handleNext = async () => {
+        try {
+            const user = JSON.parse(localStorage.getItem('user'));
+            const userId = user?.userId;
+
+
+            const response = await axios.post("http://localhost:8080/api/groupbuys", {
+                productId: 95,
+                description: description,
                 quantity: quantity,
-                product: product,
-                description: description
-            }
-        });
+                deadline: deadline
+            }, {
+                headers: {
+                    "X-USER-ID": userId
+                }
+            });
+
+            navigate('/groupBuy/detail', {
+                state: {
+                    groupBuy: response.data
+                }
+            });
+
+        } catch (error) {
+            alert("공동구매 생성 실패: " + error.response?.data?.message || error.message);
+        }
     };
 
     const regionTags = getTagsByType('region');
@@ -95,7 +114,15 @@ const CreateGroupBuy = () => {
                 <div className="cgb-right-section">
                     <div className="cgb-section">
                         <p className="cgb-section-title">공동 구매 설명</p>
-                        <input type="text" name="description" value={description} className="cgb-input-box" placeholder="간략한 설명 입력칸입니다." />
+                        <input
+                            type="text"
+                            name="description"
+                            value={description}
+                            onChange={(e) => setDescription(e.target.value)}
+                            className="cgb-input-box"
+                            placeholder="간략한 설명 입력칸입니다."
+                        />
+
                     </div>
 
                     <div className="cgb-section">
@@ -111,7 +138,13 @@ const CreateGroupBuy = () => {
 
                     <div className="cgb-section">
                         <p className="cgb-section-title">마감 시간 선택</p>
-                        <input type="date" name="date" className="cgb-input-box" />
+                        <input
+                            type="date"
+                            name="date"
+                            className="cgb-input-box"
+                            value={deadline}
+                            onChange={(e) => setDeadline(e.target.value)}
+                        />
                     </div>
                 </div>
             </div>
