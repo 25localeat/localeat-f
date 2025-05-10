@@ -10,12 +10,12 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import './CreateGroupBuy.css'
 import TagBadge from '../../components/Tag/TagBadge';
-import {getTagsByType} from '../../components/Tag/tags';
+import { getTagsByType } from '../../components/Tag/tags';
 
 const product = {
-    product_id : 1,
-    location:  "서울/인천/경기",
-    product_name : "당근",
+    product_id: 1,
+    location: "서울/인천/경기",
+    product_name: "당근",
     max_parti: 20
 }
 
@@ -27,17 +27,15 @@ const RegionTags = ({ tags }) => {
     };
 
     return (
-        <div className="region-tags-wrapper">
-            <div className="region-tags">
+        <div className="cgb-region-tags-wrapper">
+            <div className="cgb-region-tags">
                 {tags.map((tag, index) => (
-                    <div
-                        key={index}
-                        label={tag.label}       // tag의 label을 넘겨줌
-                        bg={tag.bg}             // tag의 bg를 넘겨줌
-                        color={tag.color}       // tag의 color를 넘겨줌
-                        selected={selectedIndex === index}
-                        onClick={() => handleClick(index)}
-                    >
+                    <div key={index} onClick={() => handleClick(index)}>
+                        <TagBadge
+                            label={tag.label}
+                            bg={tag.bg}
+                            color={tag.color}
+                        />
                     </div>
                 ))}
             </div>
@@ -61,13 +59,13 @@ const CreateGroupBuy = () => {
 
     const handleNext = () => {
         navigate('/groupBuy/detail', {
-          state: {
-            quantity: quantity,
-            product: product,
-            description: description
-          }
+            state: {
+                quantity: quantity,
+                product: product,
+                description: description
+            }
         });
-      };
+    };
 
     const regionTags = getTagsByType('region');
 
@@ -75,23 +73,21 @@ const CreateGroupBuy = () => {
         <div className="cgb-container">
             <p className="cgb-title">공동 구매 만들기</p>
             <div className="cgb-button-wrapper">
-                    <button className="cgb-next-button" onClick={handleNext}>다음</button>
+                <button className="cgb-next-button" onClick={handleNext}>다음</button>
             </div>
             <div className="cgb-content-wrapper">
                 <div className="cgb-left-section">
                     <div className="cgb-section">
                         <p className="cgb-section-title">지역 선택</p>
-                        
+                        <RegionTags tags={regionTags} />
                     </div>
 
                     <div className="cgb-section">
                         <p className="cgb-section-title">구매할 수량 선택</p>
                         <div className="cgb-quantity-selector">
-                            <div className="cgb-quantity-selector">
-                                <button onClick={handleDecrease}>-</button>
-                                <span>{quantity}</span>
-                                <button onClick={handleIncrease}>+</button>
-                            </div>
+                            <button onClick={handleDecrease}>-</button>
+                            <span>{quantity}</span>
+                            <button onClick={handleIncrease}>+</button>
                         </div>
                     </div>
                 </div>
@@ -99,7 +95,7 @@ const CreateGroupBuy = () => {
                 <div className="cgb-right-section">
                     <div className="cgb-section">
                         <p className="cgb-section-title">공동 구매 설명</p>
-                        <input type="text" name="description" value={description} className="cgb-input-box" placeholder="간략한 설명 입력칸입니다."/>
+                        <input type="text" name="description" value={description} className="cgb-input-box" placeholder="간략한 설명 입력칸입니다." />
                     </div>
 
                     <div className="cgb-section">
@@ -115,7 +111,7 @@ const CreateGroupBuy = () => {
 
                     <div className="cgb-section">
                         <p className="cgb-section-title">마감 시간 선택</p>
-                        <input type="date" name="date" className="cgb-nput-box" />
+                        <input type="date" name="date" className="cgb-input-box" />
                     </div>
                 </div>
             </div>

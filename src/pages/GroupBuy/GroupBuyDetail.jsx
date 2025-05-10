@@ -5,7 +5,7 @@
 기간: 2025-04-28 ~
 */
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import './GroupBuyDetail.css'
 
 const product = {
@@ -36,32 +36,34 @@ const list = [
 ];
 
 const GroupBuyDetail = () => {
+    const navigate = useNavigate();
+
     return (
-        <div className="container">
-            <p className="title">공동 구매 상세 정보</p>
-                <p className="sub">내가 참여한 공동 구매의 정보, 마감 시간 등을 확인해 보세요</p>
-                <p className="time-guide">공동구매 성사까지 남은 시간 {product.time}</p>
-                <div className="groupBuy-box">
-                    <div className = "header-section">
-                        <div className="img-wrapper">
-                            <img className="product-image" src={product.image} alt="당근"/>
+        <div className="dgb-container">
+            <p className="dgb-title">공동 구매 상세 정보</p>
+                <p className="dgb-sub">내가 참여한 공동 구매의 정보, 마감 시간 등을 확인해 보세요</p>
+                <p className="dgb-time-guide">공동구매 성사까지 남은 시간 {product.time}</p>
+                <div className="dgb-groupBuy-box">
+                    <div className = "dgb-header-section">
+                        <div className="dgb-img-wrapper">
+                            <img className="qproduct-image" src={product.image} alt="당근"/>
                         </div>
-                        <div className="product-info">
-                            <div className="top-row">
-                                <p className="product-name">{product.product_name}</p>
+                        <div className="dgb-product-info">
+                            <div className="dgb-top-row">
+                                <p className="dgb-product-name">{product.product_name}</p>
                             </div>
-                            <p className="groupBuy-description">{product.description}</p>
+                            <p className="dgb-groupBuy-description">{product.description}</p>
                         </div>
                     </div>
 
-                    <hr className="divider" />
+                    <hr className="dgb-divider" />
 
-                    <div className="list-wrapper">
-                        <p className="participants">참여인원</p>
-                            <p className="count">( {list.parti_count} / {list.max_parti})</p>
+                    <div className="dgb-list-wrapper">
+                        <p className="dgb-participants">참여인원</p>
+                            <p className="dgb-count">( {list.parti_count} / {list.max_parti})</p>
                             {list.participants?.map((item) => (
-                                <div key={item.id} className="list">
-                                    <p className="list-text">
+                                <div key={item.id} className="dgb-list">
+                                    <p className="dgb-list-text">
                                         아이디: {item.id} / 구매 수량: {item.buy}개
                                     </p>
                                 </div>
