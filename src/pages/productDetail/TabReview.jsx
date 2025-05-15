@@ -1,18 +1,18 @@
 import React from 'react';
 import './TabReview.css';
 
-const TabReview = ({ reviews, sortBy, setSortBy }) => {
-    const sortedReviews = [...reviews].sort((a, b) => {
+const TabReview = ({ reviewData, sortBy, setSortBy }) => {
+    const sortedReviews = [...reviewData].sort((a, b) => {
         if (sortBy === 'latest') {
             return b.createdAt.localeCompare(a.createdAt);
-        } else if (sortBy === 'rating') {
+        } else if (sortBy === 'highest') {
             return b.rating - a.rating;
         }
         return 0;
     });
 
-    const averageRating = reviews.length
-        ? (reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length).toFixed(1)
+    const averageRating = reviewData.length
+        ? (reviewData.reduce((sum, r) => sum + r.rating, 0) / reviewData.length).toFixed(1)
         : '0.0';
 
     return (
@@ -31,8 +31,8 @@ const TabReview = ({ reviews, sortBy, setSortBy }) => {
 
                 <div className="review-right">
                     {[5, 4, 3, 2, 1].map((score) => {
-                        const count = reviews.filter((r) => r.rating === score).length;
-                        const percentage = ((count / reviews.length) * 100).toFixed(1);
+                        const count = reviewData.filter((r) => r.rating === score).length;
+                        const percentage = reviewData.length ? ((count / reviewData.length) * 100).toFixed(1) : 0;
                         return (
                             <div className="dist-row" key={score}>
                                 <div className="dist-label">{score}점</div>
@@ -47,28 +47,28 @@ const TabReview = ({ reviews, sortBy, setSortBy }) => {
             </div>
 
             <div className="review-header">
-                <div className="total-count">총 {reviews.length}개 리뷰</div>
+                <div className="total-count">총 {reviewData.length}개 리뷰</div>
                 <div className="sort-options">
-                    <button
-                        className={sortBy === 'latest' ? 'active' : ''}
-                        onClick={() => setSortBy('latest')}
-                    >최신순</button>
-                    <span style={{ color: '#ccc' }}>|</span>
-                    <button
-                        className={sortBy === 'rating' ? 'active' : ''}
-                        onClick={() => setSortBy('rating')}
-                    >별점순</button>
+                    <button onClick={() => setSortBy('latest')}
+                            style={{ fontWeight: sortBy === 'latest' ? 'bold' : 'normal' }}>
+                        최신순
+                    </button>
+                    <span style={{ margin: '0 8px' }}>|</span>
+                    <button onClick={() => setSortBy('highest')}
+                            style={{ fontWeight: sortBy === 'highest' ? 'bold' : 'normal' }}>
+                        별점순
+                    </button>
                 </div>
             </div>
 
             <ul className="review-list">
                 {sortedReviews.map((review) => (
-                    <li key={review.reviewId} className="review-item">
+                    <li key={review.id} className="review-item">
                         <div className="review-top">
                             <div className="author-info">
                                 <div className="author-meta">
                                     <span className="author-id">
-                                        {review.user.userId.slice(0, 3) + '*'.repeat(review.user.userId.length - 3)}
+                                        {review.userId.slice(0, 3) + '*'.repeat(review.userId.length - 3)}
                                     </span>
                                     <span className="date">
                                         {new Date(review.createdAt).toLocaleString()}
@@ -81,18 +81,18 @@ const TabReview = ({ reviews, sortBy, setSortBy }) => {
                                 <span key={s} className={`star-small ${review.rating >= s ? 'filled' : ''}`}>★</span>
                             ))}
                         </div>
-                        {review.images.length > 0 && (
+                        {review.imageUrls.length > 0 && (
                             <div className="review-images">
-                                {review.images.map((img, idx) => (
+                                {review.imageUrls.map((img, idx) => (
                                     <img
                                         key={idx}
                                         src={img}
-                                        alt={`review-${review.reviewId}-img-${idx}`}
+                                        alt={`review-${review.id}-img-${idx}`}
                                     />
                                 ))}
                             </div>
                         )}
-                        <div className="review-text">{review.reviewContent}</div>
+                        <div className="review-text">{review.content}</div>
                     </li>
                 ))}
             </ul>

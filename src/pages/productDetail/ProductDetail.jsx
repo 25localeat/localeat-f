@@ -16,6 +16,7 @@ const ProductDetail = () => {
     const [product, setProduct] = useState(null);
     const [user, setUser] = useState(null);
     const [reviewData, setReviewData] = useState([]);
+    const [sortBy, setSortBy] = useState('latest');
     const [inquiries, setInquiries] = useState([]);
     const [isWish, setIsWish] = useState(false);
     const [purchaseType, setPurchaseType] = useState('one-time');
@@ -26,7 +27,6 @@ const ProductDetail = () => {
     const [popupType, setPopupType] = useState('');
     const [showPopup, setShowPopup] = useState(false);
     const [activeTab, setActiveTab] = useState('detail');
-    const [sortBy, setSortBy] = useState('latest');
 
     // imageurl 넘기기
     const imageUrl = useMemo(() => {
@@ -37,11 +37,9 @@ const ProductDetail = () => {
 
 
     useEffect(() => {
-            console.log('✅ 요청할 productId:', productId);
             const fetchProduct = async () => {
                 try {
                     const res = await axios.get(`/api/products/${productId}`);
-                    console.log('✅ 응답 받은 product:', res.data);
                     setProduct(res.data);
                 } catch (err) {
                     console.error('상품 정보를 불러오는데 실패했습니다.', err);
@@ -55,35 +53,6 @@ const ProductDetail = () => {
             role: 'SELLER', //  CONSUMER
             userId: 'testUser',
         });
-        setReviewData([
-            {
-                reviewId: 1,
-                product: { productId: 1 },
-                user: { userId: 'taelo062' },
-                rating: 5,
-                reviewContent: '정말 신선해요! 토마토 특유의 단맛이 살아있습니다.',
-                images: ['/images/review1-1.jpg','/images/review1-2.jpg'],
-                createdAt: '2025-03-19T18:45:00'
-            },
-            {
-                reviewId: 2,
-                product: { productId: 1 },
-                user: { userId: 'wish23' },
-                rating: 4,
-                reviewContent: '맛 괜찮네요. 다음에는 좀 더 큰 사이즈로…',
-                images: [],
-                createdAt: '2025-03-22T10:00:00'
-            },
-            {
-                reviewId: 3,
-                product: { productId: 1 },
-                user: { userId: 'somang12' },
-                rating: 5,
-                reviewContent: '정말 맛있어서 재구매했습니다!',
-                images: ['/images/review3.jpg'],
-                createdAt: '2025-03-20T15:30:00'
-            },
-        ]);
         setInquiries([
             {
                 inquiryId: 1,
@@ -104,6 +73,23 @@ const ProductDetail = () => {
         ]);
 
     }, [productId]);
+
+    useEffect(() => {
+        const fetchReviews = async () => {
+            try {
+                const res = await axios.get(`/api/reviews/product/${productId}`, {
+                    params: {
+                        sortBy: sortBy,
+                        currentUserId: user?.userId
+                    }
+                });
+                setReviewData(res.data);
+            } catch (error) {
+                console.error("리뷰 불러오기 실패:", error);
+            }
+        };
+        if (productId && user) fetchReviews();
+    }, [productId, user, sortBy]);
 
     if (!product || !user) return <div>로딩 중...</div>;
 
@@ -259,7 +245,7 @@ const ProductDetail = () => {
 
                 {activeTab === 'review' && (
                     <TabReview
-                        reviews={reviewData}
+                        reviewData={reviewData}
                         sortBy={sortBy}
                         setSortBy={setSortBy}
                     />

@@ -9,6 +9,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Popup from '../../components/Ui/Popup/Popup';
 import './BuyerReviewManage.css';
+import axios from "axios";
 
 const BuyerReviewManage = () => {
     const [reviews, setReviews] = useState([]);
@@ -16,25 +17,38 @@ const BuyerReviewManage = () => {
     const [targetId, setTargetId] = useState(null);
     const navigate = useNavigate();
 
+    const storedUser = JSON.parse(localStorage.getItem("user") || "{}");
+    const userId = storedUser.userId;
+
     useEffect(() => {
-        const user = localStorage.getItem('currentUser');
-        const allReviews = JSON.parse(localStorage.getItem('reviews')) || [];
-        const myReviews = allReviews.filter(r => r.buyer === user);
-        setReviews(myReviews);
-    }, []);
+        const fetchReviews = async () => {
+            try {
+                const res = await axios.get(`/api/reviews/user/${userId}`);
+                setReviews(res.data);
+            } catch (error) {
+                console.error('리뷰 불러오기 실패', error);
+            }
+        };
+
+        if (userId) fetchReviews();
+    }, [userId]);
 
     const confirmDelete = (id) => {
         setTargetId(id);
         setPopupType('delete');
     };
 
-    const deleteReview = () => {
-        const updated = reviews.filter(r => r.id !== targetId);
-        setReviews(updated);
-        localStorage.setItem('reviews', JSON.stringify(updated));
-        setPopupType(null);
-        setTargetId(null);
+    const deleteReview = async () => {
+        try {
+            await axios.delete(`/api/reviews/${targetId}`);
+            setReviews(reviews.filter(r => r.id !== targetId));
+            setPopupType(null);
+            setTargetId(null);
+        } catch (error) {
+            console.error('리뷰 삭제 실패', error);
+        }
     };
+
 
     const cancelPopup = () => {
         setPopupType(null);
@@ -70,7 +84,11 @@ const BuyerReviewManage = () => {
                             {reviews.map(review => (
                                 <tr key={review.id}>
                                     <td>{review.productName}</td>
-                                    <td>{review.rating}</td>
+                                    <td>
+                                        {[1, 2, 3, 4, 5].map((s) => (
+                                            <span key={s} className={`star-small ${review.rating >= s ? 'filled' : ''}`}>★</span>
+                                        ))}
+                                    </td>
                                     <td><button className="delete-btn" onClick={() => confirmDelete(review.id)}>삭제</button></td>
                                 </tr>
                             ))}

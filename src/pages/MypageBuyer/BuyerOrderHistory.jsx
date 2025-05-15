@@ -8,20 +8,41 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './BuyerOrderHistory.css';
+import axios from '../../components/api/axios';
 
 const BuyerOrderHistory = () => {
     const navigate = useNavigate();
     const [orders, setOrders] = useState([]);
 
     useEffect(() => {
-        const user = localStorage.getItem('currentUser'); // 현재 로그인된 사용자 이름 (buyer 기준)
-        const allOrders = JSON.parse(localStorage.getItem('orders')) || [];
-        const filteredOrders = allOrders.filter(order => order.buyer === user);
-        setOrders(filteredOrders);
+        const storedUser = JSON.parse(localStorage.getItem("user") || "{}");
+        const userId = storedUser.userId;
+
+        const fetchOrders = async () => {
+            try {
+                const res = await axios.get(`/api/orders/user/${userId}`);
+                setOrders(res.data);
+            } catch (error) {
+                console.error('주문 내역 불러오기 실패:', error);
+            }
+        };
+
+        if (userId) fetchOrders();
     }, []);
 
-    const goToReviewForm = (orderId) => {
-        navigate(`/mypage/review/write`, { state: { orderId } });//이거 민하님이 만들어주면 수정할거임
+    const statusMapping = {
+        PAID: '결제 완료',
+        READY: '배송 준비 중',
+        DELIVERING: '배송 중',
+        DELIVERED: '배송 완료'
+    };
+
+    const goToReviewForm = (orderItemId) => {
+        navigate(`/review/write/${orderItemId}`);
+    };
+
+    const goToProductDetail = (productId) => {
+        navigate(`/products/${productId}`);
     };
 
     return (
@@ -52,14 +73,32 @@ const BuyerOrderHistory = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {orders.map(order => (
-                                <tr key={order.id}>
-                                    <td>{order.productName}</td>
-                                    <td>{new Date(order.id).toLocaleDateString()}</td>
-                                    <td>{order.status}</td>
-                                    <td><button className="write-btn" onClick={() => goToReviewForm(order.id)}>등록</button></td>
+                        {orders.map(order => (
+                            order.items.map(item => (
+                                <tr key={item.id}>
+                                    <td>
+                                        <button className="product-link" onClick={() => goToProductDetail(item.productId)}>
+                                            {item.productName}
+                                        </button>
+                                    </td>
+                                    <td>{new Date(order.orderDate).toLocaleDateString()}</td>
+                                    <td>{statusMapping[item.status] || item.status}</td>
+                                    <td>
+                                        {item.reviewed ? (
+                                            <button className="write-btn completed" disabled>작성 완료</button>
+                                        ) : (
+                                            <button
+                                                className={`write-btn ${item.status !== "DELIVERED" ? 'disabled' : ''}`}
+                                                onClick={() => goToReviewForm(item.id)}
+                                                disabled={item.status !== "DELIVERED"}
+                                            >
+                                                등록
+                                            </button>
+                                        )}
+                                    </td>
                                 </tr>
-                            ))}
+                            ))
+                        ))}
                         </tbody>
                     </table>
                 </div>

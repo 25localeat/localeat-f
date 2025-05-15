@@ -106,3 +106,14 @@ thead {
 .write-btn:hover {
     background-color: #02b151;
 }
+
+.write-btn.disabled {
+    background-color: #ddd;
+    color: #999;
+    cursor: not-allowed;
+}
+.write-btn.completed {
+    background-color: #ddd;
+    color: #999;
+    cursor: not-allowed;
+}
