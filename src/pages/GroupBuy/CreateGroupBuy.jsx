@@ -6,7 +6,7 @@
 */
 
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import axios from 'axios';
 import './CreateGroupBuy.css'
 import TagBadge from '../../components/Tag/TagBadge';
@@ -46,6 +46,8 @@ const RegionTags = ({ tags }) => {
 
 const CreateGroupBuy = () => {
     const navigate = useNavigate();
+    const location = useLocation();
+    const { productId, productName, imageUrl, local } = location.state || {};
     const [quantity, setQuantity] = useState(1);
     const [description, setDescription] = useState("");
     const [deadline, setDeadline] = useState("");

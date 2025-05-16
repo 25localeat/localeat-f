@@ -5,47 +5,66 @@
 기간: 2025-04-28 ~
 */
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
+import axios from 'axios';
 import './ViewGroupBuy.css'
-
-const groupBuyList = [
-    {
-        groupBuyId: 1,
-        location: "서울/인천/경기",
-        product_name: "당근",
-        max_parti: 20,
-        parti_count: 8
-    },
-    {
-        groupBuyId: 2,
-        location: "서울/경기/인천",
-        product_name: "당근",
-        max_parti: 20,
-        parti_count: 11
-    }
-];
 
 const ViewGroupBuy = () => {
     const navigate = useNavigate();
     const [searchParams] = useSearchParams();
-
     const productId = searchParams.get('productId');
     const productName = searchParams.get('productName');
     const imageUrl = searchParams.get('imageUrl');
     const local = searchParams.get('local');
+    const [groupBuyList, setGroupBuyList] = useState([]);
 
-    const handleDetailClick = () => {
-        navigate('/groupBuy/detail');
-    }
+    useEffect(() => {
+        const fetchGroupBuys = async () => {
+            try {
+                const res = await axios.get(`/groupBuy/list?productId=${productId}`);
+                setGroupBuyList(res.data);
+            } catch (err) {
+                console.error('공동구매 리스트 불러오기 실패:', err);
+            }
+        };
+        if (productId) fetchGroupBuys();
+    }, [productId]);
+
+    const handleDetailClick = (groupBuyId) => {
+        navigate('/groupBuy/detail', {
+            state: {
+                groupBuyId,
+                productId,
+                productName,
+                imageUrl,
+                local
+            }
+        });
+    };
 
     const handleCreateClick = () => {
-        navigate('/groupBuy/create');
-    }
+        navigate('/groupBuy/create', {
+            state: {
+                productId,
+                productName,
+                imageUrl,
+                local
+            }
+        });
+    };
 
-    const handleJoinClick = () => {
-        navigate('/groupBuy/join');
-    }
+    const handleJoinClick = (groupBuyId) => {
+        navigate('/groupBuy/join', {
+            state: {
+                groupBuyId,
+                productId,
+                productName,
+                imageUrl,
+                local
+            }
+        });
+    };
 
     return (
         <div className="vgb-container">
@@ -53,7 +72,7 @@ const ViewGroupBuy = () => {
             <div className="vgb-box">
                 <div className="vgb-header-section">
                     <div className="vgb-img-wrapper">
-                        <img className="vgb-product-image" src={imageUrl} alt="당근" />
+                        <img className="vgb-product-image" src={imageUrl} alt={productName} />
                     </div>
                     <div className="vgb-product-info">
                         <div className="vgb-top-row">
@@ -63,16 +82,14 @@ const ViewGroupBuy = () => {
                         <p className="vgb-guide">현재 상품에 대한 공동구매 진행 건은 다음과 같습니다.</p>
                     </div>
                 </div>
-
                 <hr className="vgb-divider" />
-
                 <div className="vgb-list-wrapper">
                     {groupBuyList.map((item) => (
                         <div key={item.groupBuyId} className="vgb-list">
-                            <p className="vgb-list-text" onClick={handleDetailClick}>
-                                지역: {item.location} 상품명: {item.product_name} 모집인원 {item.parti_count}/{item.max_parti}
+                            <p className="vgb-list-text" onClick={() => handleDetailClick(item.groupBuyId)}>
+                                지역: {item.local} 상품명: {item.productName} 모집인원 {item.partiCount}/{item.maxParticipants}
                             </p>
-                            <button className="vgb-join-button" onClick={handleJoinClick}>참여하기</button>
+                            <button className="vgb-join-button" onClick={() => handleJoinClick(item.groupBuyId)}>참여하기</button>
                         </div>
                     ))}
                 </div>
