@@ -31,9 +31,8 @@ const Login = () => {
             const response = await axios.post('/login', {
                 userId: userId,
                 password: password,
-                userRole: userRole // ✅ 여기에 포함
+                userRole: userRole
             });
-
             console.log(response.data);
             localStorage.setItem('user', JSON.stringify(response.data));
             navigate('/');
