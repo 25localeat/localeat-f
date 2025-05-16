@@ -51,6 +51,7 @@ const CreateGroupBuy = () => {
         try {
             const user = JSON.parse(localStorage.getItem('user'));
             const userId = user?.userId;
+            if (!userId) throw new Error('로그인이 필요합니다.');
 
             const response = await axios.post("/groupBuy/create", {
                 productId: productId,
@@ -72,11 +73,11 @@ const CreateGroupBuy = () => {
                     local
                 }
             });
-
         } catch (error) {
             alert("공동구매 생성 실패: " + (error.response?.data?.message || error.message));
         }
     };
+
 
     const regionTags = getTagsByType('region');
 
