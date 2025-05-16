@@ -10,14 +10,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import axios from 'axios';
 import './CreateGroupBuy.css'
 import TagBadge from '../../components/Tag/TagBadge';
-import { getTagsByType } from '../../components/Tag/tags';
-
-const product = {
-    productId: 95,
-    location: "JEJU",
-    product_name: "당근",
-    max_parti: 20
-}
+import { getTagsByType } from '../../components/Tag/tags'
 
 const RegionTags = ({ tags }) => {
     const [selectedIndex, setSelectedIndex] = useState(null);
@@ -43,22 +36,16 @@ const RegionTags = ({ tags }) => {
     );
 };
 
-
 const CreateGroupBuy = () => {
     const navigate = useNavigate();
     const location = useLocation();
-    const { productId, productName, imageUrl, local } = location.state || {};
+    const { productId, productName, imageUrl, local, maxParticipants } = location.state || {};
     const [quantity, setQuantity] = useState(1);
     const [description, setDescription] = useState("");
     const [deadline, setDeadline] = useState("");
 
-    const handleIncrease = () => {
-        setQuantity(prev => prev + 1);
-    };
-
-    const handleDecrease = () => {
-        if (quantity > 1) setQuantity(prev => prev - 1);
-    };
+    const handleIncrease = () => setQuantity(prev => prev + 1);
+    const handleDecrease = () => { if (quantity > 1) setQuantity(prev => prev - 1); };
 
     const handleNext = async () => {
         try {
@@ -66,12 +53,26 @@ const CreateGroupBuy = () => {
             const userId = user?.userId;
             if (!userId) throw new Error('로그인이 필요합니다.');
 
-            const response = await axios.post("http://localhost:8080/groupBuy/create",
-                { productId: product.productId, description, quantity, deadline },
-                { headers: { 'X-USER-ID': userId } }
-            );
+            const response = await axios.post("/groupBuy/create", {
+                productId: productId,
+                description: description,
+                quantity: quantity,
+                deadline: deadline
+            }, {
+                headers: {
+                    "X-USER-ID": userId
+                }
+            });
 
-            navigate('/groupBuy/detail', { state: { groupBuyId: response.data.groupBuyId } });
+            navigate('/groupBuy/detail', {
+                state: {
+                    groupBuyId: response.data.groupBuyId,
+                    productId,
+                    productName,
+                    imageUrl,
+                    local
+                }
+            });
         } catch (error) {
             alert("공동구매 생성 실패: " + (error.response?.data?.message || error.message));
         }
@@ -92,7 +93,6 @@ const CreateGroupBuy = () => {
                         <p className="cgb-section-title">지역 선택</p>
                         <RegionTags tags={regionTags} />
                     </div>
-
                     <div className="cgb-section">
                         <p className="cgb-section-title">구매할 수량 선택</p>
                         <div className="cgb-quantity-selector">
@@ -102,7 +102,6 @@ const CreateGroupBuy = () => {
                         </div>
                     </div>
                 </div>
-
                 <div className="cgb-right-section">
                     <div className="cgb-section">
                         <p className="cgb-section-title">공동 구매 설명</p>
@@ -114,25 +113,22 @@ const CreateGroupBuy = () => {
                             className="cgb-input-box"
                             placeholder="간략한 설명 입력칸입니다."
                         />
-
                     </div>
-
                     <div className="cgb-section">
                         <p className="cgb-section-title">참여 인원 제한</p>
                         <input
                             type="text"
                             className="cgb-input-box"
-                            name="max_parti"
-                            value={`${product.max_parti}`}
+                            name="maxParticipants"
+                            value={maxParticipants || ""}
                             readOnly
                         />
                     </div>
-
                     <div className="cgb-section">
                         <p className="cgb-section-title">마감 시간 선택</p>
                         <input
                             type="date"
-                            name="date"
+                            name="deadline"
                             className="cgb-input-box"
                             value={deadline}
                             onChange={(e) => setDeadline(e.target.value)}

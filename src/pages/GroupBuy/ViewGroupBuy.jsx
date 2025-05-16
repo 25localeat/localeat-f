@@ -17,6 +17,7 @@ const ViewGroupBuy = () => {
     const productName = searchParams.get('productName');
     const imageUrl = searchParams.get('imageUrl');
     const local = searchParams.get('local');
+    const maxParticipants = searchParams.get('maxParticipants');
     const [groupBuyList, setGroupBuyList] = useState([]);
 
     useEffect(() => {
@@ -38,7 +39,8 @@ const ViewGroupBuy = () => {
                 productId,
                 productName,
                 imageUrl,
-                local
+                local,
+                maxParticipants
             }
         });
     };
@@ -49,7 +51,8 @@ const ViewGroupBuy = () => {
                 productId,
                 productName,
                 imageUrl,
-                local
+                local,
+                maxParticipants
             }
         });
     };
@@ -61,7 +64,8 @@ const ViewGroupBuy = () => {
                 productId,
                 productName,
                 imageUrl,
-                local
+                local,
+                maxParticipants
             }
         });
     };
