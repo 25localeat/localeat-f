@@ -57,7 +57,18 @@ const JoinGroupBuy = () => {
                     "X-USER-ID": userId
                 }
             });
-            navigate('/groupBuy/detail', { state: { groupBuyId } });
+            navigate('/groupBuy/detail', {
+                state: {
+                    groupBuyId,
+                    productId,
+                    productName,
+                    imageUrl,
+                    local,
+                    maxParticipants,
+                    description,
+                    deadline
+                }
+            });
 
         } catch (error) {
             console.error("공동구매 참여 실패:", error);
