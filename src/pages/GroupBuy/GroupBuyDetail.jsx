@@ -4,8 +4,9 @@
 작성자: 김미현
 기간: 2025-04-28 ~
 */
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
+import axios from 'axios';
 import './GroupBuyDetail.css'
 
 const product = {

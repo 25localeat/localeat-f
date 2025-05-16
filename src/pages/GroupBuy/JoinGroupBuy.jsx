@@ -13,19 +13,6 @@ import { getTagsByType } from '../../components/Tag/tags';
 import axios from 'axios';
 import { useLocation } from 'react-router-dom';
 
-
-const product = {
-    product_id: 1,
-    location: "서울/인천/경기",
-    product_name: "당근",
-    max_parti: 20,
-}
-
-const groupBuy = {
-    description: "공동구매 설명",
-    date: "2025-05-05"
-};
-
 const RegionTags = ({ tags }) => {
     const [selectedIndex, setSelectedIndex] = useState(null);
 
@@ -54,18 +41,20 @@ const JoinGroupBuy = () => {
     const [quantity, setQuantity] = useState(1);
     const navigate = useNavigate();
     const location = useLocation();
-    const { groupBuyId } = location.state || { groupBuyId: 45 }; // 이전 페이지에서 넘겨줘야 함
+    const { groupBuyId, productId, productName, imageUrl, local, maxParticipants, description, deadline } = location.state || {};
 
     const handleNext = async () => {
         try {
-            const userId = localStorage.getItem("userId"); // 로그인한 사용자 ID
+            const user = JSON.parse(localStorage.getItem("user"));
+            const userId = user?.userId;
 
             await axios.post("/groupBuy/join", {
                 groupBuyId: groupBuyId,
+                productId: productId,
                 quantity: quantity
             }, {
                 headers: {
-                    "X-USER-ID": "consumertest"
+                    "X-USER-ID": userId
                 }
             });
             navigate('/groupBuy/detail', { state: { groupBuyId } });
@@ -111,7 +100,7 @@ const JoinGroupBuy = () => {
                 <div className="jgb-right-section">
                     <div className="jgb-section">
                         <p className="jgb-section-title">공동 구매 설명</p>
-                        <input type="text" className="jgb-input-box" value={`${product.description}`} readOnly />
+                        <input type="text" className="jgb-input-box" value={description || ""} readOnly />
                     </div>
 
                     <div className="jgb-section">
@@ -119,14 +108,14 @@ const JoinGroupBuy = () => {
                         <input
                             type="text"
                             className="jgb-input-box"
-                            value={`${product.max_parti}`}
+                            value={maxParticipants || ""}
                             readOnly
                         />
                     </div>
 
                     <div className="jgb-section">
                         <p className="jgb-section-title">마감 시간</p>
-                        <input type="text" className="jgb-input-box" value={`${product.date}`} readOnly />
+                        <input type="text" className="jgb-input-box" value={deadline || ""} readOnly />
                     </div>
                 </div>
             </div>
