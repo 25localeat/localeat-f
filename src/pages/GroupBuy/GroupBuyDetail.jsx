@@ -4,11 +4,37 @@
 작성자: 김미현
 기간: 2025-04-28 ~
 */
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
+import './GroupBuyDetail.css'
 
-import React, { useState, useEffect } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
-import axios from 'axios';
-import './GroupBuyDetail.css';
+const product = {
+    product_id: 1,
+    location: "서울/인천/경기",
+    product_name: "당근",
+    time: "23:59:59"
+};
+
+
+const list = [
+    {
+        groupBuyId: 1,
+        location: "서울/인천/경기",
+        product_name: "당근",
+        max_parti: 20,
+        parti_count: 2,
+        description: "싸고 품질 좋음.",
+        participants: [{
+            id: "mhyeon",
+            buy: 5
+        },
+        {
+            id: "wish",
+            buy: 4
+        }
+        ],
+    },
+];
 
 const GroupBuyDetail = () => {
     const navigate = useNavigate();

@@ -64,29 +64,19 @@ const CreateGroupBuy = () => {
         try {
             const user = JSON.parse(localStorage.getItem('user'));
             const userId = user?.userId;
+            if (!userId) throw new Error('로그인이 필요합니다.');
 
+            const response = await axios.post("http://localhost:8080/groupBuy/create",
+                { productId: product.productId, description, quantity, deadline },
+                { headers: { 'X-USER-ID': userId } }
+            );
 
-            const response = await axios.post("/groupBuy/create", {
-                productId: product.productId,
-                description: description,
-                quantity: quantity,
-                deadline: deadline
-            }, {
-                headers: {
-                    "X-USER-ID": "as"
-                }
-            });
-
-            navigate('/groupBuy/detail', {
-                state: {
-                    groupBuy: response.data
-                }
-            });
-
+            navigate('/groupBuy/detail', { state: { groupBuyId: response.data.groupBuyId } });
         } catch (error) {
-            alert("공동구매 생성 실패: " + error.response?.data?.message || error.message);
+            alert("공동구매 생성 실패: " + (error.response?.data?.message || error.message));
         }
     };
+
 
     const regionTags = getTagsByType('region');
 
