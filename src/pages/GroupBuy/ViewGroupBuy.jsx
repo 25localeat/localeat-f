@@ -32,15 +32,17 @@ const ViewGroupBuy = () => {
         if (productId) fetchGroupBuys();
     }, [productId]);
 
-    const handleDetailClick = (groupBuyId) => {
+    const handleDetailClick = (item) => {
         navigate('/groupBuy/detail', {
             state: {
-                groupBuyId,
+                groupBuyId: item.groupBuyId,
                 productId,
                 productName,
                 imageUrl,
                 local,
-                maxParticipants
+                maxParticipants: item.maxParticipants,
+                description: item.description,
+                deadline: item.deadline
             }
         });
     };
@@ -57,15 +59,17 @@ const ViewGroupBuy = () => {
         });
     };
 
-    const handleJoinClick = (groupBuyId) => {
+    const handleJoinClick = (item) => {
         navigate('/groupBuy/join', {
             state: {
-                groupBuyId,
+                groupBuyId: item.groupBuyId,
                 productId,
                 productName,
                 imageUrl,
                 local,
-                maxParticipants
+                maxParticipants: item.maxParticipants,
+                description: item.description,
+                deadline: item.deadline
             }
         });
     };
@@ -90,10 +94,10 @@ const ViewGroupBuy = () => {
                 <div className="vgb-list-wrapper">
                     {groupBuyList.map((item) => (
                         <div key={item.groupBuyId} className="vgb-list">
-                            <p className="vgb-list-text" onClick={() => handleDetailClick(item.groupBuyId)}>
+                            <p className="vgb-list-text" onClick={() => handleDetailClick(item)}>
                                 지역: {item.local} 상품명: {item.productName} 모집인원 {item.partiCount}/{item.maxParticipants}
                             </p>
-                            <button className="vgb-join-button" onClick={() => handleJoinClick(item.groupBuyId)}>참여하기</button>
+                            <button className="vgb-join-button" onClick={() => handleJoinClick(item)}>참여하기</button>
                         </div>
                     ))}
                 </div>

@@ -1,50 +1,23 @@
-/*
-파일명: GroupBuyDetail.jsx
-파일 설명: 로컬잇 공동구매 상세 정보 보기 페이지
-작성자: 김미현
-기간: 2025-04-28 ~
-*/
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import axios from 'axios';
 import './GroupBuyDetail.css'
 
-const product = {
-    product_id: 1,
-    location: "서울/인천/경기",
-    product_name: "당근",
-    time: "23:59:59"
-};
-
-
-const list = [
-    {
-        groupBuyId: 1,
-        location: "서울/인천/경기",
-        product_name: "당근",
-        max_parti: 20,
-        parti_count: 2,
-        description: "싸고 품질 좋음.",
-        participants: [{
-            id: "mhyeon",
-            buy: 5
-        },
-        {
-            id: "wish",
-            buy: 4
-        }
-        ],
-    },
-];
-
 const GroupBuyDetail = () => {
     const navigate = useNavigate();
     const location = useLocation();
 
-    // 이전 페이지에서 넘겨준 state.groupBuyId 를 꺼내고,
-    // 없으면 테스트용 기본값(예: 1) 사용
-    const { groupBuyId } = location.state || { groupBuyId: 42 };
-    console.log("👉 groupBuyId:", groupBuyId);
+    // 이전 페이지에서 넘겨준 값들
+    const {
+        groupBuyId,
+        productId,
+        productName,
+        imageUrl,
+        local,
+        maxParticipants,
+        description,
+        deadline
+    } = location.state || {};
 
     const [detail, setDetail] = useState(null);
     const userId = localStorage.getItem('userId');
@@ -84,8 +57,8 @@ const GroupBuyDetail = () => {
                     <div className="dgb-img-wrapper">
                         <img
                             className="qproduct-image"
-                            src={detail.imageUrl || '/placeholder.png'}
-                            alt={detail.productName}
+                            src={imageUrl || detail.imageUrl || '/placeholder.png'}
+                            alt={productName || detail.productName}
                         />
                     </div>
                     <div className="dgb-product-info">
