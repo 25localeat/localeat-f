@@ -20,9 +20,11 @@ import {ROUTES} from "../routes";
 const Navbar = () => {
 
     const navigate = useNavigate();
+    const [keyword, setKeyword] = useState('');
 
     const handleSearchClick = () => {
-        navigate(ROUTES.SEARCH);
+        if (!keyword.trim()) return;
+        navigate(`/search?keyword=${encodeURIComponent(keyword)}`); // 수정
     };
 
     const [isAlarmOpen, setIsAlarmOpen] = useState(false);
@@ -47,7 +49,17 @@ const Navbar = () => {
                 </Link>
 
                 <div className="search-bar">
-                    <input type="text" className="search-input" placeholder="검색어를 입력하세요" />
+                    <input type="text"
+                           className="search-input"
+                           placeholder="검색어를 입력하세요"
+                           value={keyword}
+                           onChange={(e) => setKeyword(e.target.value)}
+                           onKeyDown={(e) => {
+                               if (e.key === 'Enter') {
+                                   handleSearchClick();
+                               }
+                           }}
+                    />
                     <img
                         src={iconSearch}
                         alt="검색아이콘"

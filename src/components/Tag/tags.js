@@ -8,14 +8,14 @@
 
 const tags = [
     // 📍 지역 태그
-    { type: 'region', label: '서울/경기/인천', bg: 'rgba(171, 78, 82, 0.1)', color: '#AB4E52' },
-    { type: 'region', label: '강원', bg: 'rgba(244, 166, 136, 0.1)', color: '#F4A688' },
-    { type: 'region', label: '충청', bg: 'rgba(110, 75, 53, 0.1)', color: '#6E4B35' },
-    { type: 'region', label: '전북', bg: 'rgba(164, 215, 146, 0.1)', color: '#A4D792' },
-    { type: 'region', label: '전남/광주', bg: 'rgba(0, 178, 169, 0.1)', color: '#00B2A9' },
-    { type: 'region', label: '대구/경북', bg: 'rgba(116, 139, 171, 0.1)', color: '#748BAB' },
-    { type: 'region', label: '경남/부산/울산', bg: 'rgba(208, 176, 132, 0.1)', color: '#D0B084' },
-    { type: 'region', label: '제주', bg: 'rgba(189, 160, 203, 0.1)', color: '#BDA0CB' },
+    { type: 'region', label: '서울/경기/인천', code: 'SGI', bg: 'rgba(171, 78, 82, 0.1)', color: '#AB4E52' },
+    { type: 'region', label: '강원', code: 'GANGWON', bg: 'rgba(244, 166, 136, 0.1)', color: '#F4A688' },
+    { type: 'region', label: '충청', code: 'CHUNGCHEONG', bg: 'rgba(110, 75, 53, 0.1)', color: '#6E4B35' },
+    { type: 'region', label: '전북',code: 'CHUNGCHEONG', bg: 'rgba(164, 215, 146, 0.1)', color: '#A4D792' },
+    { type: 'region', label: '전남/광주',code: 'JNGJ', bg: 'rgba(0, 178, 169, 0.1)', color: '#00B2A9' },
+    { type: 'region', label: '대구/경북',code: 'DGGB', bg: 'rgba(116, 139, 171, 0.1)', color: '#748BAB' },
+    { type: 'region', label: '경남/부산/울산', code: 'GNBNUL',bg: 'rgba(208, 176, 132, 0.1)', color: '#D0B084' },
+    { type: 'region', label: '제주', code: 'JEJU',bg: 'rgba(189, 160, 203, 0.1)', color: '#BDA0CB' },
 
     // 🏷️ 상품 등급 태그
     { type: 'grade', label: 'GOOD', bg: 'rgba(255, 118, 152, 0.10)', color: '#FF7698' },
@@ -37,6 +37,17 @@ export const getTagByLabel = (label) => {
     return (
         tags.find((tag) => tag.label === label) || {
             label,
+            type: 'custom',
+            bg: 'rgba(0, 0, 0, 0.05)',
+            color: '#000',
+        }
+    );
+};
+
+export const getTagByCode = (code) => {
+    return (
+        tags.find((tag) => tag.code === code) || {
+            label: code,
             type: 'custom',
             bg: 'rgba(0, 0, 0, 0.05)',
             color: '#000',

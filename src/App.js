@@ -44,7 +44,8 @@ function App() {
                         <Route path="/search" element={<Search/>} />
 
                         <Route path="/products/:productId" element={<ProductDetail />} />
-                        <Route path="/review/write/:orderItemId" element={<ReviewForm />} />                        <Route path="/cart" element={<CartGeneral />} />
+                        <Route path="/review/write/:orderItemId" element={<ReviewForm />} />
+                        <Route path="/cart" element={<CartGeneral />} />
                         <Route path="/cart-subscribe" element={<CartSubscribe />} />
                         <Route path="/cart-groupbuy" element={<CartGroupBuy />} />
                         <Route path="/SellerMypage" element={<ProductList />} />
