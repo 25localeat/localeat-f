@@ -6,17 +6,8 @@
 */
 
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import './ViewGroupBuy.css'
-import carrotImg from './carrot.png';
-
-const product = {
-    product_id: 1,
-    image: carrotImg,
-    location: "서울/인천/경기",
-    product_name: "당근"
-};
-
 
 const groupBuyList = [
     {
@@ -37,7 +28,12 @@ const groupBuyList = [
 
 const ViewGroupBuy = () => {
     const navigate = useNavigate();
+    const [searchParams] = useSearchParams();
 
+    const productId = searchParams.get('productId');
+    const productName = searchParams.get('productName');
+    const imageUrl = searchParams.get('imageUrl');
+    const local = searchParams.get('local');
 
     const handleDetailClick = () => {
         navigate('/groupBuy/detail');
@@ -57,11 +53,11 @@ const ViewGroupBuy = () => {
             <div className="vgb-box">
                 <div className="vgb-header-section">
                     <div className="vgb-img-wrapper">
-                        <img className="vgb-product-image" src={product.image} alt="당근" />
+                        <img className="vgb-product-image" src={imageUrl} alt="당근" />
                     </div>
                     <div className="vgb-product-info">
                         <div className="vgb-top-row">
-                            <p className="vgb-product-name">{product.product_name}</p>
+                            <p className="vgb-product-name">{productName}</p>
                             <button className="vgb-create-button" onClick={handleCreateClick}>공동구매 만들기</button>
                         </div>
                         <p className="vgb-guide">현재 상품에 대한 공동구매 진행 건은 다음과 같습니다.</p>

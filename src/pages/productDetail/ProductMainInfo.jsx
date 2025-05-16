@@ -4,6 +4,7 @@
 import React from 'react';
 import TagBadge from '../../components/Tag/TagBadge';
 import { getTagByLabel } from '../../components/Tag/tags';
+import { useNavigate } from 'react-router-dom'; // 공동구매 페이지로 이동, 미현 추가
 import './ProductMainInfo.css';
 
 const ProductMainInfo = ({
@@ -24,9 +25,26 @@ const ProductMainInfo = ({
                              purchasePrice,
                              onCart,
                              onOrder,
-                             onGroupBuy
                          }) => {
     const isSubscribeSelected = purchaseType === 'subscribe';
+
+    // 공동구매 페이지로 이동, 미현 추가
+    const navigate = useNavigate();
+
+    const onGroupBuy = () => {
+        const storedUser = localStorage.getItem('user');
+
+         // URL 파라미터로 상품 정보 전달
+         const queryParams = new URLSearchParams({
+            productId: product.id,
+            productName: product.productName,
+            imageUrl: product.imageUrl,
+            price: product.price,
+            local: product.local,  // 지역 정보 추가
+        }).toString();
+        
+        navigate(`/groupBuy/view?${queryParams}`);
+    };
 
     return (
         <div className="product-detail-main">
@@ -51,8 +69,16 @@ const ProductMainInfo = ({
                         {product.isGroupBuy && (
                             <button
                                 className="group-buy-button"
-                                onClick={onGroupBuy}
-                                disabled={user?.role === 'SELLER'}
+                                onClick={() => {
+                                    const storedUser = JSON.parse(localStorage.getItem('user'));
+                                    console.log('Current user data:', storedUser);
+                                    if (storedUser?.userRole === 'SELLER') {
+                                        alert('판매자는 공동구매를 이용할 수 없습니다.');
+                                        return;
+                                    }
+                                    onGroupBuy();
+                                }}
+                                disabled={false}
                             >
                                 공동구매
                             </button>
