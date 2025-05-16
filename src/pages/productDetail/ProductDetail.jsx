@@ -18,7 +18,7 @@ const ProductDetail = () => {
     const [reviewData, setReviewData] = useState([]);
     const [sortBy, setSortBy] = useState('latest');
     const [inquiries, setInquiries] = useState([]);
-    const [isWish, setIsWish] = useState(false);
+    const [wished, setWished] = useState(false);
     const [purchaseType, setPurchaseType] = useState('one-time');
     const [quantity, setQuantity] = useState(1);
     const [deliveryCycle, setDeliveryCycle] = useState({ cycleType: 'WEEKLY', cycleValue: 1 });
@@ -41,6 +41,7 @@ const ProductDetail = () => {
                 try {
                     const res = await axios.get(`/api/products/${productId}`);
                     setProduct(res.data);
+                    setWished(res.data.wished);
                 } catch (err) {
                     console.error('상품 정보를 불러오는데 실패했습니다.', err);
                 }
@@ -48,11 +49,20 @@ const ProductDetail = () => {
 
             if (productId) fetchProduct();
 
-        setUser({
-            isLoggedIn: true,
-            role: 'SELLER', //  CONSUMER
-            userId: 'testUser',
-        });
+            // 실사용자 값 받아오기
+        const storedUser = localStorage.getItem("user");
+        if (storedUser) {
+            try {
+                const parsedUser = JSON.parse(storedUser);
+                setUser({ ...parsedUser, isLoggedIn: true });
+            } catch (err) {
+                console.warn("유저 정보 파싱 실패:", err);
+                setUser({ isLoggedIn: false });
+            }
+        } else {
+            setUser({ isLoggedIn: false });
+        }
+
         setInquiries([
             {
                 inquiryId: 1,
@@ -80,7 +90,7 @@ const ProductDetail = () => {
                 const res = await axios.get(`/api/reviews/product/${productId}`, {
                     params: {
                         sortBy: sortBy,
-                        currentUserId: user?.userId
+                        currentUserId: user?.userId // 여기 추가입니다.
                     }
                 });
                 setReviewData(res.data);
@@ -108,13 +118,32 @@ const ProductDetail = () => {
         ? subscribePrice * quantity
         : purchasePrice * quantity;
 
-    const handleWishToggle = () => {
+    // 찜부분입니다.
+    const handleWishToggle = async () => {
         if (!user.isLoggedIn) {
             setPopupType('loginRequired');
             setShowPopup(true);
             return;
         }
-        setIsWish(prev => !prev);
+
+        try {
+            const res = await axios.post(`/api/wish/${product.id}`, null, {
+                params: { userId: user.userId }
+            });
+            console.log('찜 처리 성공입니다. ', res.data);
+            setWished(res.data.wished); // 서버 응답으로 상태 갱신
+        } catch (err) {
+            if (err.response) {
+                console.error('서버 응답 데이터:', err.response.data);
+                console.error('상태 코드:', err.response.status);
+                console.error('헤더:', err.response.headers);
+            } else if (err.request) {
+                console.error(' 요청은 갔지만 응답이 없음:', err.request);
+            } else {
+                console.error(' 요청 생성 중 에러:', err.message);
+            }
+            alert('찜 처리 중 오류가 발생했습니다.');
+        }
     };
 
     const handleCart = async () => {
@@ -191,7 +220,7 @@ const ProductDetail = () => {
             <ProductMainInfo
                 product={{ ...product, imageUrl }}
                 user={user}
-                isWish={isWish}
+                isWish={wished}
                 onWishToggle={handleWishToggle}
                 purchaseType={purchaseType}
                 setPurchaseType={setPurchaseType}
@@ -256,7 +285,6 @@ const ProductDetail = () => {
                 )}
 
             </div>
-
 
             {showPopup && (
                 <Popup
