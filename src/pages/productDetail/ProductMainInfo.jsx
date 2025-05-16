@@ -41,6 +41,7 @@ const ProductMainInfo = ({
             imageUrl: product.imageUrl,
             price: product.price,
             local: product.local,  // 지역 정보 추가
+            maxParticipants: product.maxParticipants
         }).toString();
         
         navigate(`/groupBuy/view?${queryParams}`);
