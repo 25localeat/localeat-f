@@ -7,9 +7,10 @@
 import './ProductCard.css';
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import carrotImg from '../../pages/home/carrot.png';
+import TagBadge from '../Tag/TagBadge';
 
-
-const ProductCard = ({ id, image, tags, title, originalPrice, discountPrice}) => {
+const ProductCard = ({ id, image, tags=[], title, originalPrice, discountPrice}) => {
     const navigate = useNavigate();
 
     const handleClick = () => {
@@ -18,13 +19,16 @@ const ProductCard = ({ id, image, tags, title, originalPrice, discountPrice}) =>
 
     return (
         <div className="product-card" onClick={handleClick} style={{ cursor: 'pointer' }}>
-            <img className="product-img" src={image} alt={title} />
+            <img
+                src={image}
+                alt={title}
+                onError={(e) => { e.target.src = carrotImg; }}
+            />
+
 
             <div className="tag-list">
                 {tags.map((tag, i) => (
-                    <div key={i} className="product-tag" style={{ backgroundColor: tag.bg }}>
-                        <span style={{ color: tag.color }}>#{tag.label}</span>
-                    </div>
+                    <TagBadge key={i} label={tag.label} bg={tag.bg} color={tag.color} />
                 ))}
             </div>
 
