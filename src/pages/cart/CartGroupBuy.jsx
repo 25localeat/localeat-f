@@ -144,6 +144,7 @@ const CartGroupBuy = () => {
                 return;
             }
 
+            // 결제 처리
             for (const item of selected) {
                 await axios.post(
                     `http://localhost:8080/api/cart/${item.id}/pay`,
@@ -151,8 +152,19 @@ const CartGroupBuy = () => {
                     { headers: { 'X-USER-ID': userId } }
                 );
             }
-            alert('결제 요청이 완료되었습니다.');
-            await fetchCart();
+
+            // 결제 완료된 상품은 장바구니에서 제거
+            setCartItems(prevItems => 
+                prevItems.filter(item => 
+                    !selected.some(selectedItem => selectedItem.id === item.id)
+                )
+            );
+
+            alert('결제가 완료되었습니다.');
+            closePopup();
+            
+            // 주문내역 페이지로 이동
+            navigate('/mypage/buyer/orders');
         } catch (err) {
             console.error('결제 요청 실패', err);
             alert('결제 요청에 실패했습니다.');
