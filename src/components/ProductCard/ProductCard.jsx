@@ -10,10 +10,17 @@ import { useNavigate } from 'react-router-dom';
 import carrotImg from '../../pages/home/carrot.png';
 import TagBadge from '../Tag/TagBadge';
 
-const ProductCard = ({ id, image, tags=[], title, originalPrice, discountPrice}) => {
+const ProductCard = ({ id, image, tags = [], title, originalPrice, discountPrice, local }) => {
     const navigate = useNavigate();
 
     const handleClick = () => {
+        const storedUser = JSON.parse(localStorage.getItem("user") || "{}");
+
+        if (storedUser.local !== local) {
+            alert("해당 상품은 회원님의 지역과 일치하지 않아 구매할 수 없습니다.");
+            return;
+        }
+
         navigate(`/products/${id}`);
     };
 
