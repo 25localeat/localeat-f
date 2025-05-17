@@ -62,6 +62,7 @@ const BuyerOrderHistory = () => {
                     <table>
                         <thead>
                             <tr>
+                                <th>구매 방법</th>
                                 <th>상품이름</th>
                                 <th>구매수량</th>
                                 <th>개당 가격</th>
@@ -77,6 +78,7 @@ const BuyerOrderHistory = () => {
 
                                 return (
                                 <tr key={item.id}>
+                                    <td>{item.purchaseType}</td>
                                     <td>
                                         <button className="product-link" onClick={() => navigate(`/products/${item.productId}`)}>
                                             {item.productName}
