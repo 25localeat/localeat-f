@@ -131,43 +131,31 @@ const CartGroupBuy = () => {
     const closePopup = () => { setPopupType(null); setItemToDelete(null); };
 
     // 선택된 항목 결제 처리
-    const orderSelected = async () => {
+    const handleOrder = async () => {
+        // 선택된 cartItem id만 추출
+        const selectedIds = cartItems
+            .filter(item => item.checked && item.paymentStatus !== 'COMPLETED')
+            .map(item => item.id);
+
+        if (selectedIds.length === 0) {
+            alert('주문할 상품을 선택해주세요.');
+            return;
+        }
+
         try {
-            const selected = cartItems.filter(item => 
-                item.checked && 
-                !expired[item.id] && 
-                item.paymentStatus !== 'COMPLETED'
-            );
-            
-            if (selected.length === 0) {
-                alert('결제할 상품을 선택해주세요.');
-                return;
-            }
-
-            // 결제 처리
-            for (const item of selected) {
-                await axios.post(
-                    `http://localhost:8080/api/cart/${item.id}/pay`,
-                    { paymentStatus: 'COMPLETED' },
-                    { headers: { 'X-USER-ID': userId } }
-                );
-            }
-
-            // 결제 완료된 상품은 장바구니에서 제거
-            setCartItems(prevItems => 
-                prevItems.filter(item => 
-                    !selected.some(selectedItem => selectedItem.id === item.id)
-                )
+            // 주문 생성 API 호출 (POST /api/cart/order)
+            await axios.post(
+                'http://localhost:8080/api/cart/order',
+                selectedIds, // body: [1,2,3,...]
+                { headers: { 'X-USER-ID': userId } }
             );
 
-            alert('결제가 완료되었습니다.');
-            closePopup();
-            
+            alert('주문이 완료되었습니다!');
             // 주문내역 페이지로 이동
             navigate('/mypage/buyer/orders');
         } catch (err) {
-            console.error('결제 요청 실패', err);
-            alert('결제 요청에 실패했습니다.');
+            alert('주문 처리 중 오류가 발생했습니다.');
+            console.error(err);
         }
     };
 
@@ -235,7 +223,7 @@ const CartGroupBuy = () => {
                 </tbody>
             </table>
 
-            <button className="order-btn" onClick={showOrderPopup}>
+            <button className="order-btn" onClick={handleOrder}>
                 주문하기
             </button>
 
@@ -246,7 +234,7 @@ const CartGroupBuy = () => {
                     onConfirm={async () => {
                         if (popupType === 'delete') await deleteItem();
                         if (popupType === 'order') {
-                            await orderSelected();
+                            await handleOrder();
                             closePopup();
                         }
                     }}
