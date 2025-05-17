@@ -14,7 +14,6 @@ import Popup from '../../components/Ui/Popup/Popup';
 const CartGroupBuy = () => {
     const [cartItems, setCartItems] = useState([]);
     const [popupType, setPopupType] = useState(null);
-    const [itemToDelete, setItemToDelete] = useState(null);
     const [timeLeft, setTimeLeft] = useState({});
     const [expired, setExpired] = useState({});
     const navigate = useNavigate();
@@ -30,7 +29,7 @@ const CartGroupBuy = () => {
                 `http://localhost:8080/api/cart`,
                 { headers: { 'X-USER-ID': userId } }
             );
-            
+
             // 각 장바구니 아이템의 상품 정보를 가져오기
             const itemsWithProductInfo = await Promise.all(
                 res.data.map(async (item) => {
@@ -40,7 +39,7 @@ const CartGroupBuy = () => {
                             `http://localhost:8080/api/products/${item.productId}`
                         );
                         const product = productRes.data;
-                        
+
                         return {
                             id: item.cartItemId,
                             groupBuyId: item.groupBuyId,
@@ -59,7 +58,7 @@ const CartGroupBuy = () => {
                     }
                 })
             );
-            
+
             // null이 아닌 아이템만 필터링
             const validItems = itemsWithProductInfo.filter(item => item !== null);
             setCartItems(validItems);
@@ -105,30 +104,8 @@ const CartGroupBuy = () => {
         ));
     };
 
-    // 삭제 팝업
-    const confirmDelete = id => {
-        setItemToDelete(id);
-        setPopupType('delete');
-    };
-    const deleteItem = async () => {
-        try {
-            await axios.delete(
-                `http://localhost:8080/api/cart/${itemToDelete}`,
-                { headers: { 'X-USER-ID': userId } }
-            );
-            await fetchCart();
-        } catch (err) {
-            console.error('삭제 실패', err);
-            alert('삭제에 실패했습니다.');
-        } finally {
-            setPopupType(null);
-            setItemToDelete(null);
-        }
-    };
-
     // 주문(결제) 팝업
     const showOrderPopup = () => setPopupType('order');
-    const closePopup = () => { setPopupType(null); setItemToDelete(null); };
 
     // 선택된 항목 결제 처리
     const handleOrder = async () => {
@@ -143,6 +120,7 @@ const CartGroupBuy = () => {
         }
 
         try {
+<<<<<<< Updated upstream
             // 주문 생성 API 호출 (POST /api/cart/order)
             await axios.post(
                 'http://localhost:8080/api/cart/order',
@@ -151,6 +129,35 @@ const CartGroupBuy = () => {
             );
 
             alert('주문이 완료되었습니다!');
+=======
+            const selected = cartItems.filter(item =>
+                item.checked &&
+                !expired[item.id] &&
+                item.paymentStatus !== 'COMPLETED'
+            );
+
+            if (selected.length === 0) {
+                alert('결제할 상품을 선택해주세요.');
+                return;
+            }
+
+            // 결제 처리
+            for (const item of selected) {
+                await axios.post(
+                    `http://localhost:8080/api/cart/${item.id}/pay`,
+                    { paymentStatus: 'COMPLETED' },
+                    { headers: { 'X-USER-ID': userId } }
+                );
+            }
+
+            // 결제 완료된 상품은 장바구니에서 제거
+            setCartItems(prevItems =>
+                prevItems.filter(item =>
+                    !selected.some(selectedItem => selectedItem.id === item.id)
+                )
+            );
+
+>>>>>>> Stashed changes
             // 주문내역 페이지로 이동
             navigate('/mypage/buyer/orders');
         } catch (err) {
@@ -186,7 +193,6 @@ const CartGroupBuy = () => {
                         <th>수량</th>
                         <th>소계</th>
                         <th>남은 시간</th>
-                        <th>삭제</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -205,18 +211,9 @@ const CartGroupBuy = () => {
                             <td>{item.quantity}</td>
                             <td>{(item.price * item.quantity)?.toLocaleString() ?? '0'}원</td>
                             <td style={expired[item.id] ? { color: 'gray' } : {}}>
-                                {expired[item.id] ? '만료됨' : 
-                                 item.paymentStatus === 'COMPLETED' ? '결제완료' : 
-                                 timeLeft[item.id]}
-                            </td>
-                            <td>
-                                <button 
-                                    className="delete-btn" 
-                                    onClick={() => confirmDelete(item.id)}
-                                    disabled={item.paymentStatus === 'COMPLETED'}
-                                >
-                                    삭제
-                                </button>
+                                {expired[item.id] ? '만료됨' :
+                                    item.paymentStatus === 'COMPLETED' ? '결제완료' :
+                                        timeLeft[item.id]}
                             </td>
                         </tr>
                     ))}
@@ -230,12 +227,14 @@ const CartGroupBuy = () => {
             {popupType && (
                 <Popup
                     type={popupType}
-                    onCancel={closePopup}
                     onConfirm={async () => {
-                        if (popupType === 'delete') await deleteItem();
                         if (popupType === 'order') {
+<<<<<<< Updated upstream
                             await handleOrder();
                             closePopup();
+=======
+                            await orderSelected();
+>>>>>>> Stashed changes
                         }
                     }}
                 />

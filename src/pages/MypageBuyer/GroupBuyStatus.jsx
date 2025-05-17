@@ -2,7 +2,9 @@
 // 설명: 구매자 마이페이지 - 공동구매 현황
 
 import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import './GroupBuyStatus.css';
 
 const GroupBuyStatus = () => {
@@ -10,19 +12,19 @@ const GroupBuyStatus = () => {
     const [groupBuys, setGroupBuys] = useState([]);
 
     useEffect(() => {
-        const user = localStorage.getItem('currentUser');
-        const allGroupBuys = JSON.parse(localStorage.getItem('groupBuys')) || [];
-        const today = new Date().toISOString().slice(0, 10);
+        const user = JSON.parse(localStorage.getItem('user') || '{}');
+        const userId = user.userId;
 
-        const filtered = allGroupBuys
-            .filter(gb => gb.buyer === user && gb.deadline >= today)
-            .map(gb => ({
-                ...gb,
-                current: parseInt(gb.current),
-                target: parseInt(gb.target)
-            }));
-
-        setGroupBuys(filtered);
+        axios.get('http://localhost:8080/groupBuy/my', {
+            headers: { 'X-USER-ID': userId }
+        })
+            .then(res => {
+                setGroupBuys(res.data);
+            })
+            .catch(err => {
+                console.error('공동구매 현황 불러오기 실패', err);
+                alert('공동구매 현황 불러오기 실패');
+            });
     }, []);
 
     return (
@@ -51,11 +53,15 @@ const GroupBuyStatus = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {groupBuys.map((item, index) => (
-                                <tr key={index}>
-                                    <td>{item.product}</td>
-                                    <td>{item.current}/{item.target}</td>
-                                    <td>{item.deadline}</td>
+                            {groupBuys.map(gb => (
+                                <tr key={gb.groupBuyId}>
+                                    <td>
+                                        <Link className="plain-link" to={`/products/${gb.productId}`}>
+                                            {gb.productName}
+                                        </Link>
+                                    </td>
+                                    <td>{gb.currentCount}/{gb.maxParticipants}</td>
+                                    <td>{gb.deadline}</td>
                                 </tr>
                             ))}
                         </tbody>
