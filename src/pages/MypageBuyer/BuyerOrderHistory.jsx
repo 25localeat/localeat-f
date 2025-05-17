@@ -13,21 +13,25 @@ import axios from '../../components/api/axios';
 const BuyerOrderHistory = () => {
     const navigate = useNavigate();
     const [orders, setOrders] = useState([]);
+    const [reviewedProductIds, setReviewedProductIds] = useState([]);
 
     useEffect(() => {
         const storedUser = JSON.parse(localStorage.getItem("user") || "{}");
         const userId = storedUser.userId;
 
-        const fetchOrders = async () => {
+        const fetchOrdersAndReviews = async () => {
             try {
-                const res = await axios.get(`/api/orders/user/${userId}`);
-                setOrders(res.data);
+                const ordersRes = await axios.get(`/api/orders/user/${userId}`);
+                setOrders(ordersRes.data);
+
+                const reviewsRes = await axios.get(`/api/reviews/user/${userId}/products`);
+                setReviewedProductIds(reviewsRes.data);
             } catch (error) {
-                console.error('주문 내역 불러오기 실패:', error);
+                console.error('불러오기 실패:', error);
             }
         };
 
-        if (userId) fetchOrders();
+        if (userId) fetchOrdersAndReviews();
     }, []);
 
     const statusMapping = {
@@ -59,6 +63,8 @@ const BuyerOrderHistory = () => {
                         <thead>
                             <tr>
                                 <th>상품이름</th>
+                                <th>구매수량</th>
+                                <th>개당 가격</th>
                                 <th>주문일자</th>
                                 <th>주문상태</th>
                                 <th>리뷰 등록</th>
@@ -66,30 +72,36 @@ const BuyerOrderHistory = () => {
                         </thead>
                         <tbody>
                         {orders.map(order => (
-                            order.items.map(item => (
+                            order.items.map(item => {
+                                const isReviewedProduct = reviewedProductIds.includes(item.productId);
+
+                                return (
                                 <tr key={item.id}>
                                     <td>
                                         <button className="product-link" onClick={() => navigate(`/products/${item.productId}`)}>
                                             {item.productName}
                                         </button>
                                     </td>
+                                    <td>{item.quantity}개</td>
+                                    <td>{item.price.toLocaleString()}원</td>
                                     <td>{new Date(order.orderDate).toLocaleDateString()}</td>
                                     <td>{statusMapping[item.status] || item.status}</td>
                                     <td>
-                                        {item.reviewed ? (
+                                        {isReviewedProduct ? (
                                             <button className="write-btn completed" disabled>작성 완료</button>
                                         ) : (
                                             <button
                                                 className={`write-btn ${item.status !== "DELIVERED" ? 'disabled' : ''}`}
                                                 onClick={() => navigate(`/review/write/${item.id}`)}
-                                                disabled={item.status !== "DELIVERED"}
+                                                disabled={item.status !== "DELIVERED" || isReviewedProduct}
                                             >
                                                 등록
                                             </button>
                                         )}
                                     </td>
                                 </tr>
-                            ))
+                                );
+                            })
                         ))}
                         </tbody>
                     </table>
