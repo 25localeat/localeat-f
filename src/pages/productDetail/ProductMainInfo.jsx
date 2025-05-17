@@ -32,8 +32,6 @@ const ProductMainInfo = ({
     const navigate = useNavigate();
 
     const onGroupBuy = () => {
-        const storedUser = localStorage.getItem('user');
-
          // URL 파라미터로 상품 정보 전달
          const queryParams = new URLSearchParams({
             productId: product.id,
@@ -70,16 +68,8 @@ const ProductMainInfo = ({
                         {product.isGroupBuy && (
                             <button
                                 className="group-buy-button"
-                                onClick={() => {
-                                    const storedUser = JSON.parse(localStorage.getItem('user'));
-                                    console.log('Current user data:', storedUser);
-                                    if (storedUser?.userRole === 'SELLER') {
-                                        alert('판매자는 공동구매를 이용할 수 없습니다.');
-                                        return;
-                                    }
-                                    onGroupBuy();
-                                }}
-                                disabled={false}
+                                onClick={onGroupBuy}
+                                disabled={user?.role === 'SELLER'}
                             >
                                 공동구매
                             </button>
