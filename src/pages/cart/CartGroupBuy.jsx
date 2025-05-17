@@ -31,17 +31,39 @@ const CartGroupBuy = () => {
                 `http://localhost:8080/api/cart`,
                 { headers: { 'X-USER-ID': userId } }
             );
-            // API DTO → UI용 객체로 매핑
-            const items = res.data.map(i => ({
-                id: i.cartItemId,
-                name: i.productName,
-                price: i.productPrice ?? i.price,
-                quantity: i.quantity,
-                addedAt: new Date(i.addedAt),
-                expiresAt: new Date(i.expiresAt),
-                checked: true
-            }));
-            setCartItems(items);
+            
+            // 각 장바구니 아이템의 상품 정보를 가져오기
+            const itemsWithProductInfo = await Promise.all(
+                res.data.map(async (item) => {
+                    try {
+                        // 상품 정보 가져오기
+                        const productRes = await axios.get(
+                            `http://localhost:8080/api/products/${item.productId}`
+                        );
+                        const product = productRes.data;
+                        
+                        return {
+                            id: item.cartItemId,
+                            groupBuyId: item.groupBuyId,
+                            productId: item.productId,
+                            name: product.productName,
+                            price: product.price,
+                            quantity: item.quantity,
+                            paymentStatus: item.paymentStatus,
+                            addedAt: new Date(item.addedAt),
+                            expiresAt: new Date(item.expiresAt),
+                            checked: true
+                        };
+                    } catch (err) {
+                        console.error('상품 정보 조회 실패:', err);
+                        return null;
+                    }
+                })
+            );
+            
+            // null이 아닌 아이템만 필터링
+            const validItems = itemsWithProductInfo.filter(item => item !== null);
+            setCartItems(validItems);
         } catch (err) {
             console.error('장바구니 불러오기 실패', err);
             alert('장바구니 불러오기 실패');
@@ -112,7 +134,17 @@ const CartGroupBuy = () => {
     // 선택된 항목 결제 처리
     const orderSelected = async () => {
         try {
-            const selected = cartItems.filter(item => item.checked && !expired[item.id]);
+            const selected = cartItems.filter(item => 
+                item.checked && 
+                !expired[item.id] && 
+                item.paymentStatus !== 'COMPLETED'
+            );
+            
+            if (selected.length === 0) {
+                alert('결제할 상품을 선택해주세요.');
+                return;
+            }
+
             for (const item of selected) {
                 await axios.post(
                     `http://localhost:8080/api/cart/${item.id}/pay`,
@@ -165,19 +197,25 @@ const CartGroupBuy = () => {
                                 <input
                                     type="checkbox"
                                     checked={item.checked}
-                                    disabled={expired[item.id]}
+                                    disabled={expired[item.id] || item.paymentStatus === 'COMPLETED'}
                                     onChange={() => toggleItem(item.id)}
                                 />
                             </td>
                             <td>{item.name}</td>
-                            <td>{item.price.toLocaleString()}원</td>
+                            <td>{item.price?.toLocaleString() ?? '0'}원</td>
                             <td>{item.quantity}</td>
-                            <td>{(item.price * item.quantity).toLocaleString()}원</td>
+                            <td>{(item.price * item.quantity)?.toLocaleString() ?? '0'}원</td>
                             <td style={expired[item.id] ? { color: 'gray' } : {}}>
-                                {expired[item.id] ? '만료됨' : timeLeft[item.id]}
+                                {expired[item.id] ? '만료됨' : 
+                                 item.paymentStatus === 'COMPLETED' ? '결제완료' : 
+                                 timeLeft[item.id]}
                             </td>
                             <td>
-                                <button className="delete-btn" onClick={() => confirmDelete(item.id)}>
+                                <button 
+                                    className="delete-btn" 
+                                    onClick={() => confirmDelete(item.id)}
+                                    disabled={item.paymentStatus === 'COMPLETED'}
+                                >
                                     삭제
                                 </button>
                             </td>
