@@ -2,14 +2,26 @@ import React from 'react';
 import './TabReview.css';
 
 const TabReview = ({ reviewData, sortBy, setSortBy }) => {
-    const sortedReviews = [...reviewData].sort((a, b) => {
-        if (sortBy === 'latest') {
-            return b.createdAt.localeCompare(a.createdAt);
-        } else if (sortBy === 'highest') {
-            return b.rating - a.rating;
-        }
-        return 0;
-    });
+    const storedUser = JSON.parse(localStorage.getItem("user") || "{}");
+    const userId = storedUser.userId;
+
+    function getSortedReviews() {
+        const myReviews = reviewData.filter(r => r.userId === userId);
+        const otherReviews = reviewData.filter(r => r.userId !== userId);
+
+        const sortedOthers = otherReviews.sort((a, b) => {
+            if (sortBy === 'latest') {
+                return b.createdAt.localeCompare(a.createdAt);
+            } else if (sortBy === 'highest') {
+                return b.rating - a.rating;
+            }
+            return 0;
+        });
+
+        return [...myReviews, ...sortedOthers];
+    }
+
+
 
     const averageRating = reviewData.length
         ? (reviewData.reduce((sum, r) => sum + r.rating, 0) / reviewData.length).toFixed(1)
@@ -62,13 +74,17 @@ const TabReview = ({ reviewData, sortBy, setSortBy }) => {
             </div>
 
             <ul className="review-list">
-                {sortedReviews.map((review) => (
+                {getSortedReviews().map((review) => (
                     <li key={review.id} className="review-item">
                         <div className="review-top">
+                            {review.userId === userId && (<div className="my-review-tag">내가 작성한 리뷰</div> )}
                             <div className="author-info">
                                 <div className="author-meta">
                                     <span className="author-id">
-                                        {review.userId.slice(0, 3) + '*'.repeat(review.userId.length - 3)}
+                                        {review.userId && review.userId.length > 3
+                                            ? review.userId.slice(0, 3) + '*'.repeat(review.userId.length - 3)
+                                            : review.userId
+                                        }
                                     </span>
                                     <span className="date">
                                         {new Date(review.createdAt).toLocaleString()}

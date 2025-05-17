@@ -83,7 +83,12 @@ const BuyerReviewManage = () => {
                         <tbody>
                             {reviews.map(review => (
                                 <tr key={review.id}>
-                                    <td>{review.productName}</td>
+                                    <td><button
+                                        className="product-link"
+                                        onClick={() => navigate(`/products/${review.productId}`)}
+                                    >
+                                        {review.productName}
+                                    </button></td>
                                     <td>
                                         {[1, 2, 3, 4, 5].map((s) => (
                                             <span key={s} className={`star-small ${review.rating >= s ? 'filled' : ''}`}>★</span>

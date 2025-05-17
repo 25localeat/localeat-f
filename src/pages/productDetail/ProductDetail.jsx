@@ -2,7 +2,6 @@ import React, {useEffect, useMemo, useState} from 'react';
 import ProductMainInfo from './ProductMainInfo';
 import TabReview from "./TabReview";
 import TabInquiry from "./TabInquiry";
-import tomatoImg from './tomato.png';
 import Popup from '../../components/Ui/Popup/Popup';
 import {useNavigate, useParams} from 'react-router-dom';
 import './ProductDetail.css'
@@ -103,16 +102,16 @@ const ProductDetail = () => {
 
     if (!product || !user) return <div>로딩 중...</div>;
 
-    // 1회 구매 시 적용되는 실제 가격 (B급은 10% 할인, A급은 그대로)
-    const purchasePrice = product.productgrade === 'B'
-        ? Math.floor(product.price * (1 - product.grade_discount_rate))
+    // B급 여부에 따라 1회 구매 단가 결정
+    const purchasePrice = product.productGrade === 'B'
+        ? Math.floor(product.price * (1 - product.gradeDiscountRate))
         : product.price;
 
 
     // 구독 시 할인 적용된 가격
     const subscribePrice = Math.floor(purchasePrice * (1 - product.subscriptionDiscountRate));
 
-    // 수량을 고려한 총 금액
+    // 수량 적용 총 금액 계산
     const isSubscribeSelected = purchaseType === 'subscribe';
     const finalPrice = isSubscribeSelected
         ? subscribePrice * quantity
@@ -176,15 +175,15 @@ const ProductDetail = () => {
             setShowPopup(true);
             return;
         }
+
+        const calculatedPrice = isSubscribeSelected ? subscribePrice : purchasePrice;
+
         try {
-            await axios.post('/api/orders', {
+            await axios.post('/api/orders/single', {
+                userId: user.userId,
                 productId: product.id,
                 quantity,
-                purchaseType,
-                ...(purchaseType === 'subscribe' && {
-                    deliveryCycle,
-                    deliveryPeriodInMonths
-                })
+                price: calculatedPrice  // 최종 가격 전송
             });
             setPopupType('paymentComplete');
             setShowPopup(true);
@@ -193,6 +192,7 @@ const ProductDetail = () => {
             alert('주문 중 오류가 발생했습니다.');
         }
     };
+
 
     const handleGroupBuy = () => {
         if (!user.isLoggedIn) {

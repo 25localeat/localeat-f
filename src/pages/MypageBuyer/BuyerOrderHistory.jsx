@@ -37,14 +37,6 @@ const BuyerOrderHistory = () => {
         DELIVERED: '배송 완료'
     };
 
-    const goToReviewForm = (orderItemId) => {
-        navigate(`/review/write/${orderItemId}`);
-    };
-
-    const goToProductDetail = (productId) => {
-        navigate(`/products/${productId}`);
-    };
-
     return (
         <div className="mypage-wrapper">
             <div className="page-header">마이페이지</div>
@@ -77,7 +69,7 @@ const BuyerOrderHistory = () => {
                             order.items.map(item => (
                                 <tr key={item.id}>
                                     <td>
-                                        <button className="product-link" onClick={() => goToProductDetail(item.productId)}>
+                                        <button className="product-link" onClick={() => navigate(`/products/${item.productId}`)}>
                                             {item.productName}
                                         </button>
                                     </td>
@@ -89,7 +81,7 @@ const BuyerOrderHistory = () => {
                                         ) : (
                                             <button
                                                 className={`write-btn ${item.status !== "DELIVERED" ? 'disabled' : ''}`}
-                                                onClick={() => goToReviewForm(item.id)}
+                                                onClick={() => navigate(`/review/write/${item.id}`)}
                                                 disabled={item.status !== "DELIVERED"}
                                             >
                                                 등록

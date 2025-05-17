@@ -1,5 +1,7 @@
 /*───────────────    리뷰 탭    ───────────────*/
-
+*{
+    font-family: 'Pretendard Variable', sans-serif;
+}
 .review-top-container {
     display: flex;
     justify-content: center;
@@ -115,7 +117,7 @@
 .review-list {
     list-style: none;
     padding: 0;
-    margin: 2rem auto;
+    margin: 1px auto;
     max-width: 1400px;
 }
 
@@ -125,11 +127,21 @@
 }
 
 .review-top {
-    display: flex;
+    display: block;
     justify-content: space-between;
     align-items: center;
 }
-
+.my-review-tag {
+    display: inline-block;
+    width: auto;
+    margin-bottom: 12px;
+    padding: 6px 6px;
+    background-color: #f0f0f0;
+    color: #03C75A;
+    border-radius: 3px;
+    font-size: 1rem;
+    font-weight: 500;
+}
 .author-info {
     display: flex;
     align-items: center;
