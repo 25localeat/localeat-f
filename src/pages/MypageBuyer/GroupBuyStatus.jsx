@@ -19,8 +19,10 @@ const GroupBuyStatus = () => {
             headers: { 'X-USER-ID': userId }
         })
             .then(res => {
+                console.log('공동구매 현황 응답:', res.data); // 응답 데이터 확인
                 setGroupBuys(res.data);
             })
+
             .catch(err => {
                 console.error('공동구매 현황 불러오기 실패', err);
                 alert('공동구매 현황 불러오기 실패');
