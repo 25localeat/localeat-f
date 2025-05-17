@@ -120,7 +120,6 @@ const CartGroupBuy = () => {
         }
 
         try {
-<<<<<<< Updated upstream
             // 주문 생성 API 호출 (POST /api/cart/order)
             await axios.post(
                 'http://localhost:8080/api/cart/order',
@@ -129,7 +128,7 @@ const CartGroupBuy = () => {
             );
 
             alert('주문이 완료되었습니다!');
-=======
+
             const selected = cartItems.filter(item =>
                 item.checked &&
                 !expired[item.id] &&
@@ -157,7 +156,6 @@ const CartGroupBuy = () => {
                 )
             );
 
->>>>>>> Stashed changes
             // 주문내역 페이지로 이동
             navigate('/mypage/buyer/orders');
         } catch (err) {
@@ -229,12 +227,8 @@ const CartGroupBuy = () => {
                     type={popupType}
                     onConfirm={async () => {
                         if (popupType === 'order') {
-<<<<<<< Updated upstream
                             await handleOrder();
                             closePopup();
-=======
-                            await orderSelected();
->>>>>>> Stashed changes
                         }
                     }}
                 />
