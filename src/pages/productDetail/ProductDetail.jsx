@@ -9,7 +9,7 @@ import axios from "../../components/api/axios";
 
 const ProductDetail = () => {
 
-    const { productId } = useParams();
+    const {productId} = useParams();
     const navigate = useNavigate();
 
     const [product, setProduct] = useState(null);
@@ -20,7 +20,7 @@ const ProductDetail = () => {
     const [wished, setWished] = useState(false);
     const [purchaseType, setPurchaseType] = useState('one-time');
     const [quantity, setQuantity] = useState(1);
-    const [deliveryCycle, setDeliveryCycle] = useState({ cycleType: 'WEEKLY', cycleValue: 1 });
+    const [deliveryCycle, setDeliveryCycle] = useState({cycleType: 'WEEKLY', cycleValue: 1});
     const [deliveryPeriodInMonths, setDeliveryPeriodInMonths] = useState(1);
 
     const [popupType, setPopupType] = useState('');
@@ -34,38 +34,94 @@ const ProductDetail = () => {
             : '/images/default.png';
     }, [product]);
 
-
+    // 로그인한 사용자 정보 불러오기
     useEffect(() => {
-            const fetchProduct = async () => {
-                try {
-                    const res = await axios.get(`/api/products/${productId}`);
-                    setProduct(res.data);
-                    setWished(res.data.wished);
-                } catch (err) {
-                    console.error('상품 정보를 불러오는데 실패했습니다.', err);
-                }
-            };
-
-            if (productId) fetchProduct();
-
-            // 실사용자 값 받아오기
         const storedUser = localStorage.getItem("user");
         if (storedUser) {
             try {
                 const parsedUser = JSON.parse(storedUser);
-                setUser({ ...parsedUser, isLoggedIn: true });
+                setUser({...parsedUser, isLoggedIn: true});
             } catch (err) {
                 console.warn("유저 정보 파싱 실패:", err);
-                setUser({ isLoggedIn: false });
+                setUser({isLoggedIn: false});
             }
         } else {
-            setUser({ isLoggedIn: false });
+            setUser({isLoggedIn: false});
+        }
+    }, []);
+
+    // 로그인된 사용자 기준 상품 정보 불러오기
+    useEffect(() => {
+        if (!productId || !user) return;
+
+        const fetchProduct = async () => {
+            try {
+                const res = await axios.get(`/api/products/${productId}`, {
+                    params: {userId: user.userId},
+                    headers: {Authorization: `Bearer ${localStorage.getItem('token')}`}
+                });
+
+                console.log(" 상품 응답 확인:", res.data);
+                setProduct(res.data);
+
+                const wishedValue = typeof res.data === 'object' && ('isWished' in res.data || 'wished' in res.data)
+                    ? (res.data.isWished ?? res.data.wished)
+                    : false;
+
+                setWished(wishedValue);
+            } catch (err) {
+                console.error(' 상품 정보 조회 실패:', err);
+            }
+        };
+
+        fetchProduct();
+    }, [productId, user]);
+
+    // 찜 토글 처리
+    const handleWishToggle = async () => {
+        if (!user.isLoggedIn) {
+            setPopupType('loginRequired');
+            setShowPopup(true);
+            return;
         }
 
+        try {
+            const res = await axios.post(`/api/wish/${product.id}`, null, {
+                params: {userId: user.userId}
+            });
+
+            console.log('찜 처리 응답:', res.data);
+            setWished(res.data.wished);
+        } catch (err) {
+            console.error('찜 처리 실패:', err);
+            alert('찜 처리 중 오류가 발생했습니다.');
+        }
+    };
+
+    // 리뷰 데이터 불러오기
+    useEffect(() => {
+        const fetchReviews = async () => {
+            try {
+                const res = await axios.get(`/api/reviews/product/${productId}`, {
+                    params: {
+                        sortBy: sortBy,
+                        currentUserId: user?.userId
+                    }
+                });
+                setReviewData(res.data);
+            } catch (error) {
+                console.error("리뷰 불러오기 실패:", error);
+            }
+        };
+        if (productId && user) fetchReviews();
+    }, [productId, user, sortBy]);
+
+    // 문의 더미 설정
+    useEffect(() => {
         setInquiries([
             {
                 inquiryId: 1,
-                user: { userId: 'buyer123' },
+                user: {userId: 'buyer123'},
                 createdAt: '2025-04-01T14:30:00',
                 category: '배송문의',
                 content: '언제쯤 배송되나요?',
@@ -73,16 +129,17 @@ const ProductDetail = () => {
             },
             {
                 inquiryId: 2,
-                user: { userId: 'moon987' },
+                user: {userId: 'moon987'},
                 createdAt: '2025-04-03T09:15:00',
                 category: '상품문의',
                 content: 'B급 상품은 상처가 많이 나 있나요?',
                 answer: '',
             },
         ]);
-
     }, [productId]);
 
+
+    // 리뷰
     useEffect(() => {
         const fetchReviews = async () => {
             try {
@@ -117,33 +174,6 @@ const ProductDetail = () => {
         ? subscribePrice * quantity
         : purchasePrice * quantity;
 
-    // 찜부분입니다.
-    const handleWishToggle = async () => {
-        if (!user.isLoggedIn) {
-            setPopupType('loginRequired');
-            setShowPopup(true);
-            return;
-        }
-
-        try {
-            const res = await axios.post(`/api/wish/${product.id}`, null, {
-                params: { userId: user.userId }
-            });
-            console.log('찜 처리 성공입니다. ', res.data);
-            setWished(res.data.wished); // 서버 응답으로 상태 갱신
-        } catch (err) {
-            if (err.response) {
-                console.error('서버 응답 데이터:', err.response.data);
-                console.error('상태 코드:', err.response.status);
-                console.error('헤더:', err.response.headers);
-            } else if (err.request) {
-                console.error(' 요청은 갔지만 응답이 없음:', err.request);
-            } else {
-                console.error(' 요청 생성 중 에러:', err.message);
-            }
-            alert('찜 처리 중 오류가 발생했습니다.');
-        }
-    };
 
     const handleCart = async () => {
         if (!user.isLoggedIn) {
@@ -218,7 +248,7 @@ const ProductDetail = () => {
     return (
         <div className="product-detail-page">
             <ProductMainInfo
-                product={{ ...product, imageUrl }}
+                product={{...product, imageUrl, wished}} // wished 상태를 product에도 반영해줘야 정상 작동.
                 user={user}
                 isWish={wished}
                 onWishToggle={handleWishToggle}
@@ -281,7 +311,7 @@ const ProductDetail = () => {
                 )}
 
                 {activeTab === 'inquiry' && (
-                    <TabInquiry inquiries={inquiries} user={user} setInquiries={setInquiries} />
+                    <TabInquiry inquiries={inquiries} user={user} setInquiries={setInquiries}/>
                 )}
 
             </div>

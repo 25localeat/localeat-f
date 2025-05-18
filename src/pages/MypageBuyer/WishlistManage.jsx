@@ -8,36 +8,81 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './WishlistManage.css';
 import Popup from '../../components/Ui/Popup/Popup';
+import axios from 'axios';
 
 const WishlistManage = () => {
     const navigate = useNavigate();
     const [wishlist, setWishlist] = useState([]);
     const [popupType, setPopupType] = useState(null);
-    const [targetIndex, setTargetIndex] = useState(null);
+    const [checkedItems, setCheckedItems] = useState([]);
 
+
+    // 수정 : 정여진
+    /**
+     * 현재 사용자의 찜 목록만 골라서 화면에 보여주도록 초기 설정을 하는 함수
+     */
     useEffect(() => {
-        const user = localStorage.getItem('currentUser');
-        const all = JSON.parse(localStorage.getItem('wishlist')) || [];
-        const filtered = all.filter(item => item.buyer === user);
-        setWishlist(filtered);
+        const user = JSON.parse(localStorage.getItem('user'));
+        if (!user) return;
+
+        axios.get(`/api/wish`, {
+            params: { userId: user.userId }
+        })
+            .then(res => {
+                setWishlist(res.data); // 서버에서 받은 찜 목록 배열
+            })
+            .catch(err => {
+                console.error("찜 목록 불러오기 실패:", err);
+                setWishlist([]);
+            });
     }, []);
 
-    const confirmDelete = (index) => {
-        setTargetIndex(index);
-        setPopupType('delete');
+    const toggleCheck = (index) => {
+        setCheckedItems(prev =>
+            prev.includes(index) ? prev.filter(i => i !== index) : [...prev, index]
+        );
     };
 
-    const deleteItem = () => {
-        const updated = [...wishlist];
-        updated.splice(targetIndex, 1);
-        setWishlist(updated);
-        localStorage.setItem('wishlist', JSON.stringify(updated));
-        setPopupType(null);
+    const confirmDelete = (index) => {
+        if (checkedItems.length > 0) {
+            setPopupType('delete');
+        }
     };
+
+    // 찜 지우기.
+    const deleteItems = async () => {
+        const user = JSON.parse(localStorage.getItem('user'));
+        if (!user) return;
+
+        const itemsToDelete = checkedItems.map(idx => wishlist[idx]);
+
+        try {
+            // 백엔드에 삭제 요청 (병렬 처리)
+            await Promise.all(
+                itemsToDelete.map(item =>
+                    axios.delete('/api/wish', {
+                        params: {
+                            userId: user.userId,
+                            productId: item.id // ← productId
+                        }
+                    })
+                )
+            );
+
+            // 상태에서 삭제한 항목 제거
+            const updated = wishlist.filter((_, idx) => !checkedItems.includes(idx));
+            setWishlist(updated);
+            setCheckedItems([]);
+            setPopupType(null);
+        } catch (err) {
+            console.error('찜 삭제 실패:', err);
+            alert('찜 삭제 중 오류가 발생했습니다.');
+        }
+    };
+
 
     const closePopup = () => {
         setPopupType(null);
-        setTargetIndex(null);
     };
 
     return (
@@ -58,6 +103,16 @@ const WishlistManage = () => {
 
                 <div className="container">
                     <h2 className="section-title">찜 관리</h2>
+                    <button
+                        className="delete-btn"
+                        onClick={confirmDelete}
+                        disabled={checkedItems.length === 0}
+                    >
+                        삭제
+                    </button>
+                    {wishlist.length === 0 ? (
+                        <div className="empty-message">찜한 상품이 없습니다.</div>
+                    ) : (
                     <table>
                         <thead>
                             <tr>
@@ -70,21 +125,24 @@ const WishlistManage = () => {
                                 <tr key={index}>
                                     <td>{item.productName}</td>
                                     <td>
-                                        <button className="delete-btn" onClick={() => confirmDelete(index)}>
-                                            삭제
-                                        </button>
+                                        <input
+                                            type="checkbox"
+                                            checked={checkedItems.includes(index)}
+                                            onChange={() => toggleCheck(index)}
+                                        />
                                     </td>
                                 </tr>
                             ))}
                         </tbody>
                     </table>
+                        )}
                 </div>
             </div>
 
             {popupType && (
                 <Popup
                     type="delete"
-                    onConfirm={deleteItem}
+                    onConfirm={deleteItems}
                     onCancel={closePopup}
                 />
             )}
