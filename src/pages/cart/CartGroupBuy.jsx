@@ -27,7 +27,7 @@ const CartGroupBuy = () => {
     const fetchCart = async () => {
         try {
             const res = await axios.get(
-                `http://localhost:8080/api/cart`,
+                `http://localhost:8080/api/group-buy-cart`,
                 { headers: { 'X-USER-ID': userId } }
             );
 
@@ -113,7 +113,7 @@ const CartGroupBuy = () => {
     const deleteItem = async () => {
         try {
             await axios.delete(
-                `http://localhost:8080/api/cart/${itemToDelete}`,
+                `http://localhost:8080/api/group-buy-cart/${itemToDelete}`,
                 { headers: { 'X-USER-ID': userId } }
             );
             await fetchCart();
@@ -143,9 +143,9 @@ const CartGroupBuy = () => {
         }
 
         try {
-            // 주문 생성 API 호출 (POST /api/cart/order)
+            // 주문 생성 API 호출 (POST /api/group-buy-cart/order)
             await axios.post(
-                'http://localhost:8080/api/cart/order',
+                'http://localhost:8080/api/group-buy-cart/order',
                 selectedIds, // body: [1,2,3,...]
                 { headers: { 'X-USER-ID': userId } }
             );

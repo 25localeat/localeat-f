@@ -116,48 +116,29 @@ const ProductDetail = () => {
         if (productId && user) fetchReviews();
     }, [productId, user, sortBy]);
 
-    // 문의 더미 설정
-    useEffect(() => {
-        setInquiries([
-            {
-                inquiryId: 1,
-                user: {userId: 'buyer123'},
-                createdAt: '2025-04-01T14:30:00',
-                category: '배송문의',
-                content: '언제쯤 배송되나요?',
-                answer: '내일 출고 예정입니다.',
-            },
-            {
-                inquiryId: 2,
-                user: {userId: 'moon987'},
-                createdAt: '2025-04-03T09:15:00',
-                category: '상품문의',
-                content: 'B급 상품은 상처가 많이 나 있나요?',
-                answer: '',
-            },
-        ]);
-    }, [productId]);
-
-
-    // 리뷰
-    useEffect(() => {
-        const fetchReviews = async () => {
-            try {
-                const res = await axios.get(`/api/reviews/product/${productId}`, {
-                    params: {
-                        sortBy: sortBy,
-                        currentUserId: user?.userId // 여기 추가입니다.
-                    }
-                });
-                setReviewData(res.data);
-            } catch (error) {
-                console.error("리뷰 불러오기 실패:", error);
-            }
-        };
-        if (productId && user) fetchReviews();
-    }, [productId, user, sortBy]);
-
     if (!product || !user) return <div>로딩 중...</div>;
+
+    // // 문의 더미 설정
+    // useEffect(() => {
+    //     setInquiries([
+    //         {
+    //             inquiryId: 1,
+    //             user: {userId: 'buyer123'},
+    //             createdAt: '2025-04-01T14:30:00',
+    //             category: '배송문의',
+    //             content: '언제쯤 배송되나요?',
+    //             answer: '내일 출고 예정입니다.',
+    //         },
+    //         {
+    //             inquiryId: 2,
+    //             user: {userId: 'moon987'},
+    //             createdAt: '2025-04-03T09:15:00',
+    //             category: '상품문의',
+    //             content: 'B급 상품은 상처가 많이 나 있나요?',
+    //             answer: '',
+    //         },
+    //     ]);
+    // }, [productId]);
 
     // B급 여부에 따라 1회 구매 단가 결정
     const purchasePrice = product.productGrade === 'B'
@@ -175,27 +156,55 @@ const ProductDetail = () => {
         : purchasePrice * quantity;
 
 
+    // 일반구매 전용 장바구니
     const handleCart = async () => {
         if (!user.isLoggedIn) {
             setPopupType('loginRequired');
             setShowPopup(true);
             return;
         }
+
         try {
-            await axios.post('/api/cart', {
+            await axios.post('/api/general-cart/items', {
                 productId: product.id,
                 quantity,
-                purchaseType,
-                ...(purchaseType === 'subscribe' && {
-                    deliveryCycle,
-                    deliveryPeriodInMonths
-                })
+                price: purchasePrice
+            }, {
+                headers: { userId: user.userId }
             });
+
+            setPopupType('cartAdded');
+            setShowPopup(true);
+        } catch (error) {
+            console.error('장바구니 추가 실패:', error);
+        }
+    };
+
+    // 구독 전용 장바구니
+    const handleSubscribeCart = async () => {
+        if (!user.isLoggedIn) {
+            setPopupType('loginRequired');
+            setShowPopup(true);
+            return;
+        }
+
+        try {
+            await axios.post('/api/general-cart/items', {
+                productId: product.id,
+                quantity,
+                price: subscribePrice,
+                purchaseType: 'subscribe',
+                deliveryCycle,
+                deliveryPeriodInMonths
+            }, {
+                headers: { userId: user.userId }
+            });
+
             setPopupType('cartAdded');
             setShowPopup(true);
         } catch (err) {
-            console.error('장바구니 추가 실패:', err);
-            alert('장바구니 담기 중 오류가 발생했습니다.');
+            console.error('구독 장바구니 추가 실패:', err);
+            alert('구독 장바구니 담기 중 오류가 발생했습니다.');
         }
     };
 
@@ -263,7 +272,7 @@ const ProductDetail = () => {
                 finalPrice={finalPrice}
                 subscribePrice={subscribePrice}
                 purchasePrice={purchasePrice}
-                onCart={handleCart}
+                onCart={isSubscribeSelected ? handleSubscribeCart : handleCart}
                 onOrder={handleOrder}
                 onGroupBuy={handleGroupBuy}
             />
