@@ -48,7 +48,8 @@ const Home = () => {
     }, []);
 
     const handleTagClick = (tagCode) => {
-        navigate(`${ROUTES.SEARCH}?tag=${tagCode}`);
+        const code = typeof tagCode === 'string' ? tagCode : String(tagCode.code || tagCode.name || '');
+        navigate(`${ROUTES.SEARCH}?tag=${encodeURIComponent(code)}`);
         window.scrollTo(0, 0);
     };
 
@@ -67,7 +68,7 @@ const Home = () => {
                     {regionTags.map((tag, index) => (
                         <div
                             key={index}
-                            onClick={() => handleTagClick(tag.code)}
+                            onClick={() => handleTagClick(String(tag.code))}
                             style={{ cursor: 'pointer' }}
                         >
                             <TagBadge label={tag.label} bg={tag.bg} color={tag.color} />

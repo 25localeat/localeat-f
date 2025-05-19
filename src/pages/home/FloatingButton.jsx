@@ -8,8 +8,8 @@ import './FloatingButton.css';
 
 const FloatingButton = ({ onClick }) => {
     return (
-        <button className="floating-button" onClick={onClick}>
-            알뜰상품<br />바로가기
+        <button onClick={() => onClick('B')} className="floating-button">
+            B급 상품 보기
         </button>
     );
 };

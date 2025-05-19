@@ -80,7 +80,6 @@ const WishlistManage = () => {
         }
     };
 
-
     const closePopup = () => {
         setPopupType(null);
     };

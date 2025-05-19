@@ -7,7 +7,7 @@
 */
 
 const tags = [
-    // 📍 지역 태그
+    // 지역 태그
     { type: 'region', label: '서울/경기/인천', code: 'SGI', bg: 'rgba(171, 78, 82, 0.1)', color: '#AB4E52' },
     { type: 'region', label: '강원', code: 'GANGWON', bg: 'rgba(244, 166, 136, 0.1)', color: '#F4A688' },
     { type: 'region', label: '충청', code: 'CHUNGCHEONG', bg: 'rgba(110, 75, 53, 0.1)', color: '#6E4B35' },
@@ -17,13 +17,12 @@ const tags = [
     { type: 'region', label: '경남/부산/울산', code: 'GNBNUL',bg: 'rgba(208, 176, 132, 0.1)', color: '#D0B084' },
     { type: 'region', label: '제주', code: 'JEJU',bg: 'rgba(189, 160, 203, 0.1)', color: '#BDA0CB' },
 
-    // 🏷️ 상품 등급 태그
-    { type: 'grade', label: 'GOOD', bg: 'rgba(255, 118, 152, 0.10)', color: '#FF7698' },
-    { type: 'grade', label: 'PERFECT', bg: 'rgba(120, 235, 180, 0.10)', color: '#00B894' },
-    { type: 'grade', label: 'EXCELLENT', bg: 'rgba(255, 216, 0, 0.10)', color: '#FFD600' },
+    // 🏷상품 등급 태그
+    { type: 'grade', label: 'GOOD', code: 'B', bg: 'rgba(255, 118, 152, 0.10)', color: '#FF7698' },
+    { type: 'grade', label: 'EXCELLENT', code: 'A', bg: 'rgba(255, 216, 0, 0.10)', color: '#FFD600' },
 
-    // 🤝 기타 태그
-    { type: 'etc', label: '공동', bg: 'rgba(190, 190, 190, 0.10)', color: '#999999' },
+    // 공동구매 태그
+    { type: 'etc', label: '공동', code: "GROUP_BUY",  bg: 'rgba(190, 190, 190, 0.10)', color: '#999999' },
 ];
 
 export default tags;
