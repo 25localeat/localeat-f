@@ -38,8 +38,7 @@ const Home = () => {
                         title: p.productName ?? '',
                         originalPrice: price,
                         discountPrice: Math.floor(price * (1 - rate)),
-                        tags: [regionTag], // ✅ ProductCard에 전달할 태그
-                        local: p.local
+                        tags: [regionTag] // ✅ ProductCard에 전달할 태그
                     };
                 });
 
@@ -80,7 +79,7 @@ const Home = () => {
 
             <div className="product-grid">
                 {products.map((product, i) => (
-                    <ProductCard key={i} {...product} />
+                    <ProductCard key={i} {...product}/>
                 ))}
             </div>
         </div>
