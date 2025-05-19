@@ -81,19 +81,35 @@ const Search = () => {
                     <div className="search-banner-placeholder">
                         <div className="search-message">
                             <h2>
-                                {keyword
-                                    ? `“${keyword}” 검색 결과입니다.`
-                                    : tag
-                                        ? `“${getRegionLabel(tag)}” 지역 상품 목록입니다.`
-                                        : '전체 상품 목록'}
+                                {keyword && `“${keyword}” 검색 결과입니다.`}
+                                {!keyword && tag === 'B' && 'B급 상품입니다.'}
+                                {!keyword && tag === 'GROUP_BUY' && '공동구매 상품입니다.'}
+                                {!keyword && tag && tag !== 'B' && tag !== 'GROUP_BUY' && `“${getRegionLabel(tag)}” 지역 상품 목록입니다.`}
+                                {!keyword && !tag && '전체 상품 목록'}
                             </h2>
-                            {!loading && products.length === 0 && (
+
+                            {/* 설명 텍스트 */}
+                            {!loading && products.length === 0 ? (
                                 <p>
                                     {keyword
                                         ? `“${keyword}”을(를) 찾을 수 없습니다. 다시 검색해주세요.`
-                                        : '해당 지역의 상품이 없습니다.'}
+                                        : '해당 조건에 맞는 상품이 없습니다.'}
+                                </p>
+                            ) : (
+                                !keyword && tag === 'B' && (
+                                    <p style={{ fontSize: '0.9rem', color: 'gray' }}>
+                                        유통기한 임박 또는 외관상 품질이 다소 떨어질 수 있으나,<br />
+                                        섭취 및 사용에는 전혀 문제가 없는 상품을 저렴한 가격에 제공합니다.
+                                    </p>
+                                )
+                            )}
+                            {!keyword && tag === 'GROUP_BUY' && (
+                                <p style={{ fontSize: '0.9rem', color: 'gray' }}>
+                                    공동구매는 다수의 소비자가 함께 참여하여<br />
+                                    보다 저렴한 가격으로 상품을 구매할 수 있는 방식입니다.
                                 </p>
                             )}
+
                         </div>
                     </div>
 
