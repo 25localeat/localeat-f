@@ -4,11 +4,12 @@
 작성자 : 김소망(프론트), 정여진(백엔드 일부 수정)
 기간 : 2025-04-24~
 */
-import React, {useEffect, useState} from 'react';
-import {useNavigate, useLocation} from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import './ProductRegister.css';
 import Popup from '../../components/Ui/Popup/Popup';
 import axios from 'axios';
+import NavbarSeller from '../../components/Navbar/NavbarSeller';
 
 const ProductRegister = () => {
 
@@ -86,14 +87,14 @@ const ProductRegister = () => {
     }, [editData]);
 
     const handleChange = (e) => {
-        const {name, value} = e.target;
-        setFormData({...formData, [name]: value});
+        const { name, value } = e.target;
+        setFormData({ ...formData, [name]: value });
     };
 
     const handleFileUpload = (e) => {
         const file = e.target.files[0];
         if (file) {
-            setFormData({...formData, image: file});
+            setFormData({ ...formData, image: file });
             const reader = new FileReader();
             reader.onloadend = () => {
                 setImagePreview(reader.result);
@@ -141,7 +142,7 @@ const ProductRegister = () => {
                 const imageFormData = new FormData();
                 imageFormData.append("file", formData.image);
                 await axios.post(`/api/images/${productId}`, imageFormData, {
-                    headers: {"Content-Type": "multipart/form-data"}
+                    headers: { "Content-Type": "multipart/form-data" }
                 });
             }
 
@@ -162,113 +163,116 @@ const ProductRegister = () => {
     };
 
     return (
-        <div className="register-container">
-            <h1 className="page-title">마이페이지</h1>
-            <div className="form-box">
-                <h2>{editData ? '상품 수정' : '상품 등록'}</h2>
-                <form onSubmit={handleSubmit}>
-                    <div className="row">
-                        <div>
-                            <select name="region" value={formData.region} onChange={handleChange}>
-                                {!editData && <option value="">지역</option>}
-                                {regionOptions.map((r) => (
-                                    <option key={r} value={r}>{LOCAL_TYPE_MAP[r] || r}</option>
-                                ))}
-                            </select>
-                            {errors.local && <div className="error-text">{errors.local}</div>}
-
-                        </div>
-                        <div>
-                            <select name="groupbuy" value={formData.groupbuy} onChange={handleChange}>
-                                {!editData && <option value="">공동구매</option>}
-                                {groupBuyOptions.map((g) => (
-                                    <option key={g} value={g}>{g}</option>
-                                ))}
-                            </select>
-                            {errors.isGroupBuy && <div className="error-text">{errors.isGroupBuy}</div>}
-                        </div>
-
-                        {/*공동구매를 할 때만 제한 인원 필드 노출*/}
-                        {formData.groupbuy === 'O' && (
+        <>
+            <NavbarSeller />
+            <div className="register-container">
+                <h1 className="page-title">마이페이지</h1>
+                <div className="form-box">
+                    <h2>{editData ? '상품 수정' : '상품 등록'}</h2>
+                    <form onSubmit={handleSubmit}>
+                        <div className="row">
                             <div>
-                                <select name="limit" value={formData.limit} onChange={handleChange}>
-                                    <option value="">공구제한인원</option>
-                                    {Array.from({length: 15}, (_, i) => (
-                                        <option key={i + 1}>{i + 1}</option>
+                                <select name="region" value={formData.region} onChange={handleChange}>
+                                    {!editData && <option value="">지역</option>}
+                                    {regionOptions.map((r) => (
+                                        <option key={r} value={r}>{LOCAL_TYPE_MAP[r] || r}</option>
                                     ))}
                                 </select>
-                                {errors.maxParticipants && <div className="error-text">{errors.maxParticipants}</div>}
+                                {errors.local && <div className="error-text">{errors.local}</div>}
+
                             </div>
-                        )}
-                        <select name="cheap" value={formData.cheap} onChange={handleChange}>
-                            {!editData && <option value="">알뜰상품</option>}
-                            {gradeBOptions.map((c) => (
-                                <option key={c} value={c}>{c}</option>
-                            ))}
-                        </select>
-                        {errors.productGrade && <div className="error-text">{errors.productGrade}</div>}
+                            <div>
+                                <select name="groupbuy" value={formData.groupbuy} onChange={handleChange}>
+                                    {!editData && <option value="">공동구매</option>}
+                                    {groupBuyOptions.map((g) => (
+                                        <option key={g} value={g}>{g}</option>
+                                    ))}
+                                </select>
+                                {errors.isGroupBuy && <div className="error-text">{errors.isGroupBuy}</div>}
+                            </div>
+
+                            {/*공동구매를 할 때만 제한 인원 필드 노출*/}
+                            {formData.groupbuy === 'O' && (
+                                <div>
+                                    <select name="limit" value={formData.limit} onChange={handleChange}>
+                                        <option value="">공구제한인원</option>
+                                        {Array.from({ length: 15 }, (_, i) => (
+                                            <option key={i + 1}>{i + 1}</option>
+                                        ))}
+                                    </select>
+                                    {errors.maxParticipants && <div className="error-text">{errors.maxParticipants}</div>}
+                                </div>
+                            )}
+                            <select name="cheap" value={formData.cheap} onChange={handleChange}>
+                                {!editData && <option value="">알뜰상품</option>}
+                                {gradeBOptions.map((c) => (
+                                    <option key={c} value={c}>{c}</option>
+                                ))}
+                            </select>
+                            {errors.productGrade && <div className="error-text">{errors.productGrade}</div>}
+
+                            <input
+                                type="number"
+                                name="price"
+                                placeholder="가격"
+                                value={formData.price}
+                                onChange={handleChange}
+                            />
+                            {errors.price && <div className="error-text">{errors.price}</div>}
+                        </div>
+
+                        <div className="upload-box">
+                            <div className="image-upload">
+                                <input type="file" id="fileUpload" onChange={handleFileUpload} hidden />
+                                <label htmlFor="fileUpload" className="image-box">
+                                    {imagePreview ? (
+                                        <img src={imagePreview} alt="미리보기" />
+                                    ) : (
+                                        <>
+                                            <img src={require('./camera.png')} alt="카메라 아이콘" className="camera-icon" />
+                                            <div>대표 사진 올리기</div>
+                                        </>
+                                    )}
+                                </label>
+                            </div>
+                        </div>
+
 
                         <input
-                            type="number"
-                            name="price"
-                            placeholder="가격"
-                            value={formData.price}
+                            type="text"
+                            name="name"
+                            placeholder="상품 이름"
+                            value={formData.name}
                             onChange={handleChange}
+                            className="input-text"
                         />
-                        {errors.price && <div className="error-text">{errors.price}</div>}
-                    </div>
+                        {errors.productName && <div className="error-text">{errors.productName}</div>}
 
-                    <div className="upload-box">
-                        <div className="image-upload">
-                            <input type="file" id="fileUpload" onChange={handleFileUpload} hidden/>
-                            <label htmlFor="fileUpload" className="image-box">
-                                {imagePreview ? (
-                                    <img src={imagePreview} alt="미리보기"/>
-                                ) : (
-                                    <>
-                                        <img src={require('./camera.png')} alt="카메라 아이콘" className="camera-icon"/>
-                                        <div>대표 사진 올리기</div>
-                                    </>
-                                )}
-                            </label>
-                        </div>
-                    </div>
+                        <textarea
+                            name="description"
+                            placeholder="상세 설명 내용 입력"
+                            value={formData.description}
+                            onChange={handleChange}
+                            className="textarea-box"
+                        />
+                        {errors.description && <div className="error-text">{errors.description}</div>}
 
+                        <button type="submit" className="submit-btn">
+                            {editData ? '수정 완료' : '등록하기'}
+                        </button>
+                    </form>
 
-                    <input
-                        type="text"
-                        name="name"
-                        placeholder="상품 이름"
-                        value={formData.name}
-                        onChange={handleChange}
-                        className="input-text"
+                </div>
+
+                {popupType && (
+                    <Popup
+                        type={popupType}
+                        onCancel={closePopup}
+                        onConfirm={closePopup}
                     />
-                    {errors.productName && <div className="error-text">{errors.productName}</div>}
-
-                    <textarea
-                        name="description"
-                        placeholder="상세 설명 내용 입력"
-                        value={formData.description}
-                        onChange={handleChange}
-                        className="textarea-box"
-                    />
-                    {errors.description && <div className="error-text">{errors.description}</div>}
-
-                    <button type="submit" className="submit-btn">
-                        {editData ? '수정 완료' : '등록하기'}
-                    </button>
-                </form>
-
+                )}
             </div>
-
-            {popupType && (
-                <Popup
-                    type={popupType}
-                    onCancel={closePopup}
-                    onConfirm={closePopup}
-                />
-            )}
-        </div>
+        </>
     );
 };
 
