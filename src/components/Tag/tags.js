@@ -11,7 +11,7 @@ const tags = [
     { type: 'region', label: '서울/경기/인천', code: 'SGI', bg: 'rgba(171, 78, 82, 0.1)', color: '#AB4E52' },
     { type: 'region', label: '강원', code: 'GANGWON', bg: 'rgba(244, 166, 136, 0.1)', color: '#F4A688' },
     { type: 'region', label: '충청', code: 'CHUNGCHEONG', bg: 'rgba(110, 75, 53, 0.1)', color: '#6E4B35' },
-    { type: 'region', label: '전북',code: 'CHUNGCHEONG', bg: 'rgba(164, 215, 146, 0.1)', color: '#A4D792' },
+    { type: 'region', label: '전북',code: 'JEONBUK', bg: 'rgba(164, 215, 146, 0.1)', color: '#A4D792' },
     { type: 'region', label: '전남/광주',code: 'JNGJ', bg: 'rgba(0, 178, 169, 0.1)', color: '#00B2A9' },
     { type: 'region', label: '대구/경북',code: 'DGGB', bg: 'rgba(116, 139, 171, 0.1)', color: '#748BAB' },
     { type: 'region', label: '경남/부산/울산', code: 'GNBNUL',bg: 'rgba(208, 176, 132, 0.1)', color: '#D0B084' },

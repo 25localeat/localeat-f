@@ -120,6 +120,10 @@ background-color: rgba(0, 0, 0, 0.65) !important;
 font-weight: bold;
 }
 
+.jgb-tag-item.selected .tag-badge {
+    font-weight: bold !important;
+}
+
 .jgb-quantity-selector {
 display: flex;
 align-items: center;

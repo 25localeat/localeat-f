@@ -105,14 +105,14 @@ display: inline-block;
 
 /* 클릭 시 효과 */
 .cgb-tag-item.selected {
-background-color: rgba(0, 0, 0, 0.65) !important;
-font-weight: bold;
+    font-weight: bold;
 }
 
 /* TagBadge 내부의 .tag가 있다면, 해당 요소에 스타일을 적용하는 방법 */
-.cgb-tag-item.selected .tag {
-background-color: rgba(0, 0, 0, 0.65) !important;
-font-weight: bold;
+.cgb-tag-item.selected .tag-badge {
+    font-weight: bold;
+    font-family: 'Pretendard', sans-serif;
+    letter-spacing: -0.5px;
 }
 
 .cgb-quantity-selector {
@@ -156,8 +156,7 @@ font-family: 'Pretendard', sans-serif;
 background: #f5f5f5;
 }
 
-.cgb-input-box,
-.cgb-input-box[readonly] {
+.cgb-section > .cgb-input-box {
   width: 530px;
   height: 66px;
   flex-shrink: 0;
@@ -168,9 +167,20 @@ background: #f5f5f5;
   padding-left: 20px;
   color: #000;
   background-color: #ffffff;
+  font-size: 18px;
+  font-family: 'Pretendard', sans-serif;
+  box-sizing: border-box;
+}
+
+.cgb-section > input[type="date"].cgb-input-box {
+  height: 66px;
 }
 
 .cgb-button-wrapper {
 text-align: right;
 margin-top: 30px;
+}
+
+.highlighted-tag {
+  font-weight: bold;
 }

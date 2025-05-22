@@ -13,25 +13,41 @@ import { getTagsByType } from '../../components/Tag/tags';
 import axios from 'axios';
 import { useLocation } from 'react-router-dom';
 
-const RegionTags = ({ tags }) => {
-    const [selectedIndex, setSelectedIndex] = useState(null);
+// 영어 지역명과 한글 태그명 매핑
+const localMap = {
+    'SGI': '서울/경기/인천',
+    'GANGWON': '강원',
+    'CHUNGCHEONG': '충청',
+    'JEONBUK': '전북',
+    'JNGJ': '전남/광주',
+    'DGGB': '대구/경북',
+    'GNBNUL': '경남/부산/울산',
+    'JEJU': '제주'
+};
 
+const RegionTags = ({ tags, local }) => {
+    const [selectedIndex, setSelectedIndex] = useState(null);
+    const localKorean = localMap[local] || local;
+    const normalize = str => (str || '').trim().replace(/／/g, '/');
     const handleClick = (index) => {
         setSelectedIndex(index === selectedIndex ? null : index);
     };
-
     return (
         <div className="jgb-region-tags-wrapper">
             <div className="jgb-region-tags">
-                {tags.map((tag, index) => (
-                    <div key={index} onClick={() => handleClick(index)}>
-                        <TagBadge
-                            label={tag.label}
-                            bg={tag.bg}
-                            color={tag.color}
-                        />
-                    </div>
-                ))}
+                {tags.map((tag, index) => {
+                    const isLocalTag = normalize(tag.label) === normalize(localKorean);
+                    return (
+                        <div key={index} onClick={() => handleClick(index)}>
+                            <TagBadge
+                                label={tag.label}
+                                bg={isLocalTag ? tag.bg.replace(/0\.[0-9]+\)/, '1)') : tag.bg}
+                                color={isLocalTag ? '#000' : tag.color}
+                                style={isLocalTag ? { fontWeight: 'bold' } : {}}
+                            />
+                        </div>
+                    );
+                })}
             </div>
         </div>
     );
@@ -95,7 +111,7 @@ const JoinGroupBuy = () => {
                 <div className="jgb-left-section">
                     <div className="jgb-section">
                         <p className="jgb-section-title">지역 선택</p>
-                        <RegionTags tags={regionTags} />
+                        <RegionTags tags={regionTags} local={local} />
                     </div>
 
                     <div className="jgb-section">
