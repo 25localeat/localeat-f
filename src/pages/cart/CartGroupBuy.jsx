@@ -27,7 +27,7 @@ const CartGroupBuy = () => {
     const fetchCart = async () => {
         try {
             const res = await axios.get(
-                `http://localhost:8080/api/cart`,
+                `http://localhost:8080/api/group-buy-cart`,
                 { headers: { 'X-USER-ID': userId } }
             );
 
