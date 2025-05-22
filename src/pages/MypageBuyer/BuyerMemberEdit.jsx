@@ -1,28 +1,64 @@
 /* 
-파일명 : MemberEdit.jsx
-파일설명 : 로컬잇 웹사이트의 구매자 마이페이지/화원정보수정 UI
+파일명 : BuyerMemberEdit.jsx
+파일설명 : 로컬잇 웹사이트의 구매자 마이페이지/회원정보수정 UI
 작성자 : 김소망
 기간 : 2025-04-25~
 */
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import './BuyerMemberEdit.css';
 import Popup from '../../components/Ui/Popup/Popup';
 
 const BuyerMemberEdit = () => {
     const navigate = useNavigate();
+
     const [memberInfo, setMemberInfo] = useState({
-        id: 'asddf',
-        name: '로컬잇',
-        businessNumber: '123-45-67890',
-        email: 'local@naver.com',
-        password: '1234',
-        region: ''
+        id: '',
+        name: '',
+        phoneNumber: '',
+        email: '',
+        password: '',
+        region: '',
+        address: ''
     });
 
     const [editMode, setEditMode] = useState({});
     const [popupType, setPopupType] = useState(null);
+
+    // ✅ 사용자 정보 로딩
+    useEffect(() => {
+        const user = JSON.parse(localStorage.getItem('user'));
+        const userId = user?.userId;
+
+        if (!userId) {
+            alert('로그인이 필요합니다.');
+            navigate('/login');
+            return;
+        }
+
+        axios.get('/api/consumer/profile', { params: { userId } })
+            .then(res => {
+                const data = typeof res.data === 'string' ? JSON.parse(res.data) : res.data;
+
+                console.log("✅ 파싱된 응답:", data);
+
+                setMemberInfo({
+                    id: data.userId,
+                    name: data.name,
+                    phoneNumber: data.phone,
+                    email: data.email,
+                    password: '',
+                    region: data.local || '',
+                    address: data.address || ''
+                });
+            })
+            .catch(err => {
+                console.error(err);
+                alert('회원 정보를 불러오지 못했습니다.');
+            });
+    }, [navigate]);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -33,9 +69,27 @@ const BuyerMemberEdit = () => {
         setEditMode(prev => ({ ...prev, [field]: !prev[field] }));
     };
 
-    const handleSave = () => {
-        setPopupType('edit');
-        setEditMode({});
+    // ✅ 정보 저장
+    const handleSave = async () => {
+        const user = JSON.parse(localStorage.getItem('user'));
+        const userId = user?.userId;
+
+        try {
+            await axios.put(`/api/consumer/profile?userId=${userId}`, {
+                name: memberInfo.name,
+                phone: memberInfo.phoneNumber,
+                email: memberInfo.email,
+                address: memberInfo.address,
+                local: memberInfo.region,
+                password: memberInfo.password
+            });
+
+            setPopupType('edit');
+            setEditMode({});
+        } catch (error) {
+            console.error(error);
+            setPopupType('edit-error');
+        }
     };
 
     const closePopup = () => {
@@ -71,9 +125,7 @@ const BuyerMemberEdit = () => {
                                 <td>
                                     {editMode.name ? (
                                         <input name="name" value={memberInfo.name} onChange={handleChange} />
-                                    ) : (
-                                        memberInfo.name
-                                    )}
+                                    ) : memberInfo.name}
                                 </td>
                                 <td><button className="edit-btn" onClick={() => toggleEdit('name')}>변경</button></td>
                             </tr>
@@ -82,9 +134,7 @@ const BuyerMemberEdit = () => {
                                 <td>
                                     {editMode.phoneNumber ? (
                                         <input name="phoneNumber" value={memberInfo.phoneNumber} onChange={handleChange} />
-                                    ) : (
-                                        memberInfo.phoneNumber
-                                    )}
+                                    ) : memberInfo.phoneNumber}
                                 </td>
                                 <td><button className="edit-btn" onClick={() => toggleEdit('phoneNumber')}>변경</button></td>
                             </tr>
@@ -93,9 +143,7 @@ const BuyerMemberEdit = () => {
                                 <td>
                                     {editMode.email ? (
                                         <input name="email" value={memberInfo.email} onChange={handleChange} />
-                                    ) : (
-                                        memberInfo.email
-                                    )}
+                                    ) : memberInfo.email}
                                 </td>
                                 <td><button className="edit-btn" onClick={() => toggleEdit('email')}>변경</button></td>
                             </tr>
@@ -104,32 +152,41 @@ const BuyerMemberEdit = () => {
                                 <td>
                                     {editMode.password ? (
                                         <input name="password" value={memberInfo.password} onChange={handleChange} />
-                                    ) : (
-                                        memberInfo.password
-                                    )}
+                                    ) : '••••••'}
                                 </td>
                                 <td><button className="edit-btn" onClick={() => toggleEdit('password')}>변경</button></td>
                             </tr>
                             <tr>
                                 <td className="label-cell">주소</td>
                                 <td>
+                                    {editMode.address ? (
+                                        <input name="address" value={memberInfo.address} onChange={handleChange} />
+                                    ) : memberInfo.address}
+                                </td>
+                                <td><button className="edit-btn" onClick={() => toggleEdit('address')}>변경</button></td>
+                            </tr>
+                            <tr>
+                                <td className="label-cell">지역</td>
+                                <td>
                                     <select name="region" value={memberInfo.region} onChange={handleChange}>
                                         <option value="">지역 선택</option>
-                                        <option>서울/경기/인천</option>
-                                        <option>강원</option>
-                                        <option>충청</option>
-                                        <option>전북</option>
-                                        <option>전남/광주</option>
-                                        <option>대구/경북</option>
-                                        <option>경남/부산/울산</option>
-                                        <option>제주</option>
+                                        <option value="SGI">서울/경기/인천</option>
+                                        <option value="GANGWON">강원</option>
+                                        <option value="CHUNGCHEONG">충청</option>
+                                        <option value="JEONBUK">전북</option>
+                                        <option value="JNGJ">전남/광주</option>
+                                        <option value="DGGB">대구/경북</option>
+                                        <option value="GNBNUL">경남/부산/울산</option>
+                                        <option value="JEJU">제주</option>
                                     </select>
                                 </td>
                                 <td><button className="edit-btn" onClick={() => toggleEdit('region')}>변경</button></td>
                             </tr>
                         </tbody>
                     </table>
+
                     <button className="save-btn" onClick={handleSave}>완료</button>
+
                     {popupType && (
                         <Popup type={popupType} onConfirm={closePopup} onCancel={closePopup} />
                     )}
