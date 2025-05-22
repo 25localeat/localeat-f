@@ -41,7 +41,7 @@ const NavbarSeller = () => {
     return (
         <header className="navbar">
             <div className="navbar-inner">
-                <Link className="logo" to="/">
+                <Link className="logo" to="/SellerMypage">
                     <span className="logo-green">Local</span>
                     <span className="logo-pink">E</span>
                     <span className="logo-green">at</span>
@@ -68,9 +68,6 @@ const NavbarSeller = () => {
                         style={{ cursor: 'pointer' }}
                     />
                 </div>
-                <nav className="menu">
-                    <Link to="/SellerMypage" className="menu-item">마이페이지</Link>
-                </nav>
 
                 <div className="icons">
                     <Link to="/login">
