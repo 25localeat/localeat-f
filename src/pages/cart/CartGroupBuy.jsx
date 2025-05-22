@@ -210,13 +210,14 @@ const CartGroupBuy = () => {
                                         timeLeft[item.id]}
                             </td>
                             <td>
-                                <button
-                                    className="delete-btn"
-                                    onClick={() => confirmDelete(item.id)}
-                                    disabled={item.paymentStatus === 'COMPLETED'}
-                                >
-                                    삭제
-                                </button>
+                                {expired[item.id] && (
+                                    <button
+                                        className="delete-btn"
+                                        onClick={() => confirmDelete(item.id)}
+                                    >
+                                        삭제
+                                    </button>
+                                )}
                             </td>
                         </tr>
                     ))}
