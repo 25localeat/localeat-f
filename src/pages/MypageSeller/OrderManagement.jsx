@@ -7,6 +7,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './OrderManagement.css';
 import Popup from '../../components/Ui/Popup/Popup';
+import NavbarSeller from '../../components/Navbar/NavbarSeller';
 
 const OrderManage = () => {
     const [orders, setOrders] = useState([]);
@@ -42,74 +43,77 @@ const OrderManage = () => {
     const filteredOrders = orders.filter(o => o.productName === selectedProduct);
 
     return (
-        <div className="mypage-wrapper">
-            <div className="page-header">마이페이지</div>
-            <div className="mypage-body">
-                <div className="sidebar">
-                    <ul>
-                        <li onClick={() => navigate('/SellerMypage')}>상품 목록</li>
-                        <li className="active">주문 관리</li>
-                        <li onClick={() => navigate('/mypage/member-edit')}>회원 정보 수정</li>
-                    </ul>
-                </div>
+        <>
+            <NavbarSeller />
+            <div className="mypage-wrapper">
+                <div className="page-header">마이페이지</div>
+                <div className="mypage-body">
+                    <div className="sidebar">
+                        <ul>
+                            <li onClick={() => navigate('/SellerMypage')}>상품 목록</li>
+                            <li className="active">주문 관리</li>
+                            <li onClick={() => navigate('/mypage/member-edit')}>회원 정보 수정</li>
+                        </ul>
+                    </div>
 
-                <div className="container">
-                    <h2 className="section-title">주문 관리</h2>
+                    <div className="container">
+                        <h2 className="section-title">주문 관리</h2>
 
-                    <select
-                        className="dropdown"
-                        value={selectedProduct}
-                        onChange={(e) => setSelectedProduct(e.target.value)}
-                    >
-                        {products.map(p => (
-                            <option key={p.id} value={p.name}>{p.name}</option>
-                        ))}
-                    </select>
-
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>상품이름</th>
-                                <th>공동구매</th>
-                                <th>구독</th>
-                                <th>주문자</th>
-                                <th>주문상태</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {filteredOrders.map((o, idx) => (
-                                <tr key={idx}>
-                                    <td>{o.productName}</td>
-                                    <td>{o.groupbuy}</td>
-                                    <td>{o.subscribe}</td>
-                                    <td>{o.buyer}</td>
-                                    <td>
-                                        <select
-                                            value={o.status}
-                                            onChange={(e) => handleChangeStatus(idx, e.target.value)}
-                                        >
-                                            {statusOptions.map(opt => (
-                                                <option key={opt} value={opt}>{opt}</option>
-                                            ))}
-                                        </select>
-                                    </td>
-                                </tr>
+                        <select
+                            className="dropdown"
+                            value={selectedProduct}
+                            onChange={(e) => setSelectedProduct(e.target.value)}
+                        >
+                            {products.map(p => (
+                                <option key={p.id} value={p.name}>{p.name}</option>
                             ))}
-                        </tbody>
-                    </table>
+                        </select>
 
-                    <button className="complete-btn" onClick={handleSubmit}>완료</button>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>상품이름</th>
+                                    <th>공동구매</th>
+                                    <th>구독</th>
+                                    <th>주문자</th>
+                                    <th>주문상태</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {filteredOrders.map((o, idx) => (
+                                    <tr key={idx}>
+                                        <td>{o.productName}</td>
+                                        <td>{o.groupbuy}</td>
+                                        <td>{o.subscribe}</td>
+                                        <td>{o.buyer}</td>
+                                        <td>
+                                            <select
+                                                value={o.status}
+                                                onChange={(e) => handleChangeStatus(idx, e.target.value)}
+                                            >
+                                                {statusOptions.map(opt => (
+                                                    <option key={opt} value={opt}>{opt}</option>
+                                                ))}
+                                            </select>
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
 
-                    {popupType && (
-                        <Popup
-                            type={popupType}
-                            onCancel={closePopup}
-                            onConfirm={closePopup}
-                        />
-                    )}
+                        <button className="complete-btn" onClick={handleSubmit}>완료</button>
+
+                        {popupType && (
+                            <Popup
+                                type={popupType}
+                                onCancel={closePopup}
+                                onConfirm={closePopup}
+                            />
+                        )}
+                    </div>
                 </div>
             </div>
-        </div>
+        </>
     );
 };
 

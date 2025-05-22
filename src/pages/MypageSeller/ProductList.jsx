@@ -5,10 +5,11 @@
 기간 : 2025-04-24~
 */
 import React, { useEffect, useState } from 'react';
-import {useLocation, useNavigate} from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import './ProductList.css';
 import Popup from '../../components/Ui/Popup/Popup';
 import axios from "axios";
+import NavbarSeller from '../../components/Navbar/NavbarSeller';
 
 function ProductList() {
     const [products, setProducts] = useState([]);
@@ -75,66 +76,69 @@ function ProductList() {
     }, []);
 
     return (
-        <div className="mypage-wrapper">
-            <div className="page-header">마이페이지</div>
+        <>
+            <NavbarSeller />
+            <div className="mypage-wrapper">
+                <div className="page-header">마이페이지</div>
 
-            <div className="mypage-body">
-                <div className="sidebar">
-                    <ul>
-                        <li className="active">상품 목록</li>
-                        <li onClick={() => navigate('/mypage/orders')}>주문 관리</li>
-                        <li onClick={() => navigate('/mypage/member-edit')}>회원 정보 수정</li>
-                    </ul>
-                </div>
-
-                <div className="container">
-                    <h2 className="section-title">상품 목록</h2>
-
-                    <div className="section-header">
-                        <button className="register-btn" onClick={() => navigate('/mypage/register')}>등록하기</button>
+                <div className="mypage-body">
+                    <div className="sidebar">
+                        <ul>
+                            <li className="active">상품 목록</li>
+                            <li onClick={() => navigate('/mypage/orders')}>주문 관리</li>
+                            <li onClick={() => navigate('/mypage/member-edit')}>회원 정보 수정</li>
+                        </ul>
                     </div>
 
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>상품이름</th>
-                                <th>공동구매</th>
-                                <th>알뜰상품</th>
-                                <th>지역</th>
-                                <th>가격</th>
-                                <th>등록일</th>
-                                <th>수정</th>
-                                <th>삭제</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {products.map((item, index) => (
-                                <tr key={index}>
-                                    <td>{item.productName}</td>
-                                    <td>{item.isGroupBuy  ? 'O' : 'X'}</td>
-                                    <td>{item.productGrade}</td>
-                                    <td>{localTypeToLabel[item.local] || item.local}</td>
-                                    <td>{item.price != null ? item.price.toLocaleString() + '원' : '가격 미정'}</td>
-                                    <td>
-                                        {item.createAt ? new Date(item.createAt).toLocaleDateString() : '등록일 없음'}
-                                    </td>
-                                    <td><button className="modify-btn" onClick={() => handleEdit(item)}>수정</button></td>
-                                    <td><button className="delete-btn" onClick={() => openDeletePopup(item.id)}>삭제</button></td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+                    <div className="container">
+                        <h2 className="section-title">상품 목록</h2>
 
-            {popupType === 'delete' && (
-                <Popup
-                    type="delete"
-                    onCancel={closePopup}
-                    onConfirm={deleteProduct}
-                />
-            )}
-        </div>
+                        <div className="section-header">
+                            <button className="register-btn" onClick={() => navigate('/mypage/register')}>등록하기</button>
+                        </div>
+
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>상품이름</th>
+                                    <th>공동구매</th>
+                                    <th>알뜰상품</th>
+                                    <th>지역</th>
+                                    <th>가격</th>
+                                    <th>등록일</th>
+                                    <th>수정</th>
+                                    <th>삭제</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {products.map((item, index) => (
+                                    <tr key={index}>
+                                        <td>{item.productName}</td>
+                                        <td>{item.isGroupBuy ? 'O' : 'X'}</td>
+                                        <td>{item.productGrade}</td>
+                                        <td>{localTypeToLabel[item.local] || item.local}</td>
+                                        <td>{item.price != null ? item.price.toLocaleString() + '원' : '가격 미정'}</td>
+                                        <td>
+                                            {item.createAt ? new Date(item.createAt).toLocaleDateString() : '등록일 없음'}
+                                        </td>
+                                        <td><button className="modify-btn" onClick={() => handleEdit(item)}>수정</button></td>
+                                        <td><button className="delete-btn" onClick={() => openDeletePopup(item.id)}>삭제</button></td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                {popupType === 'delete' && (
+                    <Popup
+                        type="delete"
+                        onCancel={closePopup}
+                        onConfirm={deleteProduct}
+                    />
+                )}
+            </div>
+        </>
     );
 }
 
