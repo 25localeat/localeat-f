@@ -79,11 +79,8 @@ const ProductDetail = () => {
 
     // 찜 토글 처리
     const handleWishToggle = async () => {
-        if (!user.isLoggedIn) {
-            setPopupType('loginRequired');
-            setShowPopup(true);
-            return;
-        }
+        if (!user.isLoggedIn) return handlePopup('loginRequired');
+        if (!isRegionMatched) return handleBlocked();
 
         try {
             const res = await axios.post(`/api/wish/${product.id}`, null, {
@@ -141,28 +138,17 @@ const ProductDetail = () => {
     // }, [productId]);
 
     // B급 여부에 따라 1회 구매 단가 결정
-    const purchasePrice = product.productGrade === 'B'
-        ? Math.floor(product.price * (1 - product.gradeDiscountRate))
-        : product.price;
-
-
+    const purchasePrice = product.productGrade === 'B' ? Math.floor(product.price * (1 - product.gradeDiscountRate)) : product.price;
     // 구독 시 할인 적용된 가격
     const subscribePrice = Math.floor(purchasePrice * (1 - product.subscriptionDiscountRate));
-
     // 수량 적용 총 금액 계산
     const isSubscribeSelected = purchaseType === 'subscribe';
-    const finalPrice = isSubscribeSelected
-        ? subscribePrice * quantity
-        : purchasePrice * quantity;
-
+    const finalPrice = isSubscribeSelected ? subscribePrice * quantity : purchasePrice * quantity;
 
     // 일반구매 전용 장바구니
     const handleCart = async () => {
-        if (!user.isLoggedIn) {
-            setPopupType('loginRequired');
-            setShowPopup(true);
-            return;
-        }
+        if (!user.isLoggedIn) return handlePopup('loginRequired');
+        if (!isRegionMatched) return handleBlocked();
 
         try {
             await axios.post('/api/general-cart/items', {
@@ -182,11 +168,8 @@ const ProductDetail = () => {
 
     // 구독 전용 장바구니
     const handleSubscribeCart = async () => {
-        if (!user.isLoggedIn) {
-            setPopupType('loginRequired');
-            setShowPopup(true);
-            return;
-        }
+        if (!user.isLoggedIn) return handlePopup('loginRequired');
+        if (!isRegionMatched) return handleBlocked();
 
         try {
             await axios.post('/api/general-cart/items', {
@@ -209,11 +192,8 @@ const ProductDetail = () => {
     };
 
     const handleOrder = async () => {
-        if (!user.isLoggedIn) {
-            setPopupType('loginRequired');
-            setShowPopup(true);
-            return;
-        }
+        if (!user.isLoggedIn) return handlePopup('loginRequired');
+        if (!isRegionMatched) return handleBlocked();
 
         const calculatedPrice = isSubscribeSelected ? subscribePrice : purchasePrice;
 
@@ -233,19 +213,39 @@ const ProductDetail = () => {
     };
 
 
+// 지역 불일치 or 미로그인 예외 처리 포함
     const handleGroupBuy = () => {
-        if (!user.isLoggedIn) {
-            setPopupType('loginRequired');
-            setShowPopup(true);
-            return;
-        }
-        navigate(`/groupBuy/detail?productId=${product.id}`);
+        if (!user.isLoggedIn) return handlePopup('loginRequired');
+        if (!isRegionMatched) return handleBlocked();
+
+        const queryParams = new URLSearchParams({
+            productId: product.id,
+            productName: product.productName,
+            imageUrl: imageUrl,
+            price: product.price,
+            local: product.local,
+            maxParticipants: product.maxParticipants
+        }).toString();
+
+        navigate(`/groupBuy/view?${queryParams}`);
     };
 
+    const isRegionMatched = product?.local === user?.local;
+
+    const handleBlocked = () => {
+        setPopupType('regionMismatch');
+        setShowPopup(true);
+    };
+    const handlePopup = (type) => {
+        setPopupType(type);
+        setShowPopup(true);
+    };
     const handlePopupConfirm = () => {
         setShowPopup(false);
         if (popupType === 'loginRequired') navigate('/login');
-        else if (popupType === 'cartAdded') {
+        else if (popupType === 'regionMismatch') {
+            navigate('/');
+        } else if (popupType === 'cartAdded') {
             if (isSubscribeSelected) navigate('/cart-subscribe');
             else navigate('/cart');
         } else if (popupType === 'paymentComplete') {

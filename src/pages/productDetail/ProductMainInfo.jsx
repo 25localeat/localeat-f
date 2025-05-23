@@ -4,46 +4,14 @@
 import React from 'react';
 import TagBadge from '../../components/Tag/TagBadge';
 import { getTagByLabel } from '../../components/Tag/tags';
-import { useNavigate } from 'react-router-dom'; // 공동구매 페이지로 이동, 미현 추가
 import './ProductMainInfo.css';
 
 const ProductMainInfo = ({
-                             product,
-                             user,
-                             isWish,
-                             onWishToggle,
-                             purchaseType,
-                             setPurchaseType,
-                             deliveryCycle,
-                             setDeliveryCycle,
-                             deliveryPeriodInMonths,
-                             setDeliveryPeriodInMonths,
-                             quantity,
-                             setQuantity,
-                             finalPrice,
-                             subscribePrice,
-                             purchasePrice,
-                             onCart,
-                             onOrder,
+                             product, user, isWish, onWishToggle, purchaseType, setPurchaseType, deliveryCycle,
+                             setDeliveryCycle, deliveryPeriodInMonths, setDeliveryPeriodInMonths, quantity, setQuantity,
+                             finalPrice, subscribePrice, purchasePrice, onGroupBuy, onCart, onOrder,
                          }) => {
     const isSubscribeSelected = purchaseType === 'subscribe';
-
-    // 공동구매 페이지로 이동, 미현 추가
-    const navigate = useNavigate();
-
-    const onGroupBuy = () => {
-         // URL 파라미터로 상품 정보 전달
-         const queryParams = new URLSearchParams({
-            productId: product.id,
-            productName: product.productName,
-            imageUrl: product.imageUrl,
-            price: product.price,
-            local: product.local,  // 지역 정보 추가
-            maxParticipants: product.maxParticipants
-        }).toString();
-        
-        navigate(`/groupBuy/view?${queryParams}`);
-    };
 
     return (
         <div className="product-detail-main">

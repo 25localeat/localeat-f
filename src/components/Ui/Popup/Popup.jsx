@@ -81,7 +81,7 @@ const Popup = ({ type, onConfirm, onCancel }) => {
                         </div>
                     </>
                 )}
-                
+
                 {type === 'loginRequired' && (
                     <>
                         <p>로그인 후 이용할 수 있습니다.<br />로그인 페이지로 이동하시겠습니까?</p>
@@ -91,34 +91,43 @@ const Popup = ({ type, onConfirm, onCancel }) => {
                         </div>
                     </>
                 )}
+                {type === 'regionMismatch' && (
+                    <>
+                        <p>해당 상품은 회원님의 지역과 일치하지 않아<br />구매할 수 없습니다.</p>
+                        <div className="btn-group">
+                            <button className="confirm" onClick={onConfirm}>확인</button>
+                        </div>
+                    </>
+                )}
 
-{type === 'cartAdded' && (
-  <>
-    <p>장바구니에 추가되었습니다.</p>
-    <div className="btn-group">
-      <button className="confirm" onClick={onConfirm}>장바구니 보기</button>
-      <button className="cancel" onClick={onCancel}>계속 쇼핑</button>
-    </div>
-  </>
-)}
+                {type === 'cartAdded' && (
+                    <>
+                        <p>장바구니에 추가되었습니다.</p>
+                        <div className="btn-group">
+                            <button className="confirm" onClick={onConfirm}>장바구니 보기</button>=
+                            <button className="cancel" onClick={onCancel}>계속 쇼핑</button>
+                        </div>
+                    </>
+                )}
 
-{type === 'paymentComplete' && (
-  <>
-    <p>결제가 완료되었습니다</p>
-    <div className="btn-group">
-      <button className="confirm" onClick={onConfirm}>주문 내역 보기</button>
-    </div>
-  </>
-)}
 
-{type === 'login-error' && (
-  <>
-    <p>로그인 실패했습니다.</p>
-    <div className="btn-group">
-      <button className="confirm" onClick={onConfirm}>확인</button>
-    </div>
-  </>
-)}
+                {type === 'paymentComplete' && (
+                    <>
+                        <p>결제가 완료되었습니다</p>
+                        <div className="btn-group">
+                            <button className="confirm" onClick={onConfirm}>주문 내역 보기</button>
+                        </div>
+                    </>
+                )}
+
+                {type === 'login-error' && (
+                    <>
+                        <p>로그인 실패했습니다.</p>
+                        <div className="btn-group">
+                            <button className="confirm" onClick={onConfirm}>확인</button>
+                        </div>
+                    </>
+                )}
 
 {type === 'id-pwd-error' && (
   <>
