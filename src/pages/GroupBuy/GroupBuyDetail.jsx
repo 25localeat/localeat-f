@@ -1,13 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import axios from 'axios';
-import './GroupBuyDetail.css'
+import './GroupBuyDetail.css';
 
 const GroupBuyDetail = () => {
-    const navigate = useNavigate();
     const location = useLocation();
-
-    // 이전 페이지에서 넘겨준 값들
     const {
         groupBuyId,
         productId,
@@ -45,40 +42,26 @@ const GroupBuyDetail = () => {
     return (
         <div className="dgb-container">
             <p className="dgb-title">공동 구매 상세 정보</p>
-            <p className="dgb-sub">
-                내가 참여한 공동 구매의 정보, 마감 시간 등을 확인해 보세요
-            </p>
-            <p className="dgb-time-guide">
-                공동구매 성사까지 남은 시간 {detail.remainingTime}
-            </p>
-
+            <p className="dgb-sub">내가 참여한 공동 구매의 정보, 마감 시간 등을 확인해 보세요</p>
+            <p className="dgb-time-guide">공동구매 성사까지 남은 시간 <span style={{color:'#03C75A', fontWeight:'bold'}}>{detail.remainingTime}</span></p>
             <div className="dgb-groupBuy-box">
                 <div className="dgb-header-section">
                     <div className="dgb-img-wrapper">
-                        <img
-                            className="qproduct-image"
-                            src={imageUrl || detail.imageUrl || '/placeholder.png'}
-                            alt={productName || detail.productName}
-                        />
+                        <img className="dgb-product-image" src={imageUrl || detail.imageUrl || '/placeholder.png'} alt={productName || detail.productName} />
                     </div>
                     <div className="dgb-product-info">
                         <div className="dgb-top-row">
                             <p className="dgb-product-name">{detail.productName}</p>
                         </div>
-                        <p className="dgb-groupBuy-description">
-                            {detail.description}
-                        </p>
+                        <p className="dgb-groupBuy-guide">{detail.description}</p>
                     </div>
                 </div>
-
                 <hr className="dgb-divider" />
-
                 <div className="dgb-list-wrapper">
-                    <p className="dgb-participants">참여인원</p>
-                    <p className="dgb-count">
-                        ( {detail.partiCount} / {detail.maxParticipants} )
+                    <p className="dgb-participants">
+                        <span className="dgb-participants-label">참여 인원</span>
+                        <span className="dgb-participants-count">( {detail.partiCount} / {detail.maxParticipants} )</span>
                     </p>
-
                     {detail.participants.map((p) => (
                         <div key={p.consumerId} className="dgb-list">
                             <p className="dgb-list-text">
@@ -88,10 +71,6 @@ const GroupBuyDetail = () => {
                     ))}
                 </div>
             </div>
-
-            <button className="dgb-back-button" onClick={() => navigate(-1)}>
-                뒤로가기
-            </button>
         </div>
     );
 };

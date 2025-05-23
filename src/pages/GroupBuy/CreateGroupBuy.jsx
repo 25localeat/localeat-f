@@ -12,25 +12,49 @@ import './CreateGroupBuy.css'
 import TagBadge from '../../components/Tag/TagBadge';
 import { getTagsByType } from '../../components/Tag/tags'
 
-const RegionTags = ({ tags }) => {
+// 영어 지역명과 한글 태그명 매핑
+const localMap = {
+    'SGI': '서울/경기/인천',
+    'GANGWON': '강원',
+    'CHUNGCHEONG': '충청',
+    'JEONBUK': '전북',
+    'JNGJ': '전남/광주',
+    'DGGB': '대구/경북',
+    'GNBNUL': '경남/부산/울산',
+    'JEJU': '제주'
+};
+
+const RegionTags = ({ tags, local }) => {
     const [selectedIndex, setSelectedIndex] = useState(null);
+    // local 값을 한글로 변환
+    const localKorean = localMap[local] || local;
 
     const handleClick = (index) => {
         setSelectedIndex(index === selectedIndex ? null : index);
     };
 
+    const normalize = str => (str || '').trim().replace(/／/g, '/');
+
     return (
         <div className="cgb-region-tags-wrapper">
             <div className="cgb-region-tags">
-                {tags.map((tag, index) => (
-                    <div key={index} onClick={() => handleClick(index)}>
-                        <TagBadge
-                            label={tag.label}
-                            bg={tag.bg}
-                            color={tag.color}
-                        />
-                    </div>
-                ))}
+                {tags.map((tag, index) => {
+                    const isLocalTag = normalize(tag.label) === normalize(localKorean);
+                    return (
+                        <div
+                            key={index}
+                            onClick={() => handleClick(index)}
+                            className={`cgb-tag-item${isLocalTag ? ' selected' : ''}`}
+                        >
+                            <TagBadge
+                                label={tag.label}
+                                bg={isLocalTag ? tag.bg.replace(/0\.[0-9]+\)/, '1)') : tag.bg}
+                                color={isLocalTag ? '#000' : tag.color}
+                                style={isLocalTag ? { fontWeight: 'bold' } : {}}
+                            />
+                        </div>
+                    );
+                })}
             </div>
         </div>
     );
@@ -57,7 +81,8 @@ const CreateGroupBuy = () => {
                 productId: productId,
                 description: description,
                 quantity: quantity,
-                deadline: deadline
+                deadline: deadline,
+                local: local
             }, {
                 headers: {
                     "X-USER-ID": userId
@@ -91,7 +116,7 @@ const CreateGroupBuy = () => {
                 <div className="cgb-left-section">
                     <div className="cgb-section">
                         <p className="cgb-section-title">지역 선택</p>
-                        <RegionTags tags={regionTags} />
+                        <RegionTags tags={regionTags} local={local} />
                     </div>
                     <div className="cgb-section">
                         <p className="cgb-section-title">구매할 수량 선택</p>

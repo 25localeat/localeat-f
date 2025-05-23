@@ -35,7 +35,12 @@ const Login = () => {
             });
             console.log(response.data);
             localStorage.setItem('user', JSON.stringify(response.data));
-            navigate('/');
+            // ✅ 역할에 따라 페이지 이동 다르게 설정
+            if (userRole === 'SELLER') {
+                navigate('/SellerMypage'); // 판매자 홈
+            } else {
+                navigate('/'); // 소비자 홈
+            }
         } catch (error) {
             console.error(error);
             setPopupType('login-error');
