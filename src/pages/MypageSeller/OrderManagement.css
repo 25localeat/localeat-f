@@ -100,6 +100,8 @@ select {
     border-radius: 6px;
     border: 1px solid #ccc;
     margin-bottom: 1rem;
+
+    min-width: 120px;
 }
 
 .complete-btn {

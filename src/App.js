@@ -69,8 +69,6 @@ function App() {
                         <Route path="/groupBuy/create" element={<CreateGroupBuy />} />
                         <Route path="/groupBuy/join" element={<JoinGroupBuy />} />
                         <Route path="/groupBuy/detail" element={<GroupBuyDetail />} />
-                        {/* 임시 테스트용 path */}
-                        <Route path="/review/form" element={<ReviewForm />} />
                     </Routes>
                 </>
             </main>
