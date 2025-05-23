@@ -3,7 +3,7 @@
 * */
 import React from 'react';
 import TagBadge from '../../components/Tag/TagBadge';
-import { getTagByLabel } from '../../components/Tag/tags';
+import {getTagByCode} from '../../components/Tag/tags';
 import './ProductMainInfo.css';
 
 const ProductMainInfo = ({
@@ -25,9 +25,10 @@ const ProductMainInfo = ({
 
             <div className="product-info">
                 <div className="product-tags">
-                    <TagBadge {...getTagByLabel(product.local)} />
-                    <TagBadge {...getTagByLabel(product.productGrade === 'B' ? 'GOOD' : 'PERFECT')} />
-                    {product.isGroupBuy && <TagBadge {...getTagByLabel('공동구매 가능')} />}
+                    <TagBadge {...getTagByCode(product.local)} />
+                    <TagBadge {...getTagByCode(product.productGrade)} />
+                    {product.isGroupBuy && <TagBadge {...getTagByCode('GROUP_BUY')} />}
+
                 </div>
 
                 <div className="product-title-box">

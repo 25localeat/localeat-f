@@ -22,7 +22,7 @@ const tags = [
     { type: 'grade', label: 'EXCELLENT', code: 'A', bg: 'rgba(255, 216, 0, 0.10)', color: '#FFD600' },
 
     // 공동구매 태그
-    { type: 'etc', label: '공동', code: "GROUP_BUY",  bg: 'rgba(190, 190, 190, 0.10)', color: '#999999' },
+    { type: 'etc', label: '공동구매', code: "GROUP_BUY",  bg: 'rgba(190, 190, 190, 0.10)', color: '#999999' },
 ];
 
 export default tags;
