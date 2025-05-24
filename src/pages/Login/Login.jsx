@@ -3,12 +3,14 @@ import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import './Login.css';
 import Popup from '../../components/Ui/Popup/Popup';
+import { requestFcmToken } from '../../utils/fcm';
 
 const Login = () => {
     const [userId, setUserId] = useState('');
     const [password, setPassword] = useState('');
-    const [userRole, setUserRole] = useState('CONSUMER'); // ✅ 기본값 설정
+    const [userRole, setUserRole] = useState('CONSUMER'); // ✅ 기본값 설정 
     const [popupType, setPopupType] = useState(null);
+    
     const navigate = useNavigate();
 
     const handleLogin = async (e) => {
@@ -33,8 +35,18 @@ const Login = () => {
                 password: password,
                 userRole: userRole
             });
+
             console.log(response.data);
             localStorage.setItem('user', JSON.stringify(response.data));
+            console.log(localStorage.getItem("user"));
+
+            // FCM 토큰 없으면 요청
+            if (!localStorage.getItem("fcmToken")) {
+                await requestFcmToken();
+            }
+
+            console.log(localStorage.getItem("fcmToken"));
+
             // ✅ 역할에 따라 페이지 이동 다르게 설정
             if (userRole === 'SELLER') {
                 navigate('/SellerMypage'); // 판매자 홈

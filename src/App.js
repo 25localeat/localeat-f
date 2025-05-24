@@ -31,6 +31,7 @@ import GroupBuyDetail from './pages/GroupBuy/GroupBuyDetail'
 import GroupBuyList from './pages/GroupBuy/GroupBuyList'
 import ProductDetail from './pages/productDetail/ProductDetail'
 import ReviewForm from "./pages/review/ReviewForm";
+import FcmTest from './pages/fcmtest';
 
 function App() {
     return (
@@ -69,6 +70,7 @@ function App() {
                         <Route path="/groupBuy/create" element={<CreateGroupBuy />} />
                         <Route path="/groupBuy/join" element={<JoinGroupBuy />} />
                         <Route path="/groupBuy/detail" element={<GroupBuyDetail />} />
+                        <Route path="/fcmtest" element={<FcmTest />} />
                     </Routes>
                 </>
             </main>
