@@ -40,10 +40,9 @@ const Login = () => {
             localStorage.setItem('user', JSON.stringify(response.data));
             console.log(localStorage.getItem("user"));
 
-            // FCM 토큰 없으면 요청
-            if (!localStorage.getItem("fcmToken")) {
-                await requestFcmToken();
-            }
+            // 로그인할 때마다 FCM 토큰 새로 요청
+            localStorage.removeItem("fcmToken"); // 기존 토큰 삭제
+            await requestFcmToken(); // 새 토큰 요청
 
             console.log(localStorage.getItem("fcmToken"));
 
