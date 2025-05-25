@@ -24,21 +24,37 @@ const AlarmDropdown = ({ onClose }) => {
             }
 
             const response = await axios.get(`/alarms/${user.userId}`);
-            setNotifications(response.data);
+            // 날짜 형식 변환
+            const formattedNotifications = response.data.map(alarm => ({
+                ...alarm,
+                timestamp: new Date(alarm.timestamp).toLocaleString('ko-KR', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                }),
+                isRead: alarm.isRead === 'Y'
+            }));
+            setNotifications(formattedNotifications);
         } catch (error) {
             console.error('알림 조회 중 오류 발생:', error);
+            if (error.response) {
+                console.error('서버 응답:', error.response.data);
+            }
         } finally {
             setLoading(false);
         }
     };
 
-    // 알림 삭제 처리
+    // 알림 읽음 처리
     const handleDelete = async (alarmId) => {
         try {
             await axios.post(`/alarms/read/${alarmId}`);
+            // 읽음 처리 후 목록에서 제거
             setNotifications(notifications.filter(item => item.id !== alarmId));
         } catch (error) {
-            console.error('알림 삭제 중 오류 발생:', error);
+            console.error('알림 읽음 처리 중 오류 발생:', error);
         }
     };
 
@@ -49,7 +65,6 @@ const AlarmDropdown = ({ onClose }) => {
 
     return (
         <div className="alarm-dropdown">
-            {/* 닫기 버튼 */}
             <div className="dropdown-header">
                 <span>알림</span>
                 <img src={iconClose} alt="닫기" className="close-btn" onClick={onClose} />
@@ -62,18 +77,20 @@ const AlarmDropdown = ({ onClose }) => {
             ) : (
                 <div className="alarm-list">
                     {notifications.map((item) => (
-                        <div className="alarm-card" key={item.id}>
+                        <div className={`alarm-card ${item.isRead ? 'read' : ''}`} key={item.id}>
                             <div className="icon">
-                                <div className="dot" />
+                                {item.isRead && <div className="dot" />}
                                 <div className="bar1" />
                                 <div className="bar2" />
                             </div>
-                            <div className="alarm-text">
-                                {item.content.split('\n').map((line, i) => (
-                                    <p key={i}>{line}</p>
-                                ))}
+                            <div className="alarm-content">
+                                <div className="alarm-text">
+                                    {item.message.split('\n').map((line, i) => (
+                                        <p key={i}>{line}</p>
+                                    ))}
+                                </div>
+                                <div className="alarm-date">{item.timestamp}</div>
                             </div>
-                            {/* 개별 삭제 버튼 */}
                             <img
                                 src={iconClose}
                                 alt="삭제"
