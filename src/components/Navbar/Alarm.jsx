@@ -5,11 +5,48 @@
 작성일  : 2025-04-24.
 */
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 import './AlarmDropdown.css';
 import iconClose from '../Ui/icon_x.png';
 
-const AlarmDropdown = ({ notifications, onDelete, onClose }) => {
+const AlarmDropdown = ({ onClose }) => {
+    const [notifications, setNotifications] = useState([]);
+    const [loading, setLoading] = useState(true);
+
+    // 알림 목록 조회
+    const fetchAlarms = async () => {
+        try {
+            const user = JSON.parse(localStorage.getItem('user'));
+            if (!user || !user.userId) {
+                console.error('사용자 정보가 없습니다.');
+                return;
+            }
+
+            const response = await axios.get(`/alarms/${user.userId}`);
+            setNotifications(response.data);
+        } catch (error) {
+            console.error('알림 조회 중 오류 발생:', error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    // 알림 삭제 처리
+    const handleDelete = async (alarmId) => {
+        try {
+            await axios.post(`/alarms/read/${alarmId}`);
+            setNotifications(notifications.filter(item => item.id !== alarmId));
+        } catch (error) {
+            console.error('알림 삭제 중 오류 발생:', error);
+        }
+    };
+
+    // 컴포넌트 마운트 시 알림 목록 조회
+    useEffect(() => {
+        fetchAlarms();
+    }, []);
+
     return (
         <div className="alarm-dropdown">
             {/* 닫기 버튼 */}
@@ -18,7 +55,9 @@ const AlarmDropdown = ({ notifications, onDelete, onClose }) => {
                 <img src={iconClose} alt="닫기" className="close-btn" onClick={onClose} />
             </div>
 
-            {notifications.length === 0 ? (
+            {loading ? (
+                <div className="loading">로딩 중...</div>
+            ) : notifications.length === 0 ? (
                 <div className="no-alarm">알람이 없습니다.</div>
             ) : (
                 <div className="alarm-list">
@@ -30,7 +69,7 @@ const AlarmDropdown = ({ notifications, onDelete, onClose }) => {
                                 <div className="bar2" />
                             </div>
                             <div className="alarm-text">
-                                {item.text.split('\n').map((line, i) => (
+                                {item.content.split('\n').map((line, i) => (
                                     <p key={i}>{line}</p>
                                 ))}
                             </div>
@@ -39,7 +78,7 @@ const AlarmDropdown = ({ notifications, onDelete, onClose }) => {
                                 src={iconClose}
                                 alt="삭제"
                                 className="alarm-close"
-                                onClick={() => onDelete(item.id)}
+                                onClick={() => handleDelete(item.id)}
                             />
                         </div>
                     ))}
@@ -48,4 +87,5 @@ const AlarmDropdown = ({ notifications, onDelete, onClose }) => {
         </div>
     );
 };
+
 export default AlarmDropdown;
