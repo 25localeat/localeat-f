@@ -24,7 +24,6 @@ const AlarmDropdown = ({ onClose }) => {
             }
 
             const response = await axios.get(`/alarms/${user.userId}`);
-            // 날짜 형식 변환
             const formattedNotifications = response.data.map(alarm => ({
                 ...alarm,
                 timestamp: new Date(alarm.timestamp).toLocaleString('ko-KR', {
@@ -33,12 +32,12 @@ const AlarmDropdown = ({ onClose }) => {
                     day: 'numeric',
                     hour: '2-digit',
                     minute: '2-digit'
-                }),
-                isRead: alarm.isRead === 'Y'
+                })
             }));
             setNotifications(formattedNotifications);
+            console.log('✅ 알림 목록 조회 완료');
         } catch (error) {
-            console.error('알림 조회 중 오류 발생:', error);
+            console.error('❌ 알림 조회 중 오류 발생:', error);
             if (error.response) {
                 console.error('서버 응답:', error.response.data);
             }
@@ -48,13 +47,33 @@ const AlarmDropdown = ({ onClose }) => {
     };
 
     // 알림 읽음 처리
-    const handleDelete = async (alarmId) => {
+    const handleRead = async (alarmId) => {
         try {
             await axios.post(`/alarms/read/${alarmId}`);
-            // 읽음 처리 후 목록에서 제거
-            setNotifications(notifications.filter(item => item.id !== alarmId));
+            setNotifications(notifications.map(item => 
+                item.id === alarmId ? { ...item, isRead: 'Y' } : item
+            ));
+            console.log('✅ 알림 읽음 처리 완료:', alarmId);
         } catch (error) {
-            console.error('알림 읽음 처리 중 오류 발생:', error);
+            console.error('❌ 알림 읽음 처리 중 오류 발생:', error);
+            if (error.response) {
+                console.error('서버 응답:', error.response.data);
+            }
+        }
+    };
+
+    // 알림 삭제
+    const handleDelete = async (alarmId, e) => {
+        e.stopPropagation(); // 이벤트 버블링 방지
+        try {
+            await axios.delete(`/alarms/${alarmId}`);
+            setNotifications(notifications.filter(item => item.id !== alarmId));
+            console.log('✅ 알림 삭제 완료:', alarmId);
+        } catch (error) {
+            console.error('❌ 알림 삭제 중 오류 발생:', error);
+            if (error.response) {
+                console.error('서버 응답:', error.response.data);
+            }
         }
     };
 
@@ -77,13 +96,14 @@ const AlarmDropdown = ({ onClose }) => {
             ) : (
                 <div className="alarm-list">
                     {notifications.map((item) => (
-                        <div className={`alarm-card ${item.isRead ? 'read' : ''}`} key={item.id}>
-                            <div className="icon">
-                                {item.isRead && <div className="dot" />}
-                                <div className="bar1" />
-                                <div className="bar2" />
-                            </div>
+                        <div 
+                            className={`alarm-card ${item.isRead === 'Y' ? 'read' : ''}`} 
+                            key={item.id}
+                            onClick={() => item.isRead !== 'Y' && handleRead(item.id)}
+                            style={{ cursor: item.isRead === 'Y' ? 'default' : 'pointer' }}
+                        >
                             <div className="alarm-content">
+                                {item.isRead !== 'Y' && <div className="dot" />}
                                 <div className="alarm-text">
                                     {item.message.split('\n').map((line, i) => (
                                         <p key={i}>{line}</p>
@@ -95,7 +115,7 @@ const AlarmDropdown = ({ onClose }) => {
                                 src={iconClose}
                                 alt="삭제"
                                 className="alarm-close"
-                                onClick={() => handleDelete(item.id)}
+                                onClick={(e) => handleDelete(item.id, e)}
                             />
                         </div>
                     ))}
