@@ -6,6 +6,8 @@ import TagBadge from '../../components/Tag/TagBadge';
 import {getTagByCode} from '../../components/Tag/tags';
 import './ProductMainInfo.css';
 
+
+
 const ProductMainInfo = ({
                              product, user, isWish, onWishToggle, purchaseType, setPurchaseType, deliveryCycle,
                              setDeliveryCycle, deliveryPeriodInMonths, setDeliveryPeriodInMonths, quantity, setQuantity,

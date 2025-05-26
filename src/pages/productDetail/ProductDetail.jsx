@@ -6,7 +6,8 @@ import Popup from '../../components/Ui/Popup/Popup';
 import {useNavigate, useParams} from 'react-router-dom';
 import './ProductDetail.css'
 import axios from "../../components/api/axios";
-
+import { createSubscribeOrder } from '../../components/api/subscribe'; // 구독 모듈 (따로 뺌)
+import { addToSubscribeCart } from '../../components/api/cart-subscribe'; // 구독 - 장바구니
 const ProductDetail = () => {
 
     const {productId} = useParams();
@@ -145,7 +146,10 @@ const ProductDetail = () => {
     const isSubscribeSelected = purchaseType === 'subscribe';
     const finalPrice = isSubscribeSelected ? subscribePrice * quantity : purchasePrice * quantity;
 
-    // 일반구매 전용 장바구니
+    /**
+     * 일반 구매 장바구니 담기
+     * - 로그인 여부 및 지역 검증 후 일반 장바구니에 상품 추가
+     */
     const handleCart = async () => {
         if (!user.isLoggedIn) return handlePopup('loginRequired');
         if (!isRegionMatched) return handleBlocked();
@@ -166,21 +170,21 @@ const ProductDetail = () => {
         }
     };
 
-    // 구독 전용 장바구니
+    /**
+     * 구독 상품 장바구니 담기
+     * - 모듈화된 addToSubscribeCart 함수 호출
+     */
     const handleSubscribeCart = async () => {
         if (!user.isLoggedIn) return handlePopup('loginRequired');
         if (!isRegionMatched) return handleBlocked();
 
         try {
-            await axios.post('/api/general-cart/items', {
+            await addToSubscribeCart({
                 productId: product.id,
                 quantity,
                 price: subscribePrice,
-                purchaseType: 'subscribe',
                 deliveryCycle,
                 deliveryPeriodInMonths
-            }, {
-                headers: { userId: user.userId }
             });
 
             setPopupType('cartAdded');
@@ -192,18 +196,30 @@ const ProductDetail = () => {
     };
 
     const handleOrder = async () => {
+
         if (!user.isLoggedIn) return handlePopup('loginRequired');
         if (!isRegionMatched) return handleBlocked();
 
         const calculatedPrice = isSubscribeSelected ? subscribePrice : purchasePrice;
 
+        // if -> 구독하기 / else -> 일반구매
         try {
-            await axios.post('/api/orders/single', {
-                userId: user.userId,
-                productId: product.id,
-                quantity,
-                price: calculatedPrice  // 최종 가격 전송
-            });
+            if (isSubscribeSelected) {
+                await createSubscribeOrder({
+                    productId: product.id,
+                    quantity,
+                    deliveryCycle,
+                    deliveryPeriodInMonths
+                });
+            } else {
+                await axios.post('/api/orders/single', {
+                    userId: user.userId,
+                    productId: product.id,
+                    quantity,
+                    price: purchasePrice
+                });
+            }
+
             setPopupType('paymentComplete');
             setShowPopup(true);
         } catch (err) {
