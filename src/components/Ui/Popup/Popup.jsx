@@ -9,7 +9,6 @@ import React, {useEffect} from 'react';
 import './Popup.css';
 import iconClose from '../icon_x.png';
 
-
 const Popup = ({ type, onConfirm, onCancel }) => {
     // 엔터 눌러도 팝업이 동작할 수 있도록 수정
     useEffect(() => {

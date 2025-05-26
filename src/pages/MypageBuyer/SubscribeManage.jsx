@@ -1,20 +1,15 @@
-/* 
-파일명 : SubscribeManage.jsx
-파일설명 : 로컬잇 웹사이트의 구매자 마이페이지/구독관리 UI
-작성자 : 김소망
-기간 : 2025-04-25~
-*/
+/*
+ * 파일명 : SubscribeManage.jsx
+ * 파일설명 : 로컬잇 웹사이트의 구매자 마이페이지/구독관리 UI (백엔드 연동 버전)
+ * 작성자 : 김소망 / 리팩토링: 정여진
+ * 기간 : 2025-04-25~
+ */
 
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './SubscribeManage.css';
 import Popup from '../../components/Ui/Popup/Popup';
-
-const deliveryOptions = {
-    '1주': 7,
-    '2주': 14,
-    '1개월': 30
-};
+import api from '../../components/api/axios'; // ← axios 인스턴스
 
 const SubscribeManage = () => {
     const navigate = useNavigate();
@@ -22,29 +17,38 @@ const SubscribeManage = () => {
     const [popupType, setPopupType] = useState(null);
 
     useEffect(() => {
-        const user = localStorage.getItem('currentUser');
-        const allSubs = JSON.parse(localStorage.getItem('subscriptions')) || [];
-        const filtered = allSubs.filter(sub => sub.buyer === user);
-        setSubscriptions(filtered);
+        const user = JSON.parse(localStorage.getItem('user'));
+        if (!user || !user.userId) return;
+
+        api.get(`/api/orders/subscription`, {
+            params: { userId: user.userId }
+        })
+            .then(res => {
+                const data = res.data.map(item => ({
+                    product: item.productName,
+                    start: item.startDate,
+                    cycle: formatCycle(item.deliveryCycleType, item.deliveryCycleValue),
+                    count: item.quantity,
+                    end: calculateEndDate(item.startDate, item.deliveryCycleType, item.deliveryCycleValue)
+                }));
+                setSubscriptions(data);
+            })
+            .catch(err => {
+                console.error('구독 목록 불러오기 실패', err);
+            });
     }, []);
 
-    const handleChange = (index, field, value) => {
-        const updated = [...subscriptions];
-        updated[index][field] = value;
-
-        if (field === 'cycle') {
-            const baseDate = new Date(updated[index].start);
-            const addDays = deliveryOptions[value];
-            baseDate.setDate(baseDate.getDate() + addDays);
-            updated[index].end = baseDate.toISOString().slice(0, 10);
-        }
-
-        setSubscriptions(updated);
+    const formatCycle = (type, value) => {
+        if (type === 'WEEKLY') return `${value}주`;
+        if (type === 'MONTHLY') return `${value}개월`;
+        return `${value}${type}`;
     };
 
-    const handleSave = () => {
-        localStorage.setItem('subscriptions', JSON.stringify(subscriptions));
-        setPopupType('edit');
+    const calculateEndDate = (start, type, value) => {
+        const base = new Date(start);
+        const addDays = type === 'WEEKLY' ? value * 7 : value * 30;
+        base.setDate(base.getDate() + addDays);
+        return base.toISOString().slice(0, 10);
     };
 
     const closePopup = () => {
@@ -70,39 +74,26 @@ const SubscribeManage = () => {
                     <h2 className="section-title">구독 관리</h2>
                     <table>
                         <thead>
-                            <tr>
-                                <th>상품이름</th>
-                                <th>구독일자</th>
-                                <th>배송주기</th>
-                                <th>수량</th>
-                                <th>배송기간</th>
-                            </tr>
+                        <tr>
+                            <th>상품이름</th>
+                            <th>구독일자</th>
+                            <th>배송주기</th>
+                            <th>수량</th>
+                            <th>배송기간</th>
+                        </tr>
                         </thead>
                         <tbody>
-                            {subscriptions.map((sub, index) => (
-                                <tr key={index}>
-                                    <td>{sub.product}</td>
-                                    <td>{sub.start}</td>
-                                    <td>
-                                        <select value={sub.cycle} onChange={e => handleChange(index, 'cycle', e.target.value)}>
-                                            <option value="1주">1주</option>
-                                            <option value="2주">2주</option>
-                                            <option value="1개월">1개월</option>
-                                        </select>
-                                    </td>
-                                    <td>
-                                        <select value={sub.count} onChange={e => handleChange(index, 'count', e.target.value)}>
-                                            {[1, 2, 3, 4].map(n => (
-                                                <option key={n} value={n}>{n}</option>
-                                            ))}
-                                        </select>
-                                    </td>
-                                    <td>{sub.end}</td>
-                                </tr>
-                            ))}
+                        {subscriptions.map((sub, index) => (
+                            <tr key={index}>
+                                <td>{sub.product}</td>
+                                <td>{sub.start}</td>
+                                <td>{sub.cycle}</td>
+                                <td>{sub.count}</td>
+                                <td>{sub.end}</td>
+                            </tr>
+                        ))}
                         </tbody>
                     </table>
-                    <button className="save-btn" onClick={handleSave}>완료</button>
                 </div>
             </div>
 
