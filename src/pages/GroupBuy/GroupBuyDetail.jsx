@@ -17,6 +17,7 @@ const GroupBuyDetail = () => {
     } = location.state || {};
 
     const [detail, setDetail] = useState(null);
+    const [remainingTime, setRemainingTime] = useState('');
     const userId = localStorage.getItem('userId');
 
     useEffect(() => {
@@ -35,6 +36,32 @@ const GroupBuyDetail = () => {
         fetchDetail();
     }, [groupBuyId, userId]);
 
+    // 실시간 타이머 업데이트
+    useEffect(() => {
+        const updateRemainingTime = () => {
+            if (!detail?.deadline) return;
+            
+            const now = Date.now();
+            const deadline = new Date(detail.deadline).getTime();
+            const diff = Math.max(0, Math.floor((deadline - now) / 1000));
+            
+            const hours = String(Math.floor(diff / 3600)).padStart(2, '0');
+            const minutes = String(Math.floor((diff % 3600) / 60)).padStart(2, '0');
+            const seconds = String(diff % 60).padStart(2, '0');
+            
+            setRemainingTime(`${hours}:${minutes}:${seconds}`);
+        };
+
+        // 초기 업데이트
+        updateRemainingTime();
+        
+        // 1초마다 업데이트
+        const timer = setInterval(updateRemainingTime, 1000);
+        
+        // 컴포넌트 언마운트 시 타이머 정리
+        return () => clearInterval(timer);
+    }, [detail?.deadline]);
+
     if (!detail) {
         return <p>로딩 중…</p>;
     }
@@ -43,7 +70,7 @@ const GroupBuyDetail = () => {
         <div className="dgb-container">
             <p className="dgb-title">공동 구매 상세 정보</p>
             <p className="dgb-sub">내가 참여한 공동 구매의 정보, 마감 시간 등을 확인해 보세요</p>
-            <p className="dgb-time-guide">공동구매 성사까지 남은 시간 <span style={{color:'#03C75A', fontWeight:'bold'}}>{detail.remainingTime}</span></p>
+            <p className="dgb-time-guide">공동구매 성사까지 남은 시간 <span style={{color:'#03C75A', fontWeight:'bold'}}>{remainingTime}</span></p>
             <div className="dgb-groupBuy-box">
                 <div className="dgb-header-section">
                     <div className="dgb-img-wrapper">

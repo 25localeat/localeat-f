@@ -51,7 +51,7 @@ const CartGroupBuy = () => {
                             paymentStatus: item.paymentStatus,
                             addedAt: new Date(item.addedAt),
                             expiresAt: new Date(item.expiresAt),
-                            checked: true
+                            checked: new Date(item.expiresAt) > new Date()
                         };
                     } catch (err) {
                         console.error('상품 정보 조회 실패:', err);
