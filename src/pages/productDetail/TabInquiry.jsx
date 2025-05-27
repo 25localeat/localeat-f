@@ -1,11 +1,32 @@
 import React, { useState } from 'react';
 import './TabInquiry.css';
+import axios from "axios";
 
-const TabInquiry = ({ inquiries, user, setInquiries }) => {
+const TabInquiry = ({ inquiries, user, setInquiries, productId }) => {
     const sortedInquiries = [...inquiries].sort((a, b) => b.createdAt.localeCompare(a.createdAt));
     const [showForm, setShowForm] = useState(false);
     const [newInquiry, setNewInquiry] = useState({ category: '상품문의', content: '' });
+
+    const [replyVisible, setReplyVisible] = useState({});
     const [replyInput, setReplyInput] = useState({});
+
+    const categoryToEnum = (label) => {
+        switch (label) {
+            case '상품문의': return 'PRODUCT';
+            case '배송문의': return 'DELIVERY';
+            case '공동구매문의': return 'GROUP';
+            default: return 'PRODUCT';
+        }
+    };
+
+    const translateCategory = (category) => {
+        switch (category) {
+            case 'PRODUCT': return '상품문의';
+            case 'DELIVERY': return '배송문의';
+            case 'GROUP': return '공동구매문의';
+            default: return category;
+        }
+    };
 
     const handleInputChange = (e) => {
         setNewInquiry({ ...newInquiry, [e.target.name]: e.target.value });
@@ -16,37 +37,53 @@ const TabInquiry = ({ inquiries, user, setInquiries }) => {
         setNewInquiry({ category: '상품문의', content: '' });
     };
 
-    const handleSubmit = () => {
+    const handleSubmit = async () => {
         if (!newInquiry.content.trim()) return;
-        const newItem = {
-            inquiryId: Date.now(),
-            user: { userId: user.userId },
-            createdAt: new Date().toISOString(),
-            category: newInquiry.category,
-            content: newInquiry.content,
-            answer: '',
+
+        const payload = {
+            productId: productId,
+            userId: user?.userId,
+            category: categoryToEnum(newInquiry.category),
+            content: newInquiry.content
         };
-        setInquiries((prev) => [...prev, newItem]);
-        setShowForm(false);
-        setNewInquiry({ category: '상품문의', content: '' });
+
+        try {
+            const res = await axios.post('/api/inquiries', payload);
+            setInquiries((prev) => [...prev, res.data]);
+            setShowForm(false);
+            setNewInquiry({ category: '상품문의', content: '' });
+        } catch (err) {
+            console.error("문의 등록 실패:", err.response?.data || err.message);
+        }
     };
 
     const toggleReplyInput = (id) => {
-        setReplyInput((prev) => ({ ...prev, [id]: !prev[id] }));
+        setReplyVisible((prev) => ({ ...prev, [id]: !prev[id] }));
     };
 
     const handleReplyChange = (e, id) => {
         setReplyInput((prev) => ({ ...prev, [id]: e.target.value }));
     };
 
-    const submitReply = (id) => {
+    const submitReply = async (id) => {
         if (!replyInput[id]?.trim()) return;
-        setInquiries((prev) =>
-            prev.map((inq) =>
-                inq.inquiryId === id ? { ...inq, answer: replyInput[id] } : inq
-            )
-        );
-        setReplyInput((prev) => ({ ...prev, [id]: false }));
+
+        try {
+            const res = await axios.patch(`/api/inquiries/${id}/answer`, replyInput[id], {
+                params: { sellerId: user.userId },
+                headers: { 'Content-Type': 'text/plain' }
+            });
+
+            setInquiries((prev) =>
+                prev.map((inq) =>
+                    inq.id === id ? res.data : inq
+                )
+            );
+            setReplyVisible((prev) => ({ ...prev, [id]: false }));
+            setReplyInput((prev) => ({ ...prev, [id]: '' }));
+        } catch (err) {
+            console.error("답변 등록 실패:", err);
+        }
     };
 
     return (
@@ -64,6 +101,7 @@ const TabInquiry = ({ inquiries, user, setInquiries }) => {
                                 <select name="category" value={newInquiry.category} onChange={handleInputChange}>
                                     <option value="상품문의">상품문의</option>
                                     <option value="배송문의">배송문의</option>
+                                    <option value="공동구매문의">공동구매문의</option>
                                 </select>
                             </label>
                             <label>
@@ -86,34 +124,37 @@ const TabInquiry = ({ inquiries, user, setInquiries }) => {
 
             <ul className="inquiry-list">
                 {sortedInquiries.map((inquiry) => (
-                    <li key={inquiry.inquiryId} className="inquiry-item">
+                    <li key={inquiry.id} className="inquiry-item">
                         <div className="inquiry-meta">
-              <span className="inquiry-writer">
-                {inquiry.user.userId.slice(0, 3) + '*'.repeat(inquiry.user.userId.length - 3)}
-              </span>
+                            <span className="inquiry-writer">
+                                {inquiry.userId
+                                    ? inquiry.userId.slice(0, 3) + '*'.repeat(inquiry.userId.length - 3)
+                                    : '알 수 없음'}
+                            </span>
                             <span className="inquiry-date">
-                {new Date(inquiry.createdAt).toLocaleString()}
-              </span>
+                                {new Date(inquiry.createdAt).toLocaleString()}
+                            </span>
                         </div>
                         <div className="inquiry-content">
-                            <span className="inquiry-category">[{inquiry.category}]</span> {inquiry.content}
+                            <span className="inquiry-category">[{translateCategory(inquiry.category)}]</span> {inquiry.content}
                         </div>
 
+                        {/* 판매자만 답변 가능 */}
                         {user.role === 'SELLER' && !inquiry.answer && (
-                            replyInput[inquiry.inquiryId] !== false ? (
+                            replyVisible[inquiry.id] ? (
                                 <div className="inquiry-form">
-                  <textarea
-                      rows="3"
-                      value={replyInput[inquiry.inquiryId] || ''}
-                      onChange={(e) => handleReplyChange(e, inquiry.inquiryId)}
-                  ></textarea>
+                                    <textarea
+                                        rows="3"
+                                        value={replyInput[inquiry.id] || ''}
+                                        onChange={(e) => handleReplyChange(e, inquiry.id)}
+                                    ></textarea>
                                     <div className="form-actions">
-                                        <button className="cancel-button" onClick={() => toggleReplyInput(inquiry.inquiryId)}>취소</button>
-                                        <button className="submit-button" onClick={() => submitReply(inquiry.inquiryId)}>등록</button>
+                                        <button className="cancel-button" onClick={() => toggleReplyInput(inquiry.id)}>취소</button>
+                                        <button className="submit-button" onClick={() => submitReply(inquiry.id)}>등록</button>
                                     </div>
                                 </div>
                             ) : (
-                                <button className="inquiry-write-button" onClick={() => toggleReplyInput(inquiry.inquiryId)}>답변 작성</button>
+                                <button className="inquiry-write-button" onClick={() => toggleReplyInput(inquiry.id)}>답변 작성</button>
                             )
                         )}
 

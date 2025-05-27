@@ -114,29 +114,22 @@ const ProductDetail = () => {
         if (productId && user) fetchReviews();
     }, [productId, user, sortBy]);
 
-    if (!product || !user) return <div>로딩 중...</div>;
+    useEffect(() => {
+        if (!productId || !user) return;
 
-    // // 문의 더미 설정
-    // useEffect(() => {
-    //     setInquiries([
-    //         {
-    //             inquiryId: 1,
-    //             user: {userId: 'buyer123'},
-    //             createdAt: '2025-04-01T14:30:00',
-    //             category: '배송문의',
-    //             content: '언제쯤 배송되나요?',
-    //             answer: '내일 출고 예정입니다.',
-    //         },
-    //         {
-    //             inquiryId: 2,
-    //             user: {userId: 'moon987'},
-    //             createdAt: '2025-04-03T09:15:00',
-    //             category: '상품문의',
-    //             content: 'B급 상품은 상처가 많이 나 있나요?',
-    //             answer: '',
-    //         },
-    //     ]);
-    // }, [productId]);
+        const fetchInquiries = async () => {
+            try {
+                const res = await axios.get(`/api/inquiries/product/${productId}`);
+                setInquiries(res.data);
+            } catch (err) {
+                console.error("문의 불러오기 실패:", err);
+            }
+        };
+
+        fetchInquiries();
+    }, [productId, user]);
+
+    if (!product || !user) return <div>로딩 중...</div>;
 
     //1회 구매 단가
     const purchasePrice = product.price;
@@ -334,7 +327,12 @@ const ProductDetail = () => {
                 )}
 
                 {activeTab === 'inquiry' && (
-                    <TabInquiry inquiries={inquiries} user={user} setInquiries={setInquiries}/>
+                    <TabInquiry
+                        inquiries={inquiries}
+                        setInquiries={setInquiries}
+                        user={user}
+                        productId={productId}
+                    />
                 )}
 
             </div>
