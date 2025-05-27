@@ -27,18 +27,14 @@ const Home = () => {
             .then(res => {
                 console.log('홈 화면 데이터: ', res.data);
                 const data = res.data.map(p => {
-                    const price = typeof p.price === 'number' ? p.price : 0;
-                    const rate = typeof p.gradeDiscountRate === 'number' ? p.gradeDiscountRate : 0;
-
                     const regionTag = getTagByCode(p.local); // ✅ 지역 코드 → 태그 정보로 변환
 
                     return {
                         id: p.id,
                         image: `/api/images/by-product/${p.id}`,
                         title: p.productName ?? '',
-                        originalPrice: price,
-                        discountPrice: Math.floor(price * (1 - rate)),
-                        tags: [regionTag] // ✅ ProductCard에 전달할 태그
+                        price: p.price,
+                        tags: [regionTag]
                     };
                 });
 

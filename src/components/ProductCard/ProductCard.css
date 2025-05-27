@@ -48,13 +48,7 @@
     margin: 10px;
 }
 
-.original {
-    text-decoration: line-through;
-    font-size: 16px;
-    color: gray;
-}
-
-.discount {
+.final {
     font-size: 24px;
     font-weight: bold;
     color: black;

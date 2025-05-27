@@ -47,16 +47,13 @@ const Search = () => {
 
                 const mapped = res.data.map(p => {
                     const price = typeof p.price === 'number' ? p.price : 0;
-                    const rate = typeof p.gradeDiscountRate === 'number' ? p.gradeDiscountRate : 0;
-
                     const regionTag = getTagByCode(p.local); // ✅ 코드 기준 태그 가져오기
 
                     return {
                         id: p.id,
                         image: `/api/images/by-product/${p.id}`,
                         title: p.productName ?? '',
-                        originalPrice: price,
-                        discountPrice: Math.floor(price * (1 - rate)),
+                        price: price,
                         tags: [regionTag] // ✅ TagBadge와 100% 호환
                     };
                 });

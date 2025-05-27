@@ -10,13 +10,13 @@ import { useNavigate } from 'react-router-dom';
 import carrotImg from '../../pages/home/carrot.png';
 import TagBadge from '../Tag/TagBadge';
 
-const ProductCard = ({ id, image, tags = [], title, originalPrice, discountPrice }) => {
+const ProductCard = ({ id, image, tags = [], title, price }) => {
     const navigate = useNavigate();
 
     const handleClick = () => {
         navigate(`/products/${id}`);
     };
-
+    console.log(`[렌더링 확인] ${title}의 가격:`, price, typeof price);
 
     return (
         <div className="product-card" onClick={handleClick} style={{ cursor: 'pointer' }}>
@@ -36,8 +36,7 @@ const ProductCard = ({ id, image, tags = [], title, originalPrice, discountPrice
             <div className="product-title">{title}</div>
 
             <div className="product-price">
-                <span className="original">{originalPrice}원</span>
-                <span className="discount">{discountPrice}원</span>
+                <span className="final">{price}원</span>
             </div>
         </div>
     );

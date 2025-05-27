@@ -138,8 +138,8 @@ const ProductDetail = () => {
     //     ]);
     // }, [productId]);
 
-    // B급 여부에 따라 1회 구매 단가 결정
-    const purchasePrice = product.productGrade === 'B' ? Math.floor(product.price * (1 - product.gradeDiscountRate)) : product.price;
+    //1회 구매 단가
+    const purchasePrice = product.price;
     // 구독 시 할인 적용된 가격
     const subscribePrice = Math.floor(purchasePrice * (1 - product.subscriptionDiscountRate));
     // 수량 적용 총 금액 계산
@@ -199,8 +199,6 @@ const ProductDetail = () => {
 
         if (!user.isLoggedIn) return handlePopup('loginRequired');
         if (!isRegionMatched) return handleBlocked();
-
-        const calculatedPrice = isSubscribeSelected ? subscribePrice : purchasePrice;
 
         // if -> 구독하기 / else -> 일반구매
         try {

@@ -65,33 +65,15 @@ const ProductMainInfo = ({
                 </div>
 
                 <div className="price-box">
-                    {product.productGrade === 'B' ? (
-                        <>
-                            <span className="discount-rate">{product.gradeDiscountRate * 100}%</span>
-                            <span className="original-price">
-                <s>{product.price.toLocaleString()}원</s>
-            </span>
-                            <span className="final-price">
-                {purchasePrice.toLocaleString()}원
-            </span>
-                        </>
-                    ) : (
-                        <span className="final-price">
-            {product.price.toLocaleString()}원
-        </span>
-                    )}
+                    <span className="final-price">{product.price.toLocaleString()}원</span>
                 </div>
 
                 <div className="product-info-box">
                     <div className="info-labels">
                         <div>배송비</div>
-                        {product.productGrade === 'B' && <div>GOOD</div>}
                     </div>
                     <div className="info-values">
                         <div>{typeof product.deliveryFee === 'number' ? product.deliveryFee.toLocaleString() : ''}원</div>
-                        {product.productGrade === 'B' && (
-                            <div>{product.gradeDiscountRate * 100}% 할인</div>
-                        )}
                     </div>
                 </div>
 
