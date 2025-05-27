@@ -46,7 +46,7 @@ const CartGroupBuy = () => {
                             groupBuyId: item.groupBuyId,
                             productId: item.productId,
                             name: product.productName,
-                            price: product.price,
+                            price: Math.floor(product.price * 0.9), // 10% 할인된 가격
                             quantity: item.quantity,
                             paymentStatus: item.paymentStatus,
                             addedAt: new Date(item.addedAt),
@@ -201,7 +201,12 @@ const CartGroupBuy = () => {
                                 />
                             </td>
                             <td>{item.name}</td>
-                            <td>{item.price?.toLocaleString() ?? '0'}원</td>
+                            <td>
+                                <span style={{ textDecoration: 'line-through', color: 'gray', marginRight: '8px' }}>
+                                    {item.price / 0.9?.toLocaleString() ?? '0'}원
+                                </span>
+                                {item.price?.toLocaleString() ?? '0'}원
+                            </td>
                             <td>{item.quantity}</td>
                             <td>{(item.price * item.quantity)?.toLocaleString() ?? '0'}원</td>
                             <td style={expired[item.id] ? { color: 'gray' } : {}}>
