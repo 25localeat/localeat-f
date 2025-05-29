@@ -5,43 +5,83 @@
 기간 : 2025-04-11~
 */
 
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import { useNavigate } from 'react-router-dom';
 import './CartGeneral.css';
 import Popup from '../../components/Ui/Popup/Popup';
-
-const initialSubscribeItems = [
-  { id: 1, name: '약과', price: 2000, quantity: 4, cycle: '1주', checked: false },
-  { id: 2, name: '약과', price: 5000, quantity: 1, cycle: '2개월', checked: true },
-  { id: 3, name: '약과', price: 5000, quantity: 5, cycle: '1주', checked: true },
-];
+import axios from "axios";
 
 const CartSubscribe = () => {
-  const [cartItems, setCartItems] = useState(initialSubscribeItems);
+  const [cartItems, setCartItems] = useState([]);
   const [popupType, setPopupType] = useState(null);
   const [itemToDelete, setItemToDelete] = useState(null);
   const navigate = useNavigate();
+  // 로그인한 사용자 가져오기
+  const user = JSON.parse(localStorage.getItem('user'));
+  const userId = user?.userId;
 
+
+  // 1. 초기 데이터 불러오기
+  useEffect(() => {
+      if (!userId) {
+        alert('로그인이 필요합니다.');
+        navigate('/login');
+        return;
+      }
+
+    axios.get(`/api/cart/subscribe/${userId}`)
+        .then(res => {
+          setCartItems(res.data.map(item => ({
+            id: item.cartItemId,
+            name: item.productName,
+            price: item.price,
+            quantity: item.quantity,
+            cycle: item.deliveryCycle,
+            checked: item.isSelected
+          })));
+            console.log("장바구니 응답 ▶", res.data);
+        })
+        .catch(err => {
+          console.error("구독 장바구니 로딩 실패:", err);
+        });
+  }, []);
+
+  // 2, 전체 선택/해제 토글
   const toggleAll = (e) => {
     const checked = e.target.checked;
-    setCartItems(cartItems.map(item => ({ ...item, checked })));
+    setCartItems(prev =>
+        prev.map(item => ({ ...item, checked }))
+    );
+    axios.post(`/api/cart/subscribe/toggle-all`, {
+      userId,
+      selected: checked
+    });
   };
 
+  // 3. 개별 항목 선택 토글
   const toggleItem = (id) => {
-    setCartItems(cartItems.map(item =>
-      item.id === id ? { ...item, checked: !item.checked } : item
-    ));
+    const updated = cartItems.map(item =>
+        item.id === id ? { ...item, checked: !item.checked } : item
+    );
+    setCartItems(updated);
+    const selected = !cartItems.find(item => item.id === id)?.checked;
+    axios.post(`/api/cart/subscribe/${id}/toggle?selected=${selected}`);
   };
 
+  //삭제확인하기
   const confirmDelete = (id) => {
     setItemToDelete(id);
     setPopupType('delete');
   };
 
+  // 삭제
   const deleteItem = () => {
-    setCartItems(cartItems.filter(item => item.id !== itemToDelete));
-    setPopupType(null);
-    setItemToDelete(null);
+    axios.delete(`/api/cart/subscribe/${itemToDelete}`)
+        .then(() => {
+          setCartItems(prev => prev.filter(item => item.id !== itemToDelete));
+          setPopupType(null);
+          setItemToDelete(null);
+        });
   };
 
   const showOrderPopup = () => {
