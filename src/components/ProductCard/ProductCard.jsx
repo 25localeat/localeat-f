@@ -21,6 +21,7 @@ const ProductCard = ({ id, image, tags = [], title, originalPrice, discountPrice
     return (
         <div className="product-card" onClick={handleClick} style={{ cursor: 'pointer' }}>
             <img
+                className="product-img"
                 src={image}
                 alt={title}
                 onError={(e) => { e.target.src = carrotImg; }}

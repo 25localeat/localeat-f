@@ -183,7 +183,8 @@ const ProductDetail = () => {
                 productId: product.id,
                 quantity,
                 price: subscribePrice,
-                deliveryCycle,
+                cycleType: deliveryCycle.cycleType,
+                cycleValue: deliveryCycle.cycleValue,
                 deliveryPeriodInMonths
             });
 
