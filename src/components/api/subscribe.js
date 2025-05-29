@@ -6,10 +6,6 @@
  * */
 import api from './axios';  // 공통 axios 인스턴스
 
-
-const storedUser = localStorage.getItem('user');
-const userId = storedUser ? JSON.parse(storedUser)?.userId : null;
-
 /**
  * 구독 주문 생성 요청
  * @param {Object} params - 구독 주문 정보
@@ -19,8 +15,6 @@ const userId = storedUser ? JSON.parse(storedUser)?.userId : null;
  * @param {number} params.deliveryPeriodInMonths - 구독 총 기간 (단위: 개월)
  * @returns {Promise<Object>} 서버 응답 데이터
  */
-
-
 export const createSubscribeOrder = async ({ productId, quantity, deliveryCycle, deliveryPeriodInMonths }) => {
     const storedUser = localStorage.getItem("user");
     const parsedUser = storedUser ? JSON.parse(storedUser) : null;
@@ -35,6 +29,7 @@ export const createSubscribeOrder = async ({ productId, quantity, deliveryCycle,
         deliveryPeriodInMonths
     };
 
+    // POST 요청 + userId는 Header에 포함
     const response = await api.post('/api/subscribe-order', payload, {
         headers: {
             'Content-Type': 'application/json',

@@ -27,7 +27,7 @@ export const addToSubscribeCart = async ({
         ? JSON.parse(localStorage.getItem('user')).userId
         : undefined;
 
-    const response = await api.post('/api/general-cart/items', {
+    const response = await api.post('/api/cart/subscribe/items', {
         productId,
         quantity,
         price,
