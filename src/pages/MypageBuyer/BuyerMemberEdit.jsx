@@ -27,14 +27,9 @@ const BuyerMemberEdit = () => {
     const [editMode, setEditMode] = useState({});
     const [popupType, setPopupType] = useState(null);
 
-    // 로그인 체크
+    // ✅ 사용자 정보 로딩
     useEffect(() => {
         const user = JSON.parse(localStorage.getItem('user'));
-        if (!user) {
-            setPopupType('loginRequired');
-            return;
-        }
-
         const userId = user?.userId;
 
         if (!userId) {
@@ -106,9 +101,6 @@ const BuyerMemberEdit = () => {
 
     const closePopup = () => {
         setPopupType(null);
-        if (popupType === 'loginRequired') {
-            navigate('/login');
-        }
     };
 
     return (

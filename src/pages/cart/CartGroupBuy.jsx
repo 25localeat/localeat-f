@@ -65,7 +65,7 @@ const CartGroupBuy = () => {
             setCartItems(validItems);
         } catch (err) {
             console.error('장바구니 불러오기 실패', err);
-            alert('장바구니 불러오기 실패');
+            setPopupType('cartLoadError');
         }
     };
 
@@ -119,7 +119,7 @@ const CartGroupBuy = () => {
             await fetchCart();
         } catch (err) {
             console.error('삭제 실패', err);
-            alert('삭제에 실패했습니다.');
+            setPopupType('deleteError');
         } finally {
             setPopupType(null);
             setItemToDelete(null);
@@ -138,24 +138,47 @@ const CartGroupBuy = () => {
             .map(item => item.id);
 
         if (selectedIds.length === 0) {
-            alert('주문할 상품을 선택해주세요.');
+            setPopupType('noItemSelected');
             return;
         }
 
         try {
-            // 주문 생성 API 호출 (POST /api/group-buy-cart/order)
+            // 공동구매 주문 API 호출 - 배열 형태로 직접 전송
             await axios.post(
                 'http://localhost:8080/api/group-buy-cart/order',
-                selectedIds, // body: [1,2,3,...]
-                { headers: { 'X-USER-ID': userId } }
+                selectedIds,  // 객체가 아닌 배열을 직접 전송
+                { 
+                    headers: { 
+                        'X-USER-ID': userId,
+                        'Content-Type': 'application/json'
+                    } 
+                }
             );
 
-            alert('주문이 완료되었습니다!');
-            // 주문내역 페이지로 이동
-            navigate('/mypage/buyer/orders');
-        } catch (err) {
-            alert('주문 처리 중 오류가 발생했습니다.');
-            console.error(err);
+            // 주문 성공 시 팝업 표시
+            setPopupType('order');
+        } catch (error) {
+            // 오류 발생 시 팝업 타입 설정
+            if (error.message === 'Network Error') {
+                setPopupType('orderNetworkError');
+            } else {
+                setPopupType('orderError');
+            }
+            console.error('주문 처리 중 오류 발생:', error);
+        }
+    };
+
+    const handlePopupConfirm = () => {
+        setPopupType(null);
+        if (popupType === 'order') {
+            navigate('/'); // 주문 성공 시 홈으로 이동
+        }
+    };
+
+    const handlePopupCancel = () => {
+        setPopupType(null);
+        if (popupType === 'order') {
+            navigate('/mypage/buyer/orders'); // 주문 내역 보기로 이동
         }
     };
 
@@ -236,14 +259,8 @@ const CartGroupBuy = () => {
             {popupType && (
                 <Popup
                     type={popupType}
-                    onCancel={closePopup}
-                    onConfirm={async () => {
-                        if (popupType === 'delete') await deleteItem();
-                        if (popupType === 'order') {
-                            await handleOrder();
-                            closePopup();
-                        }
-                    }}
+                    onConfirm={handlePopupConfirm}
+                    onCancel={handlePopupCancel}
                 />
             )}
         </div>
