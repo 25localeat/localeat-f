@@ -67,7 +67,7 @@ const Popup = ({ type, onConfirm, onCancel }) => {
                     <>
                         <p>감사합니다<br />주문이 완료되었습니다.</p>
                         <div className="btn-group">
-                            <button className="confirm" onClick={onConfirm}>홈으로</button>
+                            <button className="confirm" onClick={onConfirm}>주문내역으로</button>
                         </div>
                     </>
                 )}
