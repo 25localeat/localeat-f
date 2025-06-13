@@ -145,7 +145,7 @@ const CartSubscribe = () => {
                 if (popupType === 'delete') deleteItem();
                 if (popupType === 'order') {
                   closePopup();
-                  navigate('/');
+                  navigate('/mypage/buyer/orders');
                 }
               }}
           />
