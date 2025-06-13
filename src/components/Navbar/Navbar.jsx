@@ -7,6 +7,7 @@ import iconSearch from './icon-search.png';
 import AlarmDropdown from "./Alarm";
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import React, { useEffect, useState } from 'react';
+import Popup from '../Ui/Popup/Popup';
 
 const Navbar = () => {
     const navigate = useNavigate();
@@ -15,6 +16,7 @@ const Navbar = () => {
     const [keyword, setKeyword] = useState('');
     const [isAlarmOpen, setIsAlarmOpen] = useState(false);
     const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [popupType, setPopupType] = useState(null);
     const [notifications, setNotifications] = useState([
         { id: 1, text: "[공동구매] 결제 미완료로 자동 취소되었습니다." },
         { id: 2, text: "[공동구매] 모집 완료. 24시간 내 결제해주세요." },
@@ -41,6 +43,43 @@ const Navbar = () => {
         localStorage.removeItem("fcmToken");
         setIsLoggedIn(false);
         navigate("/");
+    };
+
+    const handleMypageClick = (e) => {
+        e.preventDefault();
+        const user = JSON.parse(localStorage.getItem('user'));
+        if (!user) {
+            setPopupType('loginRequired');
+            return;
+        }
+        navigate('/mypage/buyer/orders');
+    };
+
+    const closePopup = () => {
+        setPopupType(null);
+        if (popupType === 'loginRequired') {
+            navigate('/login');
+        }
+    };
+
+    const handleCartClick = (e) => {
+        e.preventDefault();
+        const user = JSON.parse(localStorage.getItem('user'));
+        if (!user) {
+            setPopupType('loginRequired');
+            return;
+        }
+        navigate('/cart');
+    };
+
+    const handleAlarmClick = (e) => {
+        e.preventDefault();
+        const user = JSON.parse(localStorage.getItem('user'));
+        if (!user) {
+            setPopupType('loginRequired');
+            return;
+        }
+        toggleAlarm();
     };
 
     return (
@@ -73,11 +112,14 @@ const Navbar = () => {
                 </div>
 
                 <nav className="menu">
-                    <Link to="/mypage/buyer/orders" className="menu-item">마이페이지</Link>
+                    <span onClick={handleMypageClick} className="menu-item">마이페이지</span>
                     <Link to="/mypage/buyer/subscribe" className="menu-item">구독</Link>
                     <span
                         className="menu-item"
-                        onClick={() => navigate(`/search?tag=GROUP_BUY`)}
+                        onClick={(e) => {
+                            e.preventDefault();
+                            navigate(`/search?tag=GROUP_BUY`);
+                        }}
                         style={{ cursor: 'pointer' }}
                     >
                         공동구매
@@ -100,16 +142,16 @@ const Navbar = () => {
                         </Link>
                     )}
 
-                    <Link to="/cart">
+                    <span onClick={handleCartClick} style={{ cursor: 'pointer' }}>
                         <img src={iconBasket} alt="basket" className="icon-img" />
-                    </Link>
+                    </span>
 
                     <div className="alarm-icon-wrapper" style={{ position: 'relative' }}>
                         <img
                             src={iconAlarm}
                             alt="alarm"
                             className="icon-img"
-                            onClick={toggleAlarm}
+                            onClick={handleAlarmClick}
                             style={{ cursor: 'pointer' }}
                         />
                         {isAlarmOpen && (
@@ -122,6 +164,17 @@ const Navbar = () => {
                     </div>
                 </div>
             </div>
+
+            {popupType && (
+                <Popup
+                    type={popupType}
+                    onConfirm={closePopup}
+                    onCancel={() => {
+                        setPopupType(null);
+                        navigate('/');
+                    }}
+                />
+            )}
         </header>
     );
 };

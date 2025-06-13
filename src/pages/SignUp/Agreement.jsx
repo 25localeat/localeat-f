@@ -9,12 +9,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Agreement.css'
 import Popup from '../../components/Ui/Popup/Popup';
-
-const agreementText = `
-    약관과 관련된
-    텍스트 출력란입니다.
-    추후 수정 예정
-`;
+import { AGREEMENT_TEXT } from '../../constants/terms';
 
 const Agreement = () => {
     const [popupType, setPopupType] = useState(null);
@@ -48,8 +43,8 @@ const Agreement = () => {
                         </div>
 
                         <div className="description-content">
-                            <p className="description">
-                                {agreementText}
+                            <p className="description-text">
+                                {AGREEMENT_TEXT}
                             </p>
                         </div>
                         <div className="checkbox-container">
