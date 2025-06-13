@@ -100,18 +100,23 @@ const ProductDetail = () => {
     useEffect(() => {
         const fetchReviews = async () => {
             try {
-                const res = await axios.get(`/api/reviews/product/${productId}`, {
-                    params: {
-                        sortBy: sortBy,
-                        currentUserId: user?.userId
-                    }
-                });
+                const config = {
+                    params: { sortBy }
+                };
+
+                // 로그인한 경우에만 currentUserId 포함
+                if (user?.userId) {
+                    config.params.currentUserId = user.userId;
+                }
+
+                const res = await axios.get(`/api/reviews/product/${productId}`, config);
+                console.log("리뷰 응답:", res.data);
                 setReviewData(res.data);
             } catch (error) {
                 console.error("리뷰 불러오기 실패:", error);
             }
         };
-        if (productId && user) fetchReviews();
+        if (productId) fetchReviews();
     }, [productId, user, sortBy]);
 
     useEffect(() => {
