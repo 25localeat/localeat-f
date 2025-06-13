@@ -26,6 +26,7 @@ const SubscribeManage = () => {
             .then(res => {
                 const data = res.data.map(item => ({
                     product: item.productName,
+                    productId: item.productId,
                     start: item.startDate,
                     cycle: formatCycle(item.deliveryCycleType, item.deliveryCycleValue),
                     count: item.quantity,
@@ -74,24 +75,28 @@ const SubscribeManage = () => {
                     <h2 className="section-title">구독 관리</h2>
                     <table>
                         <thead>
-                        <tr>
-                            <th>상품이름</th>
-                            <th>구독일자</th>
-                            <th>배송주기</th>
-                            <th>수량</th>
-                            <th>배송기간</th>
-                        </tr>
+                            <tr>
+                                <th>상품이름</th>
+                                <th>구독일자</th>
+                                <th>배송주기</th>
+                                <th>수량</th>
+                                <th>배송기간</th>
+                            </tr>
                         </thead>
                         <tbody>
-                        {subscriptions.map((sub, index) => (
-                            <tr key={index}>
-                                <td>{sub.product}</td>
-                                <td>{sub.start}</td>
-                                <td>{sub.cycle}</td>
-                                <td>{sub.count}</td>
-                                <td>{sub.end}</td>
-                            </tr>
-                        ))}
+                            {subscriptions.map((sub, index) => (
+                                <tr key={index}>
+                                    <td>
+                                        <button className="product-link" onClick={() => navigate(`/products/${sub.productId}`)}>
+                                            {sub.product}
+                                        </button>
+                                    </td>
+                                    <td>{sub.start}</td>
+                                    <td>{sub.cycle}</td>
+                                    <td>{sub.count}</td>
+                                    <td>{sub.end}</td>
+                                </tr>
+                            ))}
                         </tbody>
                     </table>
                 </div>
