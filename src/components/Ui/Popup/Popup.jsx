@@ -65,28 +65,9 @@ const Popup = ({ type, onConfirm, onCancel }) => {
 
                 {type === 'order' && (
                     <>
-                        <p>주문이 성공적으로 완료되었습니다.<br />감사합니다!</p>
+                        <p>감사합니다<br />주문이 완료되었습니다.</p>
                         <div className="btn-group">
                             <button className="confirm" onClick={onConfirm}>홈으로</button>
-                            <button className="cancel" onClick={onCancel}>주문내역 보기</button>
-                        </div>
-                    </>
-                )}
-
-                {type === 'orderError' && (
-                    <>
-                        <p>주문 처리 중 오류가 발생했습니다.<br />다시 시도해 주세요.</p>
-                        <div className="btn-group">
-                            <button className="confirm" onClick={onConfirm}>확인</button>
-                        </div>
-                    </>
-                )}
-
-                {type === 'orderNetworkError' && (
-                    <>
-                        <p>네트워크 연결을 확인해주세요.<br />잠시 후 다시 시도해 주세요.</p>
-                        <div className="btn-group">
-                            <button className="confirm" onClick={onConfirm}>확인</button>
                         </div>
                     </>
                 )}
@@ -240,33 +221,6 @@ const Popup = ({ type, onConfirm, onCancel }) => {
                 {type === 'agree-Warning' && (
                     <>
                         <p>이용약관에 동의하지 않으면 가입할 수 없습니다.</p>
-                        <div className="btn-group">
-                            <button className="confirm" onClick={onConfirm}>확인</button>
-                        </div>
-                    </>
-                )}
-
-                {type === 'cartLoadError' && (
-                    <>
-                        <p>장바구니를 불러오는데 실패했습니다.<br />다시 시도해 주세요.</p>
-                        <div className="btn-group">
-                            <button className="confirm" onClick={onConfirm}>확인</button>
-                        </div>
-                    </>
-                )}
-
-                {type === 'deleteError' && (
-                    <>
-                        <p>상품 삭제에 실패했습니다.<br />다시 시도해 주세요.</p>
-                        <div className="btn-group">
-                            <button className="confirm" onClick={onConfirm}>확인</button>
-                        </div>
-                    </>
-                )}
-
-                {type === 'noItemSelected' && (
-                    <>
-                        <p>주문할 상품을 선택해주세요.</p>
                         <div className="btn-group">
                             <button className="confirm" onClick={onConfirm}>확인</button>
                         </div>
