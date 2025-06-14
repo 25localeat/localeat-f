@@ -89,6 +89,11 @@
   background-color: transparent;
 }
 
+.description-text {
+  width: 100%;
+  max-width: 1040px;
+}
+
 .checkbox-container {
   width: 100%;
   max-width: 1040px;

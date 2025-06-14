@@ -8,6 +8,10 @@ import './ProductDetail.css'
 import axios from "../../components/api/axios";
 import { createSubscribeOrder } from '../../components/api/subscribe'; // 구독 모듈 (따로 뺌)
 import { addToSubscribeCart } from '../../components/api/cart-subscribe'; // 구독 - 장바구니
+
+import NavbarBuyer from '../../components/Navbar/Navbar';
+import NavbarSeller from '../../components/Navbar/NavbarSeller';
+
 const ProductDetail = () => {
 
     const {productId} = useParams();
@@ -100,18 +104,23 @@ const ProductDetail = () => {
     useEffect(() => {
         const fetchReviews = async () => {
             try {
-                const res = await axios.get(`/api/reviews/product/${productId}`, {
-                    params: {
-                        sortBy: sortBy,
-                        currentUserId: user?.userId
-                    }
-                });
+                const config = {
+                    params: { sortBy }
+                };
+
+                // 로그인한 경우에만 currentUserId 포함
+                if (user?.userId) {
+                    config.params.currentUserId = user.userId;
+                }
+
+                const res = await axios.get(`/api/reviews/product/${productId}`, config);
+                console.log("리뷰 응답:", res.data);
                 setReviewData(res.data);
             } catch (error) {
                 console.error("리뷰 불러오기 실패:", error);
             }
         };
-        if (productId && user) fetchReviews();
+        if (productId) fetchReviews();
     }, [productId, user, sortBy]);
 
     useEffect(() => {
@@ -263,6 +272,10 @@ const ProductDetail = () => {
     };
 
     return (
+        <>
+            {/* 판매자 접근 시 네비게이션 바 변경 */}
+        {user?.role === 'SELLER' ? <NavbarSeller /> : <NavbarBuyer />}
+
         <div className="product-detail-page">
             <ProductMainInfo
                 product={{...product, imageUrl, wished}} // wished 상태를 product에도 반영해줘야 정상 작동.
@@ -346,6 +359,7 @@ const ProductDetail = () => {
                 />
             )}
         </div>
+        </>
     );
 };
 

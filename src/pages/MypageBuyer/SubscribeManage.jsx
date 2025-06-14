@@ -23,10 +23,9 @@ const SubscribeManage = () => {
         return type; // fallback
     };
 
-    useEffect(() => {
+      useEffect(() => {
         const user = JSON.parse(localStorage.getItem('user'));
         if (!user || !user.userId) return;
-        console.log('[✅ PUT 성공] 값 반영 완료, fetch 시작');
 
         api.get(`/api/orders/subscription`, {
             params: { userId: user.userId }
@@ -38,6 +37,7 @@ const SubscribeManage = () => {
                     return {
                         id: item.id,
                         product: item.productName,
+                        productId: item.productId,
                         start: item.startDate,
                         cycleType: item.deliveryCycleType,
                         cycleValue: item.deliveryCycleValue,
@@ -180,7 +180,6 @@ const SubscribeManage = () => {
                             </tr>
                         ))}
                         </tbody>
-
                     </table>
                 </div>
             </div>

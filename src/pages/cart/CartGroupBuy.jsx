@@ -127,12 +127,7 @@ const CartGroupBuy = () => {
     };
 
     // 주문(결제) 팝업
-    const showOrderPopup = () => setPopupType('order');
-    const closePopup = () => { setPopupType(null); setItemToDelete(null); };
-
-    // 선택된 항목 결제 처리
-    const handleOrder = async () => {
-        // 선택된 cartItem id만 추출
+    const showOrderPopup = () => {
         const selectedIds = cartItems
             .filter(item => item.checked && item.paymentStatus !== 'COMPLETED')
             .map(item => item.id);
@@ -141,16 +136,24 @@ const CartGroupBuy = () => {
             alert('주문할 상품을 선택해주세요.');
             return;
         }
+        setPopupType('order');
+    };
+    const closePopup = () => { setPopupType(null); setItemToDelete(null); };
 
+    // 선택된 항목 결제 처리
+    const handleOrder = async () => {
         try {
             // 주문 생성 API 호출 (POST /api/group-buy-cart/order)
+            const selectedIds = cartItems
+                .filter(item => item.checked && item.paymentStatus !== 'COMPLETED')
+                .map(item => item.id);
+
             await axios.post(
                 'http://localhost:8080/api/group-buy-cart/order',
-                selectedIds, // body: [1,2,3,...]
+                selectedIds,
                 { headers: { 'X-USER-ID': userId } }
             );
 
-            alert('주문이 완료되었습니다!');
             // 주문내역 페이지로 이동
             navigate('/mypage/buyer/orders');
         } catch (err) {
@@ -229,7 +232,7 @@ const CartGroupBuy = () => {
                 </tbody>
             </table>
 
-            <button className="order-btn" onClick={handleOrder}>
+            <button className="order-btn" onClick={showOrderPopup}>
                 주문하기
             </button>
 

@@ -4,7 +4,7 @@
    작성일: 2025-04-25~ */
 
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import {Link, useNavigate} from 'react-router-dom';
 import './OrderManagement.css';
 import Popup from '../../components/Ui/Popup/Popup';
 import NavbarSeller from '../../components/Navbar/NavbarSeller';
@@ -38,6 +38,7 @@ const OrderManage = () => {
 
         axios.get(`/api/seller/orders?sellerId=${sellerId}`)
             .then(res => {
+                console.log("응답 데이터 확인:", res.data);
                 const sorted = [...res.data].sort((a, b) =>
                     new Date(b.orderDate) - new Date(a.orderDate)
                 );
@@ -127,7 +128,11 @@ const OrderManage = () => {
                             <tbody>
                             {filteredOrders.map((o) => (
                                 <tr key={o.orderItemId}>
-                                    <td>{o.productName}</td>
+                                    <td>
+                                        <Link className="plain-link" to={`/products/${o.productId}`}>
+                                            {o.productName}
+                                        </Link>
+                                    </td>
                                     <td>{getPurchaseType(o)}</td>
                                     <td>{o.quantity}</td>
                                     <td>{o.price.toLocaleString()}원</td>

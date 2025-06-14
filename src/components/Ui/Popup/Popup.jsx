@@ -119,6 +119,16 @@ const Popup = ({ type, onConfirm, onCancel }) => {
                     </>
                 )}
 
+                {type === 'reviewComplete' && (
+                    <>
+                        <p>리뷰가 성공적으로 등록되었습니다!</p>
+                        <div className="btn-group">
+                            <button className="confirm" onClick={onConfirm}>확인</button>
+                        </div>
+                    </>
+                )}
+
+
                 {type === 'login-error' && (
                     <>
                         <p>로그인 실패했습니다.</p>

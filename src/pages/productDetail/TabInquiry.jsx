@@ -127,9 +127,9 @@ const TabInquiry = ({ inquiries, user, setInquiries, productId }) => {
                     <li key={inquiry.id} className="inquiry-item">
                         <div className="inquiry-meta">
                             <span className="inquiry-writer">
-                                {inquiry.userId
+                                {inquiry.userId?.length > 3
                                     ? inquiry.userId.slice(0, 3) + '*'.repeat(inquiry.userId.length - 3)
-                                    : '알 수 없음'}
+                                    : inquiry.userId || '알 수 없음'}
                             </span>
                             <span className="inquiry-date">
                                 {new Date(inquiry.createdAt).toLocaleString()}

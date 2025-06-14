@@ -8,6 +8,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './ReviewForm.css';
 import { useNavigate, useParams } from 'react-router-dom';
+import Popup from '../../components/Ui/Popup/Popup';
 
 const ReviewForm = () => {
     const { orderItemId } = useParams();
@@ -17,6 +18,8 @@ const ReviewForm = () => {
     const [content, setContent] = useState('');
     const [images, setImages] = useState([]);
     const [imagePreviews, setImagePreviews] = useState([]);
+    const [showPopup, setShowPopup] = useState(false);
+    const [popupType, setPopupType] = useState('');
     const navigate = useNavigate();
     const storedUser = JSON.parse(localStorage.getItem("user") || "{}");
     const currentUserId = storedUser.userId;
@@ -61,13 +64,18 @@ const ReviewForm = () => {
 
         try {
             await axios.post('/api/reviews', formData);
-            alert("리뷰 등록이 완료되었습니다.");
-            navigate('/mypage/buyer/review');
+            setPopupType('reviewComplete');
+            setShowPopup(true);
         } catch (err) {
             console.error(err);
             alert("리뷰 등록에 실패했습니다.");
         }
     };
+    const handlePopupConfirm = () => {
+        setShowPopup(false);
+        navigate('/mypage/buyer/review');
+    };
+
 
     return (
         <div className="review-form">
@@ -110,8 +118,19 @@ const ReviewForm = () => {
             </table>
 
             <button className="submit-btn" onClick={handleSubmit}>리뷰 등록하기</button>
+
+            {showPopup && (
+                <Popup
+                    type={popupType}
+                    onConfirm={handlePopupConfirm}
+                    onCancel={() => setShowPopup(false)}
+                />
+            )}
+
         </div>
+
     );
+
 };
 
 export default ReviewForm;

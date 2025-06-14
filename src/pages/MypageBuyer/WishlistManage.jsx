@@ -112,29 +112,34 @@ const WishlistManage = () => {
                     {wishlist.length === 0 ? (
                         <div className="empty-message">찜한 상품이 없습니다.</div>
                     ) : (
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>상품이름</th>
-                                <th>삭제</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {wishlist.map((item, index) => (
-                                <tr key={index}>
-                                    <td>{item.productName}</td>
-                                    <td>
-                                        <input
-                                            type="checkbox"
-                                            checked={checkedItems.includes(index)}
-                                            onChange={() => toggleCheck(index)}
-                                        />
-                                    </td>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>상품이름</th>
+                                    <th>삭제</th>
                                 </tr>
-                            ))}
-                        </tbody>
-                    </table>
-                        )}
+                            </thead>
+                            <tbody>
+                                {wishlist.map((item, index) => (
+                                    <tr key={index}>
+                                        <td>
+                                            <button className="product-link"
+                                                onClick={() => navigate(`/products/${item.id}`)}>
+                                                {item.productName}
+                                            </button>
+                                        </td>
+                                        <td>
+                                            <input
+                                                type="checkbox"
+                                                checked={checkedItems.includes(index)}
+                                                onChange={() => toggleCheck(index)}
+                                            />
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    )}
                 </div>
             </div>
 
