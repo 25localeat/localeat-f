@@ -100,7 +100,7 @@
     margin-right: 2rem;
 }
 
-.sort-button {
+.sort-options button {
     background: none;
     border: none;
     font-size: 16px;
@@ -109,7 +109,7 @@
     margin: 0 0.5rem;
 }
 
-.sort-button.active {
+.sort-options .active {
     color: #03C75A;
     font-weight: bold;
 }

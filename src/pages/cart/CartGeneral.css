@@ -23,14 +23,14 @@ h1 {
   margin-bottom: 1rem;
 }
 
-.cart-button {
+button {
   cursor: pointer;
   background: none;
   border: none;
   font-size: 1.2rem;
 }
 
-.cart-button.active {
+button.active {
   font-weight: bold;
 }
 
