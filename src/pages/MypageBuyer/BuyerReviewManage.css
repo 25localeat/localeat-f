@@ -107,8 +107,3 @@ thead {
 .delete-btn:hover {
     background-color: #02b151;
 }
-
-.plain-link {
-    text-decoration: none;
-    color: #282c34;
-}

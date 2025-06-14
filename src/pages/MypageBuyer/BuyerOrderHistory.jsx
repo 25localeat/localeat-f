@@ -6,7 +6,7 @@
 */
 
 import React, { useEffect, useState } from 'react';
-import {Link, useNavigate} from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import './BuyerOrderHistory.css';
 import axios from '../../components/api/axios';
 
@@ -80,9 +80,9 @@ const BuyerOrderHistory = () => {
                                 <tr key={item.id}>
                                     <td>{item.purchaseType}</td>
                                     <td>
-                                        <Link className="product-link" to={`/products/${item.productId}`}>
+                                        <button className="product-link" onClick={() => navigate(`/products/${item.productId}`)}>
                                             {item.productName}
-                                        </Link>
+                                        </button>
                                     </td>
                                     <td>{item.quantity}개</td>
                                     <td>{item.price.toLocaleString()}원</td>

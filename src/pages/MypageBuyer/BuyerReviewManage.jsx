@@ -6,7 +6,7 @@
 */
 
 import React, { useEffect, useState } from 'react';
-import {Link, useNavigate} from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import Popup from '../../components/Ui/Popup/Popup';
 import './BuyerReviewManage.css';
 import axios from "axios";
@@ -83,11 +83,12 @@ const BuyerReviewManage = () => {
                         <tbody>
                             {reviews.map(review => (
                                 <tr key={review.id}>
-                                    <td>
-                                        <Link className="plain-link" to={`/products/${review.productId}`}>
-                                            {review.productName}
-                                        </Link>
-                                    </td>
+                                    <td><button
+                                        className="product-link"
+                                        onClick={() => navigate(`/products/${review.productId}`)}
+                                    >
+                                        {review.productName}
+                                    </button></td>
                                     <td>
                                         {[1, 2, 3, 4, 5].map((s) => (
                                             <span key={s} className={`star-small ${review.rating >= s ? 'filled' : ''}`}>★</span>
