@@ -20,32 +20,43 @@ import axios from 'axios';
 const Home = () => {
     const navigate = useNavigate();
     const [products, setProducts] = useState([]);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [totalPages, setTotalPages] = useState(1);
     const regionTags = getTagsByType('region');
+    const itemsPerPage = 8;
 
     useEffect(() => {
-        axios.get('/api/products/latest')
-            .then(res => {
-                console.log('홈 화면 데이터: ', res.data);
-                const data = res.data.map(p => {
-                    const regionTag = getTagByCode(p.local); // ✅ 지역 코드 → 태그 정보로 변환
+        fetchProducts();
+    }, [currentPage]);
 
-                    return {
-                        id: p.id,
-                        image: `/api/images/by-product/${p.id}`,
-                        title: p.productName ?? '',
-                        price: p.price,
-                        tags: [regionTag]
-                    };
-                });
-
-                setProducts(data);
-            })
-            .catch(err => console.error('최신 상품 불러오기 실패', err));
-    }, []);
+    const fetchProducts = async () => {
+        try {
+            const response = await axios.get(`/api/products/latest?page=${currentPage - 1}&size=${itemsPerPage}`);
+            const data = (response.data.content || []).map(p => {
+                const regionTag = getTagByCode(p.local);
+                return {
+                    id: p.id,
+                    image: `/api/images/by-product/${p.id}`,
+                    title: p.productName ?? '',
+                    price: p.price,
+                    tags: [regionTag]
+                };
+            });
+            setProducts(data);
+            setTotalPages(Math.ceil((response.data.totalElements || 0) / itemsPerPage));
+        } catch (err) {
+            console.error('최신 상품 불러오기 실패', err);
+        }
+    };
 
     const handleTagClick = (tagCode) => {
         const code = typeof tagCode === 'string' ? tagCode : String(tagCode.code || tagCode.name || '');
         navigate(`${ROUTES.SEARCH}?tag=${encodeURIComponent(code)}`);
+        window.scrollTo(0, 0);
+    };
+
+    const handlePageChange = (pageNumber) => {
+        setCurrentPage(pageNumber);
         window.scrollTo(0, 0);
     };
 
@@ -76,6 +87,18 @@ const Home = () => {
             <div className="product-grid">
                 {products.map((product, i) => (
                     <ProductCard key={i} {...product}/>
+                ))}
+            </div>
+
+            <div className="pagination">
+                {Array.from({ length: totalPages }, (_, i) => i + 1).map((pageNum) => (
+                    <button
+                        key={pageNum}
+                        className={`page-button ${currentPage === pageNum ? 'active' : ''}`}
+                        onClick={() => handlePageChange(pageNum)}
+                    >
+                        {pageNum}
+                    </button>
                 ))}
             </div>
         </div>

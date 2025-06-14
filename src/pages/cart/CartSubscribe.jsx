@@ -33,13 +33,14 @@ const CartSubscribe = () => {
         .then(res => {
           setCartItems(res.data.map(item => ({
             id: item.cartItemId,
+            productId: item.productId,
             name: item.productName,
             price: item.price,
             quantity: item.quantity,
-            cycle: item.deliveryCycle,
+            cycle: item.deliveryCycle || 'WEEKLY_1', // 기본값 설정
             checked: item.isSelected
           })));
-            console.log("장바구니 응답 ▶", res.data);
+            console.log("장바구니 응답 ", res.data);
         })
         .catch(err => {
           console.error("구독 장바구니 로딩 실패:", err);
@@ -141,12 +142,64 @@ const CartSubscribe = () => {
           <Popup
               type={popupType}
               onCancel={closePopup}
-              onConfirm={() => {
-                if (popupType === 'delete') deleteItem();
-                if (popupType === 'order') {
-                  closePopup();
-                  navigate('/');
-                }
+              onConfirm={async () => {
+                  if (popupType === 'delete') {
+                      deleteItem();
+                  }
+
+                  if (popupType === 'order') {
+                      const selectedItems = cartItems.filter(item => item.checked);
+                      if (selectedItems.length === 0) {
+                          alert('선택된 상품이 없습니다.');
+                          closePopup();
+                          return;
+                      }
+
+                      try {
+                          const selectedItem = selectedItems[0];
+                          const [cycleType, cycleValue] = (selectedItem.cycle || 'WEEKLY_1').split('_');
+                          
+                          await axios.post('/api/subscribe-order',
+                              {
+                                  productId: selectedItem.productId,
+                                  quantity: selectedItem.quantity,
+                                  deliveryCycle: {
+                                      cycleType,
+                                      cycleValue: parseInt(cycleValue)
+                                  },
+                                  deliveryPeriodInMonths: 1  // 기본값 설정
+                              },
+                              {
+                                  headers: {
+                                      userId: userId
+                                  }
+                              }
+                          );
+
+                          // 주문 성공 후: 장바구니에서 제거
+                          await axios.delete(`/api/cart/subscribe/${selectedItem.id}`);
+                          
+                          // 장바구니 목록 다시 불러오기
+                          const res = await axios.get(`/api/cart/subscribe/${userId}`);
+                          setCartItems(res.data.map(item => ({
+                              id: item.cartItemId,
+                              productId: item.productId,
+                              name: item.productName,
+                              price: item.price,
+                              quantity: item.quantity,
+                              cycle: item.deliveryCycle || 'WEEKLY_1',
+                              checked: item.isSelected
+                          })));
+
+                          // 마이페이지 구독 목록으로 이동
+                          navigate('/mypage/buyer/subscribe');
+                      } catch (error) {
+                          console.error('주문 실패:', error);
+                          alert('주문에 실패했습니다.');
+                      }
+
+                      closePopup();
+                  }
               }}
           />
       )}
