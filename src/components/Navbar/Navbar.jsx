@@ -55,6 +55,26 @@ const Navbar = () => {
         navigate('/mypage/buyer/orders');
     };
 
+    const handleSubscribeClick = (e) => {
+        e.preventDefault();
+        const user = JSON.parse(localStorage.getItem('user'));
+        if (!user) {
+            setPopupType('loginRequired');
+            return;
+        }
+        navigate('/mypage/buyer/subscribe');
+    };
+
+    const handleWishClick = (e) => {
+        e.preventDefault();
+        const user = JSON.parse(localStorage.getItem('user'));
+        if (!user) {
+            setPopupType('loginRequired');
+            return;
+        }
+        navigate('/mypage/buyer/wish');
+    };
+
     const closePopup = () => {
         setPopupType(null);
         if (popupType === 'loginRequired') {
@@ -113,7 +133,7 @@ const Navbar = () => {
 
                 <nav className="menu">
                     <span onClick={handleMypageClick} className="menu-item">마이페이지</span>
-                    <Link to="/mypage/buyer/subscribe" className="menu-item">구독</Link>
+                    <span onClick={handleSubscribeClick} className="menu-item" style={{ cursor: 'pointer' }}>구독</span>
                     <span
                         className="menu-item"
                         onClick={(e) => {
@@ -124,7 +144,7 @@ const Navbar = () => {
                     >
                         공동구매
                     </span>
-                    <Link to="/mypage/buyer/wish" className="menu-item">찜</Link>
+                    <span onClick={handleWishClick} className="menu-item" style={{ cursor: 'pointer' }}>찜</span>
                 </nav>
 
                 <div className="icons">
