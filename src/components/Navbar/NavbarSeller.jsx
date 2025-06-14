@@ -59,7 +59,7 @@ const NavbarSeller = () => {
     return (
         <header className="navbar">
             <div className="navbar-inner">
-                <Link className="logo" to="/SellerMypage">
+                <Link className="logo" to="/">
                     <span className="logo-green">Local</span>
                     <span className="logo-pink">E</span>
                     <span className="logo-green">at</span>

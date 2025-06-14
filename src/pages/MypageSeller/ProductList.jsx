@@ -108,7 +108,6 @@ function ProductList() {
                                     <th>알뜰상품</th>
                                     <th>지역</th>
                                     <th>가격</th>
-                                    <th>등록일</th>
                                     <th>수정</th>
                                     <th>삭제</th>
                                 </tr>
@@ -121,9 +120,6 @@ function ProductList() {
                                         <td>{item.productGrade}</td>
                                         <td>{localTypeToLabel[item.local] || item.local}</td>
                                         <td>{item.price != null ? item.price.toLocaleString() + '원' : '가격 미정'}</td>
-                                        <td>
-                                            {item.createAt ? new Date(item.createAt).toLocaleDateString() : '등록일 없음'}
-                                        </td>
                                         <td><button className="modify-btn" onClick={() => handleEdit(item)}>수정</button></td>
                                         <td><button className="delete-btn" onClick={() => openDeletePopup(item.id)}>삭제</button></td>
                                     </tr>
