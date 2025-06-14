@@ -120,7 +120,7 @@ const ProductMainInfo = ({
                                 value={deliveryCycle.cycleType + '_' + deliveryCycle.cycleValue}
                                 onChange={(e) => {
                                     const [type, value] = e.target.value.split('_');
-                                    setDeliveryCycle({ cycleType: `${type}_${value}`, cycleValue: parseInt(value) });  // 또는 type/value 따로 보낼지 결정
+                                    setDeliveryCycle({ cycleType: `${type}`, cycleValue: parseInt(value) });
                                 }}
                             >
                                 <option value="WEEKLY_1">1주</option>
