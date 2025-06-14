@@ -117,15 +117,15 @@ const ProductMainInfo = ({
                         <div className="form-group">
                             <label>배송주기</label>
                             <select
-                                value={`${deliveryCycle.cycleType}-${deliveryCycle.cycleValue}`}
+                                value={deliveryCycle.cycleType + '_' + deliveryCycle.cycleValue}
                                 onChange={(e) => {
-                                    const [type, value] = e.target.value.split('-');
-                                    setDeliveryCycle({ cycleType: type, cycleValue: parseInt(value) });
+                                    const [type, value] = e.target.value.split('_');
+                                    setDeliveryCycle({ cycleType: `${type}_${value}`, cycleValue: parseInt(value) });  // 또는 type/value 따로 보낼지 결정
                                 }}
                             >
-                                <option value="WEEKLY-1">1주</option>
-                                <option value="WEEKLY-2">2주</option>
-                                <option value="MONTHLY-1">1개월</option>
+                                <option value="WEEKLY_1">1주</option>
+                                <option value="WEEKLY_2">2주</option>
+                                <option value="MONTHLY_1">1개월</option>
                             </select>
                         </div>
 

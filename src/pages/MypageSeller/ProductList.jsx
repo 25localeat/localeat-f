@@ -35,7 +35,10 @@ function ProductList() {
     };
 
     useEffect(() => {
-        axios.get('/api/products')
+        const user = JSON.parse(localStorage.getItem('user'));
+        const sellerId = user?.userId;
+        if (!sellerId) return;
+        axios.get(`/api/products/seller-list?sellerId=${sellerId}`)
             .then(res => {
                 setProducts(res.data);
             })
