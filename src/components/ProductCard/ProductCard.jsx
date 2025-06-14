@@ -37,7 +37,7 @@ const ProductCard = ({ id, image, tags = [], title, price }) => {
             <div className="product-title">{title}</div>
 
             <div className="product-price">
-                <span className="final">{price}원</span>
+                <span className="final">{price?.toLocaleString()}원</span>
             </div>
         </div>
     );
