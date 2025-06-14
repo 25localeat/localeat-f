@@ -3,12 +3,6 @@ import './TabInquiry.css';
 import axios from "axios";
 
 const TabInquiry = ({ inquiries, user, setInquiries, productId }) => {
-    const sortedInquiries = [...inquiries].sort((a, b) => b.createdAt.localeCompare(a.createdAt));
-    const [showForm, setShowForm] = useState(false);
-    const [newInquiry, setNewInquiry] = useState({ category: '상품문의', content: '' });
-
-    const [replyVisible, setReplyVisible] = useState({});
-    const [replyInput, setReplyInput] = useState({});
 
     const categoryToEnum = (label) => {
         switch (label) {
@@ -28,6 +22,20 @@ const TabInquiry = ({ inquiries, user, setInquiries, productId }) => {
         }
     };
 
+    const [showForm, setShowForm] = useState(false);
+    const [newInquiry, setNewInquiry] = useState({ category: '상품문의', content: '' });
+    const [isSubmitting, setIsSubmitting] = useState(false);
+
+    const [replyVisible, setReplyVisible] = useState({});
+    const [replyInput, setReplyInput] = useState({});
+
+    const [selectedCategory, setSelectedCategory] = useState('전체');
+
+    const sortedInquiries = [...inquiries].sort((a, b) => b.createdAt.localeCompare(a.createdAt));
+    const filteredInquiries = selectedCategory === '전체'
+        ? sortedInquiries
+        : sortedInquiries.filter(inq => translateCategory(inq.category) === selectedCategory);
+
     const handleInputChange = (e) => {
         setNewInquiry({ ...newInquiry, [e.target.name]: e.target.value });
     };
@@ -38,8 +46,9 @@ const TabInquiry = ({ inquiries, user, setInquiries, productId }) => {
     };
 
     const handleSubmit = async () => {
-        if (!newInquiry.content.trim()) return;
+        if (isSubmitting || !newInquiry.content.trim()) return;
 
+        setIsSubmitting(true);
         const payload = {
             productId: productId,
             userId: user?.userId,
@@ -52,8 +61,10 @@ const TabInquiry = ({ inquiries, user, setInquiries, productId }) => {
             setInquiries((prev) => [...prev, res.data]);
             setShowForm(false);
             setNewInquiry({ category: '상품문의', content: '' });
-        } catch (err) {
+        }  catch (err) {
             console.error("문의 등록 실패:", err.response?.data || err.message);
+        } finally {
+            setIsSubmitting(false);
         }
     };
 
@@ -89,6 +100,18 @@ const TabInquiry = ({ inquiries, user, setInquiries, productId }) => {
     return (
         <div>
             <h2 className="inquiry-heading">상품 문의</h2>
+            {/* 카테고리 필터 */}
+            <div className="category-filter">
+                <label>
+                    카테고리 필터 :
+                    <select value={selectedCategory} onChange={e => setSelectedCategory(e.target.value)}>
+                        <option value="전체">전체</option>
+                        <option value="상품문의">상품문의</option>
+                        <option value="배송문의">배송문의</option>
+                        <option value="공동구매문의">공동구매문의</option>
+                    </select>
+                </label>
+            </div>
 
             {user.role === 'CONSUMER' && user.isLoggedIn && (
                 <>
@@ -115,7 +138,8 @@ const TabInquiry = ({ inquiries, user, setInquiries, productId }) => {
                             </label>
                             <div className="form-actions">
                                 <button className="cancel-button" onClick={handleCancel}>취소</button>
-                                <button className="submit-button" onClick={handleSubmit}>등록</button>
+                                <button className="submit-button" onClick={handleSubmit} disabled={isSubmitting}>등록</button>
+
                             </div>
                         </div>
                     )}
@@ -123,7 +147,7 @@ const TabInquiry = ({ inquiries, user, setInquiries, productId }) => {
             )}
 
             <ul className="inquiry-list">
-                {sortedInquiries.map((inquiry) => (
+                {filteredInquiries.map((inquiry) => (
                     <li key={inquiry.id} className="inquiry-item">
                         <div className="inquiry-meta">
                             <span className="inquiry-writer">
