@@ -5,7 +5,7 @@
 기간 : 2025-04-24~
 */
 import React, { useEffect, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import {Link, useLocation, useNavigate} from 'react-router-dom';
 import './ProductList.css';
 import Popup from '../../components/Ui/Popup/Popup';
 import axios from "axios";
@@ -115,7 +115,10 @@ function ProductList() {
                             <tbody>
                                 {products.map((item, index) => (
                                     <tr key={index}>
-                                        <td>{item.productName}</td>
+                                        <td>
+                                            <Link className="plain-link" to={`/products/${item.id}`}>
+                                                {item.productName}
+                                            </Link></td>
                                         <td>{item.isGroupBuy ? 'O' : 'X'}</td>
                                         <td>{item.productGrade}</td>
                                         <td>{localTypeToLabel[item.local] || item.local}</td>
