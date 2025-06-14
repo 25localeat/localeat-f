@@ -115,3 +115,19 @@ select {
 .save-btn:hover {
     background-color: #02b151;
 }
+
+/* 적용하기 버튼 스타일 */
+button {
+    background-color: #03C75A;
+    color: white;
+    padding: 0.6rem 1rem;
+    font-size: 1rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+}
+
+button:hover {
+    background-color: #02b151;
+}
