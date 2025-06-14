@@ -28,7 +28,6 @@ export const createSubscribeOrder = async ({ productId, quantity, deliveryCycle,
         deliveryCycle,
         deliveryPeriodInMonths
     };
-
     // POST 요청 + userId는 Header에 포함
     const response = await api.post('/api/subscribe-order', payload, {
         headers: {
@@ -36,6 +35,5 @@ export const createSubscribeOrder = async ({ productId, quantity, deliveryCycle,
             'userId': userId
         }
     });
-
     return response.data;
 };

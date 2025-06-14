@@ -61,17 +61,16 @@ const ProductRegister = () => {
             console.log("editData 값:", editData);
 
             setFormData({
-                region: editData.region,
-                groupbuy: editData.groupbuy,
-                limit: editData.limit,
-                cheap: editData.cheap,
-                price: editData.price,
+                region: editData.local,
+                groupbuy: editData.isGroupBuy ? 'O' : 'X',
+                limit: editData.maxParticipants?.toString() || '',
+                cheap: editData.productGrade === 'B' ? 'O' : 'X',
+                price: editData.price?.toString() || '',
                 name: editData.productName,
                 description: editData.description,
                 image: editData.image,
                 isSubscription: true,
             });
-
 
             // 이미지 blob 요청
             axios.get(`/api/images/${editData.id}`, {

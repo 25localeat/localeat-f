@@ -201,10 +201,24 @@
 .quantity-box button {
     width: 32px;
     height: 32px;
-    border: 1px solid #ccc;
-    background-color: white;
-    font-size: 18px;
-    cursor: pointer;
+    border: 1.5px solid #03c75a;
+    background-color: #fff;
+    color: #03c75a;
+    font-size: 22px;
+    font-weight: bold;
+    border-radius: 6px;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    line-height: 1;
+}
+
+.quantity-box button:hover {
+    background-color: #03c75a;
+    color: #fff;
+    border-color: #03c75a;
 }
 
 .total-price {
