@@ -1,0 +1,67 @@
+/* ProductDetail.css */
+
+.product-detail-page {
+    max-width: 1500px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+    font-family: 'Pretendard', sans-serif;
+}
+
+/*───────────────    하단 탭    ───────────────*/
+.product-detail-tabs {
+    display: flex;
+    justify-content: center;
+    margin-top: 5rem;
+}
+
+.tab {
+    width: 500px;
+    border: 1px solid #D9D9D9;
+    border-bottom: none;
+    background-color: #f9f9f9;
+    font-family: "Pretendard Variable";
+    font-size: 18px;
+    font-weight: 400;
+    color: #000;
+    padding: 12px 24px;
+    cursor: pointer;
+    outline: none;
+    margin-right: -1px;
+    position: relative;
+    border-bottom: 1px solid #D9D9D9; /* 하단 선 공통 */
+}
+
+.tab.active {
+    color: #03c75a;
+    background-color: white;
+    border-bottom: 1px solid transparent; /* 하단만 투명 */
+}
+/* 탭 내용 출력 영역 */
+.product-tab-content {
+    max-width: 1500px;
+    padding: 2rem;
+    background-color: white;
+    border-top: none;
+}
+
+.detail-heading {
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+
+.detail-text {
+    width: 100%;
+    max-width: 1200px;
+    padding: 10px 20px 20px 20px;
+    background: rgba(255, 255, 255, 0.77);
+    overflow-y: auto;
+    font-size: 18px;
+    font-weight: 500;
+    color: #000;
+    line-height: 1.5;
+    margin-bottom: 30px;
+    text-align: left;
+    box-sizing: border-box;
+    white-space: pre-line;
+}

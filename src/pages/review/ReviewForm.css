@@ -1,0 +1,85 @@
+/*
+파일명: ReviewForm.css
+파일 설명: 리뷰 작성 페이지 스타일
+작성자: 김민하
+기간: 2025-04-26 ~ 28, 05-05
+*/
+
+.review-form {
+    max-width: 1500px;
+    margin: 0 auto;
+    padding: 2rem;
+    font-family: 'Pretendard', sans-serif;
+}
+.review-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 30px;
+}
+
+.review-table th {
+    width: 200px;
+    padding: 16px;
+    text-align: left;
+    background-color: rgba(3, 199, 90, 0.1);
+    font-weight: bold;
+    border: 1px solid #ccc;
+    vertical-align: top;
+}
+
+.review-table td {
+    padding: 16px;
+    border: 1px solid #ccc;
+    vertical-align: top;
+}
+
+.review-table input[type="text"],
+.review-table textarea,
+.review-table input[type="file"] {
+    width: 100%;
+    padding: 10px;
+    font-size: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.review-table textarea {
+    resize: vertical;
+    max-height: 200px;
+}
+
+.stars span {
+    font-size: 26px;
+}
+
+.image-preview {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.preview-img {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border: 1px solid #aaa;
+    border-radius: 4px;
+}
+
+
+.submit-btn {
+    margin-top: 40px;
+    padding: 14px 32px;
+    background-color: #03c75a;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}

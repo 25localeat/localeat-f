@@ -1,0 +1,107 @@
+/*
+파일명: FormSeller.css
+파일 설명: 로컬잇 판매자 회원 가입 정보 입력 UI 디자인
+작성자: 김미현
+기간: 2025-04-27 ~
+*/
+
+.container {
+    width: 100%;
+    max-width: 1200px;
+    height: auto;  /* 고정 높이 삭제 */
+        overflow-y: auto;  /* 세로 스크롤이 필요할 때만 표시 */
+    margin: 0 auto;
+    padding: 2rem;
+    flex-shrink: 0;
+}
+
+.title {
+  color: #000 !important ;
+  text-align: center;
+  font-family: Pretendard;
+  font-size: 34px;
+  font-style: normal;
+  font-weight: 800;
+  line-height: normal;
+  margin-bottom: 30px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th, td {
+  border: 1px solid #ddd;
+  padding: 12px;
+  text-align: left;
+}
+
+th {
+  background: rgba(3, 199, 90, 0.10);
+  width: 150px;
+  color: #000;
+  text-align: center;
+  font-family: Pretendard;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 800;
+  line-height: normal;
+}
+
+td {
+      vertical-align: middle;
+}
+
+input[type="text"],
+input[type="password"],
+input[type="email"],
+select {
+  width: 35%;
+  padding: 8px;
+  box-sizing: border-box;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-right: 3%;
+}
+
+.id-check-button {
+    width: 160px;
+    height: 38px;
+    flex-shrink: 0;
+    margin-top: 10px;
+    margin-left: 4%;
+    padding: 8px 16px;
+    border-radius: 15px;
+    background: rgba(3, 199, 90, 0.18);
+    border: none;
+    cursor: pointer;
+    color: #000;
+    text-align: center;
+    font-family: Pretendard;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+}
+
+.signUpButton {
+      width: 400px;
+      height: 64px;
+      flex-shrink: 0;
+      border-radius: 15px;
+      border: none;
+      background: #03C75A;
+      color: #FFF;
+      font-family: Pretendard;
+      font-size: 24px;
+      font-style: normal;
+      font-weight: 500;
+      line-height: normal;
+      margin-top: 37px;
+}
+
+.submit-row {
+  text-align: center;
+  padding-top: 20px;
+}

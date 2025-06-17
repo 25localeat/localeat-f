@@ -1,0 +1,66 @@
+/*
+파일명: GroupBuyList.jsx
+파일 설명: 로컬잇 공동구매 상품 모아보기 UI 디자인
+작성자: 김미현
+기간: 2025-04-28 ~
+*/
+
+.container {
+    width: 100%;
+    max-width: 1200px;
+    height: auto;
+    margin: 0 auto;
+    padding: 30px;
+    font-family: 'Pretendard', sans-serif;
+}
+
+.title {
+    font-family: Pretendard;
+    font-size: 34px;
+    font-weight: bold;
+    text-align: center;
+    margin-top: 0px;
+    margin-bottom: 20px;
+    color: #000;
+}
+
+.region-tags-wrapper {
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    margin-top: 3rem;
+}
+
+.region-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px;
+    justify-content: center;
+}
+
+.tag {
+    padding: 0.5rem 1.25rem;
+    border-radius: 999px;
+    font-size: 1rem;
+    font-weight: 500;
+    color: black;
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+.tag-0 { background-color: rgba(171, 78, 82, 0.1); }
+.tag-1 { background-color: rgba(244, 166, 136, 0.1); }
+.tag-2 { background-color: rgba(110, 75, 53, 0.1); }
+.tag-3 { background-color: rgba(164, 215, 146, 0.1); }
+.tag-4 { background-color: rgba(0, 178, 169, 0.1); }
+.tag-5 { background-color: rgba(116, 139, 171, 0.1); }
+.tag-6 { background-color: rgba(208, 176, 132, 0.1); }
+.tag-7 { background-color: rgba(189, 160, 203, 0.1); }
+
+.product-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 32px;
+    justify-content: space-between;
+    padding: 0 70px;
+    margin-top:3rem;
+}

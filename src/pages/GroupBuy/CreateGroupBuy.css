@@ -1,0 +1,186 @@
+/*
+파일명: CreateGroupBuy.css
+파일 설명: 로컬잇 공동구매 공동구매 만들기 UI 디자인
+작성자: 김미현
+기간: 2025-04-28 ~
+*/
+
+.cgb-container {
+  width: 100%;
+  max-width: 1200px;
+  height: auto;
+  margin: 0 auto;
+  padding: 30px;
+  font-family: 'Pretendard', sans-serif;
+}
+
+.cgb-title {
+  font-size: 34px;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 40px;
+  font-family: 'Pretendard', sans-serif;
+}
+
+.cgb-next-button {
+  width: 199px;
+  height: 50px;
+  flex-shrink: 0;
+  padding: 10px 20px;
+  border-radius: 15px;
+  background: rgba(3, 199, 90, 0.18);
+  border: none;
+  color: #000;
+  font-family: Pretendard;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  cursor: pointer;
+}
+
+.cgb-content-wrapper {
+display: flex;
+justify-content: space-between;
+gap: 40px;
+}
+
+.cgb-left-section, .cgb-right-section {
+flex: 1;
+}
+
+.cgb-section {
+margin-bottom: 30px;
+}
+
+.cgb-section-title {
+  color: #000;
+  font-family: Inter;
+  font-size: 26px;
+  font-style: normal;
+  margin-bottom: 10px;
+  line-height: normal;
+}
+
+.cgb-region-tags-wrapper {
+display: flex;
+margin-top: 20px;
+margin-left: 0;
+}
+
+.cgb-region-tags {
+display: grid;
+grid-template-columns: repeat(3, 1fr);
+gap: 24px;
+justify-content: start;
+}
+
+.cgb-tag {
+display: block;
+width: 100%;
+padding: 0.5rem 1.25rem;
+border-radius: 999px;
+font-size: 1rem;
+font-weight: 500;
+color: black;
+background-color: rgba(0, 0, 0, 0.05);
+}
+
+.cgb-tag-item {
+width: 180px;
+text-align: center;
+cursor: pointer;
+transition: all 0.3s ease;
+display: inline-block;
+}
+
+.tag-0 { background-color: rgba(171, 78, 82, 0.1); }
+.tag-1 { background-color: rgba(244, 166, 136, 0.1); }
+.tag-2 { background-color: rgba(110, 75, 53, 0.1); }
+.tag-3 { background-color: rgba(164, 215, 146, 0.1); }
+.tag-4 { background-color: rgba(0, 178, 169, 0.1); }
+.tag-5 { background-color: rgba(116, 139, 171, 0.1); }
+.tag-6 { background-color: rgba(208, 176, 132, 0.1); }
+.tag-7 { background-color: rgba(189, 160, 203, 0.1); }
+
+/* 클릭 시 효과 */
+.cgb-tag-item.selected {
+    font-weight: bold;
+}
+
+/* TagBadge 내부의 .tag가 있다면, 해당 요소에 스타일을 적용하는 방법 */
+.cgb-tag-item.selected .tag-badge {
+    font-weight: bold;
+    font-family: 'Pretendard', sans-serif;
+    letter-spacing: -0.5px;
+}
+
+.cgb-quantity-selector {
+display: flex;
+align-items: center;
+gap: 10px;
+margin-top: 10px;
+border: 2px solid #bdbdbd;
+border-radius: 20px;
+padding: 16px 32px;
+background: #fff;
+width: fit-content;
+min-width: 0;
+max-width: 100%;
+}
+
+.cgb-quantity-button {
+width: 48px;         /* 적당한 크기 */
+height: 48px;        /* 적당한 크기 */
+background-color: white;
+color: #333;
+border: 1.5px solid #bdbdbd;
+font-size: 32px;     /* 글씨 크게 */
+cursor: pointer;
+border-radius: 10px; /* 약간 둥글게 */
+aspect-ratio: unset; /* 비율 고정 해제 */
+flex-shrink: 0;
+transition: background 0.2s;
+font-family: 'Pretendard', sans-serif;
+}
+
+.cgb-quantity {
+min-width: 40px;
+text-align: center;
+font-size: 32px;   /* 숫자 크게 */
+color: black;
+font-family: 'Pretendard', sans-serif;
+}
+
+.cgb-quantity-button:hover {
+background: #f5f5f5;
+}
+
+.cgb-section > .cgb-input-box {
+  width: 530px;
+  height: 66px;
+  flex-shrink: 0;
+  border-radius: 30px;
+  border: 2px solid #03C75A;
+  background: rgba(255, 255, 255, 0.30);
+  padding: 10px;
+  padding-left: 20px;
+  color: #000;
+  background-color: #ffffff;
+  font-size: 18px;
+  font-family: 'Pretendard', sans-serif;
+  box-sizing: border-box;
+}
+
+.cgb-section > input[type="date"].cgb-input-box {
+  height: 66px;
+}
+
+.cgb-button-wrapper {
+text-align: right;
+margin-top: 30px;
+}
+
+.highlighted-tag {
+  font-weight: bold;
+}

@@ -1,0 +1,142 @@
+/*
+파일명 : MemberEdit.css
+파일설명 : 구매자 마이페이지 - 화원정보수정 화면 디자인
+작성자 : 김소망
+작성일 : 2025-04-25
+*/
+
+.mypage-wrapper {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+    box-sizing: border-box;
+    background-color: white;
+}
+
+.page-header {
+    background-color: #DFF3E6;
+    width: 100%;
+    text-align: center;
+    font-size: 2rem;
+    font-weight: bold;
+    padding: 0.6rem 0;
+    border-radius: 4px;
+    margin-bottom: 0.5rem;
+}
+
+.mypage-body {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+    align-items: stretch;
+}
+
+.sidebar {
+    flex: 0 0 200px;
+    padding: 2rem 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    border-right: 2px solid #03C75A;
+}
+
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.sidebar li {
+    font-size: 1.2rem;
+    margin: 2rem 0;
+    cursor: pointer;
+    text-align: center;
+    width: 100%;
+}
+
+.sidebar li.active {
+    color: #03C75A;
+    font-weight: bold;
+}
+
+.container {
+    flex: 1;
+    min-width: 0;
+    padding: 2rem 3rem;
+    box-sizing: border-box;
+    overflow-x: auto;
+}
+
+.section-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 1.5rem;
+    color: black;
+}
+
+.edit-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+    margin-bottom: 1.5rem;
+}
+
+.edit-table td {
+    padding: 0.75rem;
+    border-bottom: 1px solid #ddd;
+    vertical-align: middle;
+}
+
+.edit-table select {
+    padding: 0.5rem;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    min-width: 200px;
+    background-color: white;
+    appearance: none;
+    background-image: url("data:image/svg+xml;utf8,<svg fill='black' height='16' viewBox='0 0 24 24' width='16' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
+    background-repeat: no-repeat;
+    background-position: right 0.5rem center;
+    background-size: 1rem;
+}
+
+.label-cell {
+    background-color: #DFF3E6;
+    font-weight: bold;
+    width: 150px;
+}
+
+.edit-btn {
+    background-color: #03C75A;
+    color: white;
+    padding: 0.4rem 1rem;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+}
+
+.edit-btn:hover {
+    background-color: #02b151;
+}
+
+.save-btn {
+    background-color: #03C75A;
+    color: white;
+    padding: 0.6rem 2rem;
+    font-size: 1rem;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    display: block;
+    margin: 1rem auto;
+    transition: background-color 0.2s ease-in-out;
+}
+
+.save-btn:hover {
+    background-color: #02b151;
+}

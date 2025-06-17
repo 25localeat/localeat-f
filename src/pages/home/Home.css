@@ -1,0 +1,109 @@
+/*
+파일명 : Home.css
+파일설명 : 로컬잇 웹사이트의 메인(홈) 화면 디자인
+작성자 : 정여진
+기간 : 2025-04-09.
+*/
+.banner-container {
+    position: relative;
+    width: 100%;
+    background-color: white;
+    overflow: hidden;
+}
+
+.banner-image {
+    width: 100%;
+    height: auto;
+    max-height: 400px;
+    object-fit: cover;
+}
+
+.banner-button {
+    position: absolute;
+    bottom: 30px;
+    right: 30px;
+    background: rgba(17, 0, 0, 0.7);
+    padding: 10px 20px;
+    border-radius: 17px;
+    color: white;
+    font-size: 1.5rem;
+    font-weight: 700;
+    text-align: center;
+}
+
+.region-tags-wrapper {
+    width: 100vw; /* 화면 전체를 강제로 차지하게, 이거 안쓰면 안돼 */
+    display: flex;
+    justify-content: center;
+    margin-top: 3rem;
+}
+
+.region-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px;
+    justify-content: center;
+}
+
+.tag {
+    padding: 0.5rem 1.25rem;
+    border-radius: 999px;
+    font-size: 1rem;
+    font-weight: 500;
+    color: black;
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+.tag-0 { background-color: rgba(171, 78, 82, 0.1); }
+.tag-1 { background-color: rgba(244, 166, 136, 0.1); }
+.tag-2 { background-color: rgba(110, 75, 53, 0.1); }
+.tag-3 { background-color: rgba(164, 215, 146, 0.1); }
+.tag-4 { background-color: rgba(0, 178, 169, 0.1); }
+.tag-5 { background-color: rgba(116, 139, 171, 0.1); }
+.tag-6 { background-color: rgba(208, 176, 132, 0.1); }
+.tag-7 { background-color: rgba(189, 160, 203, 0.1); }
+
+.product-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 32px;
+    padding: 0 70px;
+    margin-top: 3rem;
+    margin-bottom: 3rem;
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 3rem;
+}
+
+.page-button {
+    width: 40px;
+    height: 40px;
+    border: 1.5px solid #bbb;
+    background-color: #fff;
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    color: #222;
+    font-weight: bold;
+    transition: all 0.2s;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+}
+
+.page-button:hover {
+    background-color: #e6f9ef;
+    border-color: #03c75a;
+    color: #03c75a;
+}
+
+.page-button.active {
+    background-color: #03c75a;
+    color: #fff;
+    border-color: #03c75a;
+}
